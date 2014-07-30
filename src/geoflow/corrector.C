@@ -90,6 +90,8 @@ void correct(HashTable* NodeTable, HashTable* El_Table,
   double hscale=matprops_ptr->HEIGHT_SCALE;
   double velocity_scale = sqrt(lscale *gscale);
   double momentum_scale = hscale * velocity_scale;
+  double timescale=timeprops->TIME_SCALE;
+  double scaling_coef=timescale;//we need this for scaling the RHS of the phase field equation
 
   double Vfluid[DIMENSION], Vsolid[DIMENSION];
   // double volf;
@@ -163,7 +165,7 @@ void correct(HashTable* NodeTable, HashTable* El_Table,
 	   gravity, kactxy,d_gravity ,&(matprops_ptr->frict_tiny),
 	   forceint, forcebed, dragforce, &do_erosion, eroded, Vsolid, Vfluid,
 	   &solid_den, &fluid_den, &terminal_vel,
-	   &(matprops_ptr->epsilon), &IF_STOPPED, Influx, &navslip_coef,eta);
+	   &(matprops_ptr->epsilon), &IF_STOPPED, Influx, &navslip_coef,eta,&scaling_coef);
 
   //if (state_vars[2]>100) {print_elem_data(EmTemp,matprops_ptr, fluxprops,timeprops); exit(1);}
   EmTemp->put_drag(dragforce);

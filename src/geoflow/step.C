@@ -198,7 +198,7 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump,
   double realvolume=0.0;
 
   double eta=compute_eta(El_Table,statprops_ptr );
-
+//cout<<"eta is equal to "<<eta<<"  and time scale "<<timeprops_ptr->TIME_SCALE<<endl;
   for(i=0; i<El_Table->get_no_of_buckets(); i++)
     if(*(buck+i))
       {
@@ -262,7 +262,7 @@ double timedelta=0;
   // ====================================================Implicit Solver==========================
    if (timeprops_ptr->iter%5==4 ||timeprops_ptr->iter==1 || timeprops_ptr->time>=timeprops_ptr->ndnextoutput  /*|| timeprops_ptr->iter==1 */){//{|| timeprops_ptr->iter == 1){//|| timeprops_ptr->iter % 5 ==2){
   timedelta= (timeprops_ptr->time-timeprops_ptr->implicit);//*timeprops_ptr->TIME_SCALE;  
-  LaplacianData  Laplacian (El_Table, NodeTable , timedelta, .0001,timeprops_ptr); 
+  LaplacianData  Laplacian (El_Table, NodeTable , timedelta, (10*timeprops_ptr->TIME_SCALE)/(matprops_ptr->LENGTH_SCALE*matprops_ptr->LENGTH_SCALE),timeprops_ptr); 
 
 //cout<<"time data not scaled  "<<timeprops_ptr->time-timeprops_ptr->implicit<<"   scaled time is   "<<timedelta<<"  Time Scale is "<<timeprops_ptr->TIME_SCALE<<endl;
 
@@ -285,8 +285,11 @@ double timedelta=0;
 //  		//if (*(Curr_El->get_state_vars()+1)>1e-3)
 //		//{					
 		phi = *(Curr_El->get_state_vars());
-		if(phi*timeprops_ptr->TIME_SCALE>1) phi=1/timeprops_ptr->TIME_SCALE;
-		if(phi*timeprops_ptr->TIME_SCALE<-1) phi=-1/timeprops_ptr->TIME_SCALE;
+		if(phi>1) phi=1;
+		if(phi<-1) phi=-1;
+		
+		//if(phi*timeprops_ptr->TIME_SCALE>1) phi=1/timeprops_ptr->TIME_SCALE;
+		//if(phi*timeprops_ptr->TIME_SCALE<-1) phi=-1/timeprops_ptr->TIME_SCALE;
 		//}
   		//else 
 		//phi=0;

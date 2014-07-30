@@ -215,7 +215,8 @@ extern "C" void correct_(double *Uvec, double *Uprev, double *fluxxp,
 			 double *dragf, int *do_erosion, double *eroded, 
 			 double *Vsolid, double *Vfluid, double *den_solid, 
                          double *den_fluid, double *terminal_vel, double *eps, 
-                         int *if_stopped, double *fluxcoef, double *navslip,double *eta);
+                         int *if_stopped, double *fluxcoef, double *navslip,
+			 double *eta,double *scaling_coef);
 #endif
 #ifdef IBMSP
 extern "C" void gmfggetcoef(double*, double*, double*, double*, double*, 

@@ -592,10 +592,7 @@ int print_bubble_node(FILE *fp, HashTable* NodeTable, MatProps* matprops,
   int num_missing_bubble_node;
   double velocity_scale, momentum_scale, elevation;
 
-  double TIME_SCALE=
-    sqrt(matprops->LENGTH_SCALE/matprops->GRAVITY_SCALE);
-
-
+  //double TIME_SCALE= sqrt(matprops->LENGTH_SCALE/matprops->GRAVITY_SCALE);
   velocity_scale = sqrt(matprops->LENGTH_SCALE * (matprops->GRAVITY_SCALE)); // scaling factor for the velocities
   momentum_scale = matprops->HEIGHT_SCALE * velocity_scale; // scaling factor for the momentums
 
@@ -614,7 +611,7 @@ int print_bubble_node(FILE *fp, HashTable* NodeTable, MatProps* matprops,
 	  (*(EmTemp->get_coord()+1))*(matprops)->LENGTH_SCALE,
 	  (elevation+(*(EmTemp->get_state_vars()+1))*(matprops)->HEIGHT_SCALE), 
 	  *(EmTemp->get_state_vars()+1)*(matprops)->HEIGHT_SCALE,
-	  *(EmTemp->get_state_vars())*TIME_SCALE,
+	  *(EmTemp->get_state_vars())/*TIME_SCALE*/,
 	  *(EmTemp->get_state_vars()+2)*momentum_scale, 
 	  *(EmTemp->get_state_vars()+3)*momentum_scale, 
 	  *(EmTemp->get_state_vars()+4)/**momentum_scale*/, 

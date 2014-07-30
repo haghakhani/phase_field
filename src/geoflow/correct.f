@@ -21,7 +21,7 @@ C***********************************************************************
      2     curv,intfrictang, bedfrictang, g, kactxy,  dgdx, 
      3     frict_tiny, forceint,forcebed, dragfoce ,DO_EROSION,
      4     eroded, v_solid, v_fluid,den_solid, den_fluid, terminal_vel,
-     5     eps, IF_STOPPED, fluxsrc, navslip,eta)
+     5     eps, IF_STOPPED, fluxsrc, navslip,eta,scale_coef)
 C***********************************************************************
 
       implicit none
@@ -44,7 +44,7 @@ C***********************************************************************
       double precision xslope,yslope,slope
       double precision t1, t2, t3, t4,aaa
       double precision erosion_rate,threshold,es,totalShear
-      double precision eps, drag(4),tempo,eta
+      double precision eps, drag(4),tempox,tempoy,eta,scale_coef
 
 !     function calls
       double precision sgn
@@ -75,10 +75,16 @@ c     -------------------------------Hossein------------------------------------
      $     -dtdx*(fluxxp(1)+fluxxm(5))
      $     -dtdy*(fluxyp(1)+fluxym(5))
 
-      t3=4*uvec(1)*(uvec(1)**2-1)
+      t3=1.d0*uvec(1)*(uvec(1)**2-1)
 c      t3=2*uvec(1)*(2*uvec(1)**2-3*uvec(1)+1)
-      ustore(1)=ustore(1)+dt*(-t3+eta)
+      ustore(1)=ustore(1)+1.d0*dt*scale_coef*(-t3+eta)
 
+      tempox=dtdx*(fluxxp(1)-fluxxm(1))
+      tempoy=dtdy*(fluxyp(1)-fluxym(1))
+
+c      if (dabs(t3).gt.0)  print *," dt*t3 is  ", dt*t3*scale_coef,
+c     $ " flux x is ",tempox, " flux y is ", tempoy,
+c     $ " usoter is ", ustore(1)
       
       ustore(2) = max(ustore(2),0.)
 c      ustore(1) = max(ustore(1),0.)

@@ -323,9 +323,10 @@ void elliptical_pile_height(HashTable* HT_Node_Ptr, Element *EmTemp,
 			4.0*sum_node_ymom[8]
 		    )/16.0;
 
-	double TIME_SCALE= sqrt(matprops->LENGTH_SCALE/matprops->GRAVITY_SCALE);
-	if (pileheight>GEOFLOW_TINY) phi=1/TIME_SCALE;
-	else phi/=TIME_SCALE;
+	//double TIME_SCALE= sqrt(matprops->LENGTH_SCALE/matprops->GRAVITY_SCALE);
+	//if (pileheight>GEOFLOW_TINY) phi=1/TIME_SCALE;
+	//else phi/=TIME_SCALE;
+	if (pileheight>GEOFLOW_TINY) phi=1;
 
 	EmTemp->put_height_mom(pileheight,phi,xmom,ymom);
 	return;

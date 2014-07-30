@@ -57,7 +57,7 @@ int write_xdmf(HashTable *El_Table, HashTable *NodeTable,TimeProps *timeprops_pt
   double momentum_scale=matprops_ptr->HEIGHT_SCALE*
     sqrt(matprops_ptr->LENGTH_SCALE*(matprops_ptr->GRAVITY_SCALE)); 
   unsigned *nodes;
-  double TIME_SCALE= sqrt(matprops_ptr->LENGTH_SCALE/matprops_ptr->GRAVITY_SCALE);
+  //double TIME_SCALE= sqrt(matprops_ptr->LENGTH_SCALE/matprops_ptr->GRAVITY_SCALE);
 
 
   /* scan HashTable and store coordinates and variables in vectors */
@@ -65,7 +65,7 @@ int write_xdmf(HashTable *El_Table, HashTable *NodeTable,TimeProps *timeprops_pt
   Node *NodeTemp=NULL;
   HashEntry *entryptr;
   int buckets=El_Table->get_no_of_buckets();
-  cout<<" I want to start print:"<<endl;
+  //cout<<" I want to start print:"<<endl;
   for (i=0; i<buckets; i++)
   {
     entryptr=*(El_Table->getbucketptr()+i);
@@ -79,8 +79,8 @@ int write_xdmf(HashTable *El_Table, HashTable *NodeTable,TimeProps *timeprops_pt
 	pheight.push_back(state_vars[1]*matprops_ptr->LENGTH_SCALE);
 	xmom.push_back(state_vars[2]*momentum_scale);
 	ymom.push_back(state_vars[3]*momentum_scale);
-	phi.push_back(state_vars[0]*TIME_SCALE);
-	if (state_vars[0]!=0) cout<<"phi  = "<<state_vars[0]*TIME_SCALE<<endl;
+	phi.push_back(state_vars[0]/**TIME_SCALE*/);
+	//if (state_vars[0]!=0) cout<<"phi  = "<<state_vars[0]*TIME_SCALE<<endl;
 	num_elm++;
 	nodes=EmTemp->getNode();
 	for (j=0; j<4; j++)

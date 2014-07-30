@@ -42,7 +42,7 @@ double compute_eta(HashTable* El_Table,StatProps* statprops){
 	  dx=Curr_El->get_dx();
 	  phi=*(Curr_El->get_state_vars());
 
-	  local_eta+=4*dx[0]*dx[1]*phi*(phi*phi-1);
+	  local_eta+=1*dx[0]*dx[1]*phi*(phi*phi-1);
 	}
 	currentPtr=currentPtr->next;
       }
