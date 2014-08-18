@@ -105,7 +105,7 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump,
 	    curr_time=(timeprops_ptr->time)*(timeprops_ptr->TIME_SCALE);
 
 	    //VxVy[2]; 
-	    if(*(Curr_El->get_state_vars())>0/*GEOFLOW_TINY*/) {
+	    if(*(Curr_El->get_state_vars()+1)>GEOFLOW_TINY) {
 	      VxVy[0]=*(Curr_El->get_state_vars()+2)/ *(Curr_El->get_state_vars()+1);
 	      VxVy[1]=*(Curr_El->get_state_vars()+3)/ *(Curr_El->get_state_vars()+1);
 	    }
@@ -236,8 +236,9 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump,
 	      double *coord=Curr_El->get_coord();	      
 	      //update the record of maximum pileheight in the area covered by this element
 	      double hheight;
-	      if(*(Curr_El->get_state_vars())>=0)   hheight=*(Curr_El->get_state_vars()+1);
-	      else hheight=0;
+	      //if(*(Curr_El->get_state_vars())>=0)   
+hheight=*(Curr_El->get_state_vars()+1);
+	      //else hheight=0;
 	      if(hheight>0 && hheight<0);
 
 
@@ -262,7 +263,7 @@ double timedelta=0;
   // ====================================================Implicit Solver==========================
    if (timeprops_ptr->iter%5==4 ||timeprops_ptr->iter==1 || timeprops_ptr->time>=timeprops_ptr->ndnextoutput  /*|| timeprops_ptr->iter==1 */){//{|| timeprops_ptr->iter == 1){//|| timeprops_ptr->iter % 5 ==2){
   timedelta= (timeprops_ptr->time-timeprops_ptr->implicit);//*timeprops_ptr->TIME_SCALE;  
-  LaplacianData  Laplacian (El_Table, NodeTable , timedelta, (10*timeprops_ptr->TIME_SCALE)/(matprops_ptr->LENGTH_SCALE*matprops_ptr->LENGTH_SCALE),timeprops_ptr); 
+  LaplacianData  Laplacian (El_Table, NodeTable , timedelta, (100*timeprops_ptr->TIME_SCALE)/(matprops_ptr->LENGTH_SCALE*matprops_ptr->LENGTH_SCALE),timeprops_ptr); 
 
 //cout<<"time data not scaled  "<<timeprops_ptr->time-timeprops_ptr->implicit<<"   scaled time is   "<<timedelta<<"  Time Scale is "<<timeprops_ptr->TIME_SCALE<<endl;
 

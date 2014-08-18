@@ -154,7 +154,7 @@ int implicit_solver(LaplacianData *Laplacian)
      Set operators. Here the matrix that defines the linear system
      also serves as the preconditioning matrix.
    */
-  ierr = KSPSetOperators(ksp,A,A,DIFFERENT_NONZERO_PATTERN);CHKERRQ(ierr);
+  ierr = KSPSetOperators(ksp,A,A/*,DIFFERENT_NONZERO_PATTERNdeleted for v3.5 petsc*/);CHKERRQ(ierr);
   ierr = KSPSetType(ksp,KSPFGMRES);CHKERRQ(ierr);
 
   /*
@@ -186,7 +186,7 @@ int implicit_solver(LaplacianData *Laplacian)
 
     ierr = KSPGetIterationNumber(ksp,&its);CHKERRQ(ierr);
     ierr = KSPGetResidualNorm(ksp,&norm);CHKERRQ(ierr);
-    ierr = PetscSynchronizedPrintf( MPI_COMM_SELF,"Norm of error %G iterations %D\n",norm,its);CHKERRQ(ierr);
+    ierr = PetscSynchronizedPrintf( MPI_COMM_SELF,"Norm of error %g iterations %D\n",(double) norm,its);CHKERRQ(ierr);
     //PetscSynchronizedFlush(PETSC_COMM_WORLD); 
     ierr = KSPGetConvergedReason(ksp,&reason);
     ierr = PetscSynchronizedPrintf( MPI_COMM_SELF,"kind of divergence is: ...........%D \n", reason);
