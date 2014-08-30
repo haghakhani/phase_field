@@ -491,7 +491,8 @@ class Element{
 
   //! this function returns 2 if this element contains pileheight>=contour_height and has a neighbor who contains pileheight<contour_height.  It returns 1 if this element contains pileheight<contour_height and has a neighbor who contains pileheight>=contour_height.  It returns 0 otherwise. The intended use if if(EmTemp->if_pile_boundary(ElemTable,contour_height)) but I (Keith) added the distinction bewteen 1 and 2 to allow future developers to distinguish between the inside and outside of a pileheight contour line, as this functionality could be useful in the future.
   int if_pile_boundary(HashTable *ElemTable, double contour_height);
-  int if_pahse_baundary(HashTable *ElemTable);
+//  int if_pahse_baundary(HashTable *ElemTable);
+  int if_phase_boundary(HashTable*);
 
   //! this function returns 2 if this element has Influx[0]>0 and has a neighbor who has Influx[0]<=0.  It returns 1 if this element has Influx[0]==0 and has a neighbor who has Influx[0]!=0.  It returns -1 if this element has Influx[0]<0 and a neighbor with Influx[0]>=0. It returns 0 otherwise. Influx[0] is a pileheight per unit time source term.  Currently Influx[0] is restricted to be non-negative (a source or no source with sinks not allowed), but I (Keith) have added the extra functionality because it may be useful at a future date. The intended use if if(EmTemp->if_source_boundary(ElemTable)), but the distinction between 1 and 2 allows futuredevelopers to distinguish between the strictly inside and strictly outside of an area with a flux source term.
   int if_source_boundary(HashTable *ElemTable);
