@@ -27,7 +27,7 @@ C***********************************************************************
       double precision eps
       double precision sound_speed
 
-      if (Uvec(1) .gt. 0.d0) then !tiny
+      if (Uvec(2) .gt.tiny) then !tiny
 c     iverson and denlinger
          if(kactxy(1) .lt. 0.d0) then
             kactxy(1) = -kactxy(1)
