@@ -3344,27 +3344,9 @@ int Element::if_pile_boundary(HashTable *ElemTable, double contour_height){
 
   int ineigh;
   Element* ElemNeigh;
-  // if (!(state_vars[0]>=0)){//((state_vars[0]<0)||(isnan(state_vars[0])))  {
-  //   int i;
-  //   printf("ElemKey: %u      %u\n", *(this->pass_key()),*(this->pass_key()+1));
-  //   printf("state_vars: \n");
-  //   for (i=0; i<NUM_STATE_VARS; i++)
-  //     printf("%10.5e, ", state_vars[i]);
-  //   printf("\n");
-
-  //   printf("d_state_vars: \n");
-  //   for (i=0; i<2*NUM_STATE_VARS; i++)
-  //     {printf("%10.5e, ", d_state_vars[i]);if(i==NUM_STATE_VARS-1) printf("\n");}
-  //   printf("\n");
-
-  //   printf("prev_state_vars: \n");
-  //   for (i=0; i<NUM_STATE_VARS; i++)
-  //     printf("%10.5e, ", prev_state_vars[i]);
-  //   printf("\n");
-  // }
 
   //  assert(state_vars[0]>=0.0);
-  if(state_vars[1]>=contour_height)
+  if(dabs(state_vars[0])<=contour_height)
   {
     for(ineigh=0;ineigh<8;ineigh++)
       if(neigh_proc[ineigh]>=0) //don't check outside map boundary or duplicate neighbor
@@ -3378,7 +3360,7 @@ int Element::if_pile_boundary(HashTable *ElemTable, double contour_height){
 	  fflush(stdout);
 	}
 	assert(ElemNeigh);
-	if(*(ElemNeigh->get_state_vars()+1)<contour_height)
+	if(dabs(*(ElemNeigh->get_state_vars()))>contour_height)
 	  return(2); //inside of pileheight contour line
       }
   }
@@ -3396,7 +3378,7 @@ int Element::if_pile_boundary(HashTable *ElemTable, double contour_height){
 	  fflush(stdout);
 	}
 	assert(ElemNeigh);
-	if(*(ElemNeigh->get_state_vars()+1)>=contour_height)
+	if(dabs(*(ElemNeigh->get_state_vars()))<=contour_height)
 	  return(1); //outside of pileheight contour line
       }
   } 
@@ -3503,13 +3485,13 @@ int Element::if_first_buffer_boundary(HashTable *ElemTable, double contour_heigh
 
   //assert(state_vars[0]>=0.0);
   assert(Influx[1]>=0.0);
-  if((state_vars[1]<contour_height)&&
+  if((dabs(state_vars[0])<contour_height)&&
       (Influx[1]==0.0)){
     for(ineigh=0;ineigh<8;ineigh++)
       if(neigh_proc[ineigh]>=0){ //don't check outside map boundary or duplicate neighbor
 	ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
 	assert(ElemNeigh);
-	if((*(ElemNeigh->get_state_vars()+1)>=contour_height)||
+	if((dabs(*(ElemNeigh->get_state_vars()))>=contour_height)||
 	    (*(ElemNeigh->get_influx()+1)>0.0))
 	{
 	  iffirstbuffer=1;
@@ -3524,7 +3506,7 @@ int Element::if_first_buffer_boundary(HashTable *ElemTable, double contour_heigh
       {
 	ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
 	assert(ElemNeigh);
-	if((*(ElemNeigh->get_state_vars()+1)<contour_height)&&
+	if((dabs(*(ElemNeigh->get_state_vars()))<contour_height)&&
 	    (*(ElemNeigh->get_influx()+1)==0.0))
 	{
 	  iffirstbuffer=1;
@@ -3569,7 +3551,7 @@ int Element::if_next_buffer_boundary(HashTable *ElemTable, HashTable *NodeTable,
 	}
 
 	if((abs(ElemNeigh->get_adapted_flag())==BUFFER)&&
-	    (state_vars[1]<=*(ElemNeigh->get_state_vars()+1)))//Hossein is not sure that this part should change or not for level_set
+	    (state_vars[0]<=*(ElemNeigh->get_state_vars())))//Hossein is not sure that this part should change or not for level_set
 	{ //this element is next to a member of the old buffer layer
 	  ifnextbuffer=1; //which means this element is a member of the next outer boundary of the buffer layer
 	  break;

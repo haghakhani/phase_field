@@ -154,7 +154,7 @@ int implicit_solver(LaplacianData *Laplacian)
      Set operators. Here the matrix that defines the linear system
      also serves as the preconditioning matrix.
    */
-  ierr = KSPSetOperators(ksp,A,A,DIFFERENT_NONZERO_PATTERN);CHKERRQ(ierr);
+  ierr = KSPSetOperators(ksp,A,A/*,DIFFERENT_NONZERO_PATTERN*/);CHKERRQ(ierr);
   ierr = KSPSetType(ksp,KSPFGMRES);CHKERRQ(ierr);
 
   /*
