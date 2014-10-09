@@ -163,7 +163,7 @@ Element::Element(unsigned nodekeys[][KEYLENGTH], unsigned neigh[][KEYLENGTH],
   drypoint[0]=drypoint[1]=0.0;
   Awet=Swet=(pile_height>GEOFLOW_TINY)?1.0:0.0;
 
-  prev_state_vars[0] = prev_state_vars[4]=0;
+  prev_state_vars[0] = prev_state_vars[4]=0.;
   //if(pile_height>0) prev_state_vars[0]=prev_state_vars[4]=1.;
   prev_state_vars[1] = pile_height;
   prev_state_vars[2] =  0.;
@@ -173,7 +173,7 @@ Element::Element(unsigned nodekeys[][KEYLENGTH], unsigned neigh[][KEYLENGTH],
   for(i=0;i<DIMENSION*NUM_STATE_VARS;i++)
     d_state_vars[i] = 0;
   for (int i=0; i<DIMENSION; i++)
-    lap_phi[i]=0;
+    lap_phi[i]=0.;
 
   for (i=0; i<NUM_STATE_VARS; i++)
     Influx[i]=0.0;
@@ -206,7 +206,7 @@ Element::Element(unsigned nodekeys[][KEYLENGTH], unsigned neigh[][KEYLENGTH],
   for (int i=0; i<DIMENSION*NUM_STATE_VARS; i++)
     d_state_vars[i] = 0.;
   for (int i=0; i<DIMENSION; i++)
-    lap_phi[i]=0;
+    lap_phi[i]=0.;
 
   for(int ikey=0;ikey<KEYLENGTH;ikey++)
     father[ikey]=
@@ -350,7 +350,7 @@ Element::Element(Element* sons[], HashTable* NodeTable, HashTable* El_Table,
   for (int i=0; i<DIMENSION*NUM_STATE_VARS; i++)
     d_state_vars[i] = 0.;
   for (int i=0; i<DIMENSION; i++)
-    lap_phi[i]=0;
+    lap_phi[i]=0.0;
 
   for(int ikey=0;ikey<KEYLENGTH;ikey++)
     father[ikey]=
@@ -1098,11 +1098,11 @@ void Element::calc_wet_dry_orient(HashTable *El_Table)
   {
     if(neigh_proc[ineigh]==-1)
       //edge of map and cell has same wetness as the cell 
-      ifsidewet[ineigh]=(state_vars[0]>0/*>GEOFLOW_TINY*/) ? 1 : 0;
+      ifsidewet[ineigh]=(state_vars[1]>GEOFLOW_TINY) ? 1 : 0;
     else
     {
       EmTemp=(Element *) El_Table->lookup(neighbor[ineigh]);
-      if(*(EmTemp->get_state_vars())>0/*>GEOFLOW_TINY*/)
+      if(*(EmTemp->get_state_vars()+1)>GEOFLOW_TINY)
 	//first neighbor on this side is wet
 	ifsidewet[ineigh]=1;
       else if(neigh_proc[ineigh+4]==-2)
@@ -1124,7 +1124,7 @@ void Element::calc_wet_dry_orient(HashTable *El_Table)
     //if opposite sides of the element are the same (both wet or dry)
     iwetnode=8;
     drypoint[0]=drypoint[1]=0.0;
-    if(state_vars[0]>0/*>GEOFLOW_TINY*/)
+    if(state_vars[1]>GEOFLOW_TINY)
       Awet=Swet=1.0;
     else
       Awet=Swet=0.0;
@@ -1202,7 +1202,7 @@ void Element::calc_wet_dry_orient(HashTable *El_Table)
   }    
 
   if(iwetnode==8)
-    Awet=(state_vars[0]>0/*>GEOFLOW_TINY*/)?1.0:0.0;
+    Awet=(state_vars[1]>GEOFLOW_TINY)?1.0:0.0;
 
   return;
 }
@@ -2691,7 +2691,7 @@ void Element::eval_velocity(double xoffset, double yoffset, double Vel[])
   for (i=0; i<4; i++)
     Vel[i]=0;
 
-  if (temp_state_vars[0] >0/*> GEOFLOW_TINY*/)
+  if (temp_state_vars[1] > GEOFLOW_TINY)
   {
     Vel[0]=temp_state_vars[2]/temp_state_vars[1];
     Vel[1]=temp_state_vars[3]/temp_state_vars[1];

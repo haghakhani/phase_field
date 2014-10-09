@@ -133,8 +133,8 @@ double get_coef_and_eigen(HashTable* El_Table, HashTable* NodeTable,
 
 					Vsolid[0]=(*(EmTemp->get_state_vars()+2))/(*(EmTemp->get_state_vars()+1));
 					Vsolid[1]=(*(EmTemp->get_state_vars()+3))/(*(EmTemp->get_state_vars()+1));
-					Vfluid[0]=0;//(*(EmTemp->get_state_vars()+4))/(*(EmTemp->get_state_vars()+1));
-					Vfluid[1]=0;//(*(EmTemp->get_state_vars()+4))/(*(EmTemp->get_state_vars()+1));
+					Vfluid[0]=0.;//(*(EmTemp->get_state_vars()+4))/(*(EmTemp->get_state_vars()+1));
+					Vfluid[1]=0.;//(*(EmTemp->get_state_vars()+4))/(*(EmTemp->get_state_vars()+1));
 					//}else
 					  // Vsolid[0]=Vsolid[1]=Vfluid[0]=Vfluid[1]=0;
 

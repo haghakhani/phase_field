@@ -277,7 +277,7 @@ void elliptical_pile_height(HashTable* HT_Node_Ptr, Element *EmTemp,
 			if(node_pile_height[inode] < height)
 				node_pile_height[inode] = height;
 		}
-		if(sum_node_pile_height[inode] <= .001)//GEOFLOW_TINY)
+		if(sum_node_pile_height[inode] <= GEOFLOW_TINY)//GEOFLOW_TINY)
 			sum_node_xmom[inode]=sum_node_ymom[inode]=0.0;
 		else{
 			sum_node_xmom[inode]*=height/sum_node_pile_height[inode];
