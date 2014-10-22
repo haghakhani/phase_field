@@ -86,13 +86,13 @@ AUTOMAKE = ${SHELL} /keith1/data/users/haghakha/phase_field/missing --run automa
 AWK = gawk
 CC = /keith1/home/haghakha/petsc-3.5.0/titan_dbg/bin/mpicc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -g -O2 -I/include
+CFLAGS = -I/include  -O0 -g
 CPP = /keith1/home/haghakha/petsc-3.5.0/titan_dbg/bin/mpicc -E
-CPPFLAGS = -DH5_USE_16_API -DMPICH_IGNORE_CXX_SEEK  -DMPICH_SKIP_MPICXX -I/keith1/data/users/haghakha/petsc-3.5.0/include -I/keith1/data/users/haghakha/petsc-3.5.0/titan_dbg/include  -I/include -DH5_USE_16_API
+CPPFLAGS = -g -O0 -DH5_USE_16_API -DMPICH_IGNORE_CXX_SEEK  -DMPICH_SKIP_MPICXX -I/keith1/data/users/haghakha/petsc-3.5.0/include -I/keith1/data/users/haghakha/petsc-3.5.0/titan_dbg/include  -I/include -DH5_USE_16_API
 CXX = /keith1/home/haghakha/petsc-3.5.0/titan_dbg/bin/mpicxx
 CXXCPP = /keith1/home/haghakha/petsc-3.5.0/titan_dbg/bin/mpicxx -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -DH5_USE_16_API -DMPICH_IGNORE_CXX_SEEK  -DMPICH_SKIP_MPICXX -I/keith1/data/users/haghakha/petsc-3.5.0/include -I/keith1/data/users/haghakha/petsc-3.5.0/titan_dbg/include  -I/include
+CXXFLAGS = -O0 -DH5_USE_16_API -DMPICH_IGNORE_CXX_SEEK  -DMPICH_SKIP_MPICXX -I/keith1/data/users/haghakha/petsc-3.5.0/include -I/keith1/data/users/haghakha/petsc-3.5.0/titan_dbg/include  -I/include  -O0 -g
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps

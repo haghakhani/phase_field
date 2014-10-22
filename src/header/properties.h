@@ -616,7 +616,7 @@ struct OutLine{
     //pileheight2=CAllocD2(Ny,Nx);
     for(iy=0;iy<Ny;iy++)
       for(ix=0;ix<Nx;ix++) {
-	pileheight[ iy][ix]=0.0;
+	pileheight[ iy][ix]=1.0;//since we want to store min(abs(pileheight)) to track the interface
 	//pileheight2[iy][ix]=0.0;
       }      
     return;
@@ -679,7 +679,7 @@ struct OutLine{
 	y=(iy+0.5)*dy-yc;
 	height2=h2[0]+h2[1]*x+h2[2]*y+h2[3]*x*y+h2[4]*x*x+h2[5]*y*y;
 	if(height2>pileheight2[iy][ix]) pileheight2[iy][ix]=height2; */
-	if(height >pileheight[ iy][ix]) pileheight[ iy][ix]=height;
+	if(fabs(height) <pileheight[ iy][ix]) pileheight[ iy][ix]=fabs(height);
       }
     return;
   }
@@ -716,7 +716,7 @@ struct OutLine{
 	ierr = Get_elevation(res, xx, yy, &elevation);
 	fprintf(fp,"%g ",elevation);
       }
-      fprintf(fp,"%g\n",pileheight[iy][ix]*matprops_ptr->HEIGHT_SCALE);
+      fprintf(fp,"%g\n",pileheight[iy][ix]);//*matprops_ptr->HEIGHT_SCALE);
     }
     fclose(fp);
 
