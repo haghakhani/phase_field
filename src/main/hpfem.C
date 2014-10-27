@@ -276,8 +276,8 @@ printf("Nx=%d  Ny=%d \n",outline.Nx,outline.Ny);
         //output_flag=0;
  MPI_Barrier(MPI_COMM_WORLD);
         MPI_Reduce(*(outline.pileheight),*(outline2.pileheight),NxNyout,
-                    MPI_DOUBLE,MPI_SUM,0,MPI_COMM_WORLD);
-                if(myid==0) outline2.output(&matprops,&statprops);
+                    MPI_DOUBLE,MPI_MIN,0,MPI_COMM_WORLD);
+                if(myid==0) outline2.output(&matprops,&statprops,&timeprops);
  MPI_Barrier(MPI_COMM_WORLD);
 
         if(myid==0){ 
@@ -397,7 +397,7 @@ printf("Nx=%d  Ny=%d \n",outline.Nx,outline.Ny);
 
         MPI_Reduce(*(outline.pileheight),*(outline2.pileheight),NxNyout, 
             MPI_DOUBLE,MPI_SUM,0,MPI_COMM_WORLD);
-        if(myid==0) outline2.output(&matprops,&statprops);
+        if(myid==0) outline2.output(&matprops,&statprops,&timeprops);
 
 #ifdef PERFTEST  
         long  m = element_counter, ii;
