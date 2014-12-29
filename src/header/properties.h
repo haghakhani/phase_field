@@ -199,9 +199,13 @@ struct PileProps{
   //!array holding the initial y speed of the pile
   double *initialVy;   
 
+  //pile volume, this is scaled pile volume that we need to compute for eta(phase field mass conservation term)
+  double pilevol;
+
   //! this constuctor initializes the number of piles to zero.
   PileProps() {
     numpiles=0;
+    pilevol=0.;
   }
 
   //! function allocates space for the pile data
@@ -217,8 +221,7 @@ struct PileProps{
     sinrot    =CAllocD1(numpiles);
     initialVx =CAllocD1(numpiles);
     initialVy =CAllocD1(numpiles);
-
-  }
+    }
 
   //! this function deallocates the dynamically out array members of the PileProps structure
   ~PileProps() {

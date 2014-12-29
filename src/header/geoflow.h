@@ -108,7 +108,7 @@ PetscErrorCode MatLaplacian2D_Mult(Mat A,Vec x,Vec y);
 ////! This function is the implicit solver
 int implicit_solver(LaplacianData* Laplacian);
 
-double compute_eta(HashTable* El_Table,StatProps* statprops);
+double compute_eta(HashTable* El_Table, PileProps *pileprops);
 //
 ////! This function is used in in implicit solver 
 PetscScalar *phase(HashTable *El_Table, int num_elem);

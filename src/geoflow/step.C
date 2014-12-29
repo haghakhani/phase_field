@@ -197,7 +197,7 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump,
   double deposited=0.0, elemdeposited;
   double realvolume=0.0;
 
-  double eta=compute_eta(El_Table,statprops_ptr );
+  double eta=compute_eta(El_Table,pileprops_ptr );
   //cout<<"eta is equal to "<<eta<<"  and time scale "<<timeprops_ptr->TIME_SCALE<<endl;
   for(i=0; i<El_Table->get_no_of_buckets(); i++)
     if(*(buck+i))

@@ -21,65 +21,29 @@
 
 #include "../header/hpfem.h"
 
-void calc_map_area(HashTable* El_Table, StatProps* statprops);
+double compute_eta(HashTable* El_Table, PileProps *pileprops) {
 
-double compute_eta(HashTable* El_Table,StatProps* statprops){
+	double local_eta = 0., eta = 0., *dx, phi = 0.0, height = 0.;
+	HashEntryPtr* buck = El_Table->getbucketptr();
 
-  calc_map_area( El_Table, statprops);
+	for (int i = 0; i < El_Table->get_no_of_buckets(); i++)
+		if (*(buck + i)) {
+			HashEntryPtr currentPtr = *(buck + i);
+			while (currentPtr) {
+				Element* Curr_El = (Element*) (currentPtr->value);
+				if (Curr_El->get_adapted_flag() > 0) {
 
-  double local_eta=0.,eta=0. ,*dx, phi=0.0;
-  HashEntryPtr* buck = El_Table->getbucketptr();
+					dx = Curr_El->get_dx();
+					phi = *(Curr_El->get_state_vars());
+					height = *(Curr_El->get_state_vars() + 1);
 
-  for(int i=0; i<El_Table->get_no_of_buckets(); i++)
-    if(*(buck+i))
-    {
-      HashEntryPtr currentPtr = *(buck+i);
-      while(currentPtr)
-      {
-	Element* Curr_El=(Element*)(currentPtr->value);
-	if(Curr_El->get_adapted_flag()>0) {
+					local_eta += height*dx[0] * dx[1] * phi * (phi * phi - 1);
+				}
+				currentPtr = currentPtr->next;
+			}
+		}
+	local_eta /=  pileprops->pilevol;
+	MPI_Allreduce(&local_eta, &eta, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
 
-	  dx=Curr_El->get_dx();
-	  phi=*(Curr_El->get_state_vars());
-
-	  local_eta+=1*dx[0]*dx[1]*phi*(phi*phi-1);
-	}
-	currentPtr=currentPtr->next;
-      }
-    }
-  local_eta/=statprops->map_area;
-  MPI_Allreduce(&local_eta,&eta,1,MPI_DOUBLE,MPI_SUM,MPI_COMM_WORLD);
-
-
-  return eta;
+	return eta;
 }
-
-void calc_map_area(HashTable* El_Table, StatProps* statprops){
-
-  double map_area=0.0,*dx;
-
-  HashEntryPtr* buck = El_Table->getbucketptr();
-
-  for(int i=0; i<El_Table->get_no_of_buckets(); i++)
-    if(*(buck+i))
-    {             
-      HashEntryPtr currentPtr = *(buck+i);
-      while(currentPtr)             
-      {                                         
-	Element* Curr_El=(Element*)(currentPtr->value);       
-	if(Curr_El->get_adapted_flag()>0) { 
-	  dx=Curr_El->get_dx();
-
-	  map_area+=dx[0]*dx[1];
-
-	}
-	currentPtr=currentPtr->next;
-      }
-    }
-
-  MPI_Allreduce(&map_area,&(statprops->map_area),1,MPI_DOUBLE,MPI_SUM,MPI_COMM_WORLD);
-
-  return;
-}
-
-
