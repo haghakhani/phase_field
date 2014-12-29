@@ -338,7 +338,7 @@ void elliptical_pile_height(HashTable* HT_Node_Ptr, Element *EmTemp,
 	//if (pileheight>GEOFLOW_TINY) phi=1/TIME_SCALE;
 	//else phi/=TIME_SCALE;
 	if (pileheight > GEOFLOW_TINY)
-		phi = 1;
+		phi = 1.;
 
 	EmTemp->put_height_mom(pileheight, phi, xmom, ymom);
 	return;

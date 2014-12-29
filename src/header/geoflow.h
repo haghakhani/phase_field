@@ -44,7 +44,7 @@ void correct(HashTable* NodeTable, HashTable* El_Table,
 	     double dt, MatProps* matprops_ptr, 
 	     FluxProps *fluxprops, TimeProps *timeprops,
 	     void *EmTemp, double *forceint, double *forcebed, 
-	     double *eroded, double *deposited,double *eta);
+	     double *eroded, double *deposited,double *eta,double *capwid);
 
 //! this function is legacy, the prototype exists but the function is not defined
 void checknodesol(HashTable*);
@@ -216,7 +216,7 @@ extern "C" void correct_(double *Uvec, double *Uprev, double *fluxxp,
 			 double *Vsolid, double *Vfluid, double *den_solid, 
                          double *den_fluid, double *terminal_vel, double *eps, 
                          int *if_stopped, double *fluxcoef, double *navslip,
-			 double *eta,double *scaling_coef);
+			 double *eta,double *capwid, double *scaling_coef);
 #endif
 #ifdef IBMSP
 extern "C" void gmfggetcoef(double*, double*, double*, double*, double*, 

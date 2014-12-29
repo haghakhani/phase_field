@@ -21,7 +21,7 @@ C***********************************************************************
      2     curv,intfrictang, bedfrictang, g, kactxy,  dgdx, 
      3     frict_tiny, forceint,forcebed, dragfoce ,DO_EROSION,
      4     eroded, v_solid, v_fluid,den_solid, den_fluid, terminal_vel,
-     5     eps, IF_STOPPED, fluxsrc, navslip,eta,scale_coef)
+     5     eps, IF_STOPPED, fluxsrc, navslip,eta,capwid,elsrelti)
 C***********************************************************************
 
       implicit none
@@ -44,7 +44,7 @@ C***********************************************************************
       double precision xslope,yslope,slope
       double precision t1, t2, t3, t4,aaa
       double precision erosion_rate,threshold,es,totalShear
-      double precision eps, drag(4),tempox,tempoy,eta,scale_coef
+      double precision eps, drag(4),tempox,tempoy,eta,elsrelti,capwid
 
 !     function calls
       double precision sgn
@@ -75,9 +75,12 @@ c     -------------------------------Hossein------------------------------------
      $     -dtdx*(fluxxp(1)+fluxxm(5))
      $     -dtdy*(fluxyp(1)+fluxym(5))
 
-      t3=1.d0*uvec(1)*(uvec(1)**2-1)
+      t3=uvec(1)*(uvec(1)**2-1)
 c      t3=2*uvec(1)*(2*uvec(1)**2-3*uvec(1)+1)
-      ustore(1)=ustore(1)+1.d0*dt*scale_coef*(-t3+eta)
+      ustore(1)=ustore(1)+dt*elsrelti*(-t3+eta)/(16*capwid*capwid)
+c      (f-eta)/(capwid^2)  capwid=4*mindx
+!      print *,"coefficient is:  ", dt*elsrelti/(16*capwid*capwid)
+!      print *,"source is:       ", -t3+eta
 
       tempox=dtdx*(fluxxp(1)-fluxxm(1))
       tempoy=dtdy*(fluxyp(1)-fluxym(1))

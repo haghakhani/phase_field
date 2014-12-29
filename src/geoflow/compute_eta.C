@@ -42,7 +42,11 @@ double compute_eta(HashTable* El_Table, PileProps *pileprops) {
 				currentPtr = currentPtr->next;
 			}
 		}
+	//cout<<"local eta is  "<<local_eta<<"  and volume is  "<<pileprops->pilevol<<endl;
+
 	local_eta /=  pileprops->pilevol;
+
+//	cout<<"local eta is  "<<local_eta<<"  and volume is  "<<pileprops->pilevol<<endl;
 	MPI_Allreduce(&local_eta, &eta, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
 
 	return eta;
