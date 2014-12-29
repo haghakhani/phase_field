@@ -21,3 +21,9 @@ bin/
 *.exe
 *.out
 *.app
+
+# Eclipse
+.autotools
+.cproject
+.project
+.settings/
