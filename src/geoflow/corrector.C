@@ -91,7 +91,7 @@ void correct(HashTable* NodeTable, HashTable* El_Table,
   double velocity_scale = sqrt(lscale *gscale);
   double momentum_scale = hscale * velocity_scale;
   double timescale=timeprops->TIME_SCALE;
-  double elsrelti=.01/timescale;//we need this for scaling the RHS of the phase field equation
+  double elsrelti=.0003/timescale;//we need this for scaling the RHS of the phase field equation
 
   double Vfluid[DIMENSION], Vsolid[DIMENSION];
   // double volf;

@@ -20,8 +20,8 @@
 #endif
 
 #include "../header/hpfem.h"
-#define PARABALOID
-//#define CYLINDER
+//#define PARABALOID
+#define CYLINDER
 //#define PLANE
 //#define CASITA
 //#define POPO
@@ -118,7 +118,7 @@ void init_piles(HashTable* HT_Elem_Ptr, HashTable* HT_Node_Ptr, int myid,
 #elif defined CYLINDER
 	for (int i = 0; i < pileprops->numpiles; i++) {
 
-		pileprops->pilevol +=PI *(pileprops->pileheight + i)
+		pileprops->pilevol +=PI * *(pileprops->pileheight + i)
 				* *(pileprops->majorrad + i) * *(pileprops->minorrad + i);
 //				* (matprops->LENGTH_SCALE) * (matprops->LENGTH_SCALE)
 //				* (matprops->HEIGHT_SCALE);

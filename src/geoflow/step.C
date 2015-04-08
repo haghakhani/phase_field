@@ -201,6 +201,8 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump,
 
 	double eta = compute_eta(El_Table, pileprops_ptr);
 
+  cout << "min dx is:   "<<mindx;
+
 //	cout<<"eta is equal to "<<eta<<"  and coef "<<1/(16*mindx*mindx)<<endl;
 
 	for (i = 0; i < El_Table->get_no_of_buckets(); i++)
@@ -244,8 +246,8 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump,
 				currentPtr = currentPtr->next;
 			}
 		}
-	double timedelta = 0;
-	const double elsrelti = .01;   //elastic relaxation time
+	double timedelta = 0.;
+	const double elsrelti = .0003;   //elastic relaxation time (.001 is good for incline, and .01 is good for colima)
 	const double scelsrelti = elsrelti / timeprops_ptr->TIME_SCALE; //scaled elastic relaxation time
 	// ====================================================Implicit Solver==========================
 	if (timeprops_ptr->iter % 5 == 4 || timeprops_ptr->iter == 1
@@ -274,9 +276,9 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump,
 						  //		//{
 					phi = *(Curr_El->get_state_vars());
 					if (phi > 1)
-						//phi = 1;
+						phi = 1;
 					if (phi < -1)
-						//phi = -1;
+						phi = -1;
 
 					//if(phi*timeprops_ptr->TIME_SCALE>1) phi=1/timeprops_ptr->TIME_SCALE;
 					//if(phi*timeprops_ptr->TIME_SCALE<-1) phi=-1/timeprops_ptr->TIME_SCALE;

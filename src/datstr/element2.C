@@ -82,10 +82,10 @@ Element::Element(unsigned nodekeys[][KEYLENGTH], unsigned neigh[][KEYLENGTH],
     neigh_proc[i+4] = -2;//-- -2 means regular element
     if(neigh_proc[i]!=-1)
       for(int j=0; j<KEYLENGTH; j++)
-	neighbor[i][j]=neighbor[i+4][j]=neigh[i][j];
+        neighbor[i][j]=neighbor[i+4][j]=neigh[i][j];
     else
       for(int j=0; j<KEYLENGTH; j++)
-	neighbor[i][j]=neighbor[i+4][j]=NULL;
+        neighbor[i][j]=neighbor[i+4][j]=NULL;
   }
 
   bcptr = b;
@@ -124,26 +124,26 @@ Element::Element(unsigned nodekeys[][KEYLENGTH], unsigned neigh[][KEYLENGTH],
   switch(which_son) {
     case 0:
       for(i=0;i<KEYLENGTH;i++) {
-	brothers[1][i] = neighbor[1][i];
-	brothers[3][i] = neighbor[2][i];
+        brothers[1][i] = neighbor[1][i];
+        brothers[3][i] = neighbor[2][i];
       }
       break;
     case 1:
       for(i=0;i<KEYLENGTH;i++) {
-	brothers[0][i] = neighbor[3][i];
-	brothers[2][i] = neighbor[2][i];
+        brothers[0][i] = neighbor[3][i];
+        brothers[2][i] = neighbor[2][i];
       }
       break;
     case 2:
       for(i=0;i<KEYLENGTH;i++) {
-	brothers[1][i] = neighbor[0][i];
-	brothers[3][i] = neighbor[3][i];
+        brothers[1][i] = neighbor[0][i];
+        brothers[3][i] = neighbor[3][i];
       }
       break;
     case 3:
       for(i=0;i<KEYLENGTH;i++) {
-	brothers[0][i] = neighbor[0][i];
-	brothers[2][i] = neighbor[1][i];
+        brothers[0][i] = neighbor[0][i];
+        brothers[2][i] = neighbor[1][i];
       }
       break;
   }  
@@ -249,10 +249,10 @@ Element::Element(unsigned nodekeys[][KEYLENGTH], unsigned neigh[][KEYLENGTH],
     neigh_proc[i+4] = -2;//-- -2 means regular element
     if(neigh_proc[i]!=-1)
       for(int j=0; j<KEYLENGTH; j++)
-	neighbor[i][j]=neighbor[i+4][j]=neigh[i][j];
+        neighbor[i][j]=neighbor[i+4][j]=neigh[i][j];
     else
       for(int j=0; j<KEYLENGTH; j++)
-	neighbor[i][j]=neighbor[i+4][j]=NULL;
+        neighbor[i][j]=neighbor[i+4][j]=NULL;
 
     neigh_gen[i]=neigh_gen[i+4]=gen_neigh[i];
   }
@@ -402,9 +402,9 @@ Element::Element(Element* sons[], HashTable* NodeTable, HashTable* El_Table,
     node_key[6][ikey] = son_nodes[2][3*KEYLENGTH+ikey];
     node_key[7][ikey] = son_nodes[3][ikey];
     /*    key[ikey] = son_nodes[0][2*KEYLENGTH+ikey];
-	  for(ison=0;ison<4;ison++)
-	  sons[ison]->put_father(key);
-     */
+          for(ison=0;ison<4;ison++)
+          sons[ison]->put_father(key);
+          */
     elm_loc[ikey] = (*(sons[0]->get_elm_loc()+ikey))/2;
   }
   myprocess = sons[0]->get_myprocess();
@@ -452,7 +452,7 @@ Element::Element(Element* sons[], HashTable* NodeTable, HashTable* El_Table,
     neigh_gen[ineigh] =*(sons[ison]->get_neigh_gen() +isonneigh);
     for(ikey=0;ikey<KEYLENGTH;ikey++)  
       neighbor[ineigh][ikey]=
-	*(sons[ison]->get_neighbors()+isonneigh*KEYLENGTH+ikey);
+        *(sons[ison]->get_neighbors()+isonneigh*KEYLENGTH+ikey);
     neigh_proc[ineigh]=*(sons[ison]->get_neigh_proc()+isonneigh);
 
     isonneigh=(ison+3)%4;
@@ -460,9 +460,9 @@ Element::Element(Element* sons[], HashTable* NodeTable, HashTable* El_Table,
     neigh_gen[ineigh] =*(sons[ison]->get_neigh_gen() +isonneigh);
     for(ikey=0;ikey<KEYLENGTH;ikey++)  
       neighbor[ineigh][ikey]=
-	*(sons[ison]->get_neighbors()+isonneigh*KEYLENGTH+ikey);
+        *(sons[ison]->get_neighbors()+isonneigh*KEYLENGTH+ikey);
     if((*(sons[ison]->get_neigh_gen()+isonneigh)==generation)||
-	(*(sons[ison]->get_neigh_proc()+isonneigh)==-1))
+        (*(sons[ison]->get_neigh_proc()+isonneigh)==-1))
       neigh_proc[ineigh]=-2;
     else
       neigh_proc[ineigh]=*(sons[ison]->get_neigh_proc()+isonneigh);
@@ -475,155 +475,155 @@ Element::Element(Element* sons[], HashTable* NodeTable, HashTable* El_Table,
   switch(which_son) {
     case 0:
       for(i=0;i<KEYLENGTH;i++)
-	brothers[0][i] = key[i];
+        brothers[0][i] = key[i];
       if(neigh_proc[1] == -1) {
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[1][i] = 0;
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[1][i] = 0;
       }
       else if(neigh_gen[1] == generation) {
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[1][i] = neighbor[1][i];
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[1][i] = neighbor[1][i];
       }
       else if(neigh_gen[1] == generation+1) {
-	EmTemp = (Element*) El_Table->lookup(neighbor[1]);
-	assert(EmTemp);
-	unsigned* bro_key = EmTemp->getfather();
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[1][i] = bro_key[i];
+        EmTemp = (Element*) El_Table->lookup(neighbor[1]);
+        assert(EmTemp);
+        unsigned* bro_key = EmTemp->getfather();
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[1][i] = bro_key[i];
       }
       else
-	assert(0);
+        assert(0);
       if(neigh_proc[2] == -1) {
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[3][i] = 0;
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[3][i] = 0;
       }
       else if(neigh_gen[2] == generation) {
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[3][i] = neighbor[2][i];
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[3][i] = neighbor[2][i];
       }
       else if(neigh_gen[2] == generation+1) {
-	EmTemp = (Element*) El_Table->lookup(neighbor[2]);
-	assert(EmTemp);
-	unsigned* bro_key = EmTemp->getfather();
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[3][i] = bro_key[i];
+        EmTemp = (Element*) El_Table->lookup(neighbor[2]);
+        assert(EmTemp);
+        unsigned* bro_key = EmTemp->getfather();
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[3][i] = bro_key[i];
       }
       else
-	assert(0);
+        assert(0);
       break;
     case 1:
       for(i=0;i<KEYLENGTH;i++)
-	brothers[1][i] = key[i];
+        brothers[1][i] = key[i];
       if(neigh_proc[3] == -1) {
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[0][i] = 0;
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[0][i] = 0;
       }
       else if(neigh_gen[3] == generation) {
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[0][i] = neighbor[3][i];
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[0][i] = neighbor[3][i];
       }
       else if(neigh_gen[3] == generation+1) {
-	EmTemp = (Element*) El_Table->lookup(neighbor[3]);
-	assert(EmTemp);
-	unsigned* bro_key = EmTemp->getfather();
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[0][i] = bro_key[i];
+        EmTemp = (Element*) El_Table->lookup(neighbor[3]);
+        assert(EmTemp);
+        unsigned* bro_key = EmTemp->getfather();
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[0][i] = bro_key[i];
       }
       else
-	assert(0);
+        assert(0);
       if(neigh_proc[2] == -1) {
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[2][i] = 0;
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[2][i] = 0;
       }
       else if(neigh_gen[2] == generation) {
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[2][i] = neighbor[2][i];
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[2][i] = neighbor[2][i];
       }
       else if(neigh_gen[2] == generation+1) {
-	EmTemp = (Element*) El_Table->lookup(neighbor[2]);
-	assert(EmTemp);
-	unsigned* bro_key = EmTemp->getfather();
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[2][i] = bro_key[i];
+        EmTemp = (Element*) El_Table->lookup(neighbor[2]);
+        assert(EmTemp);
+        unsigned* bro_key = EmTemp->getfather();
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[2][i] = bro_key[i];
       }
       else
-	assert(0);
+        assert(0);
       break;
     case 2:
       for(i=0;i<KEYLENGTH;i++)
-	brothers[2][i] = key[i];
+        brothers[2][i] = key[i];
       if(neigh_proc[0] == -1) {
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[1][i] = 0;
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[1][i] = 0;
       }
       else if(neigh_gen[0] == generation) {
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[1][i] = neighbor[0][i];
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[1][i] = neighbor[0][i];
       }
       else if(neigh_gen[0] == generation+1) {
-	EmTemp = (Element*) El_Table->lookup(neighbor[0]);
-	assert(EmTemp);
-	unsigned* bro_key = EmTemp->getfather();
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[1][i] = bro_key[i];
+        EmTemp = (Element*) El_Table->lookup(neighbor[0]);
+        assert(EmTemp);
+        unsigned* bro_key = EmTemp->getfather();
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[1][i] = bro_key[i];
       }
       else
-	assert(0);
+        assert(0);
       if(neigh_proc[3] == -1) {
-	for(i=0;i<KEYLENGTH;i++) 
-	  brothers[3][i] = 0;
+        for(i=0;i<KEYLENGTH;i++) 
+          brothers[3][i] = 0;
       }
       else if(neigh_gen[3] == generation) {
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[3][i] = neighbor[3][i];
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[3][i] = neighbor[3][i];
       }
       else if(neigh_gen[3] == generation+1) {
-	EmTemp = (Element*) El_Table->lookup(neighbor[3]);
-	assert(EmTemp);
-	unsigned* bro_key = EmTemp->getfather();
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[3][i] = bro_key[i];
+        EmTemp = (Element*) El_Table->lookup(neighbor[3]);
+        assert(EmTemp);
+        unsigned* bro_key = EmTemp->getfather();
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[3][i] = bro_key[i];
       }
       else
-	assert(0);
+        assert(0);
       break;
     case 3:
       for(i=0;i<KEYLENGTH;i++)
-	brothers[3][i] = key[i];
+        brothers[3][i] = key[i];
       if(neigh_proc[0] == -1) {
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[0][i] = 0;
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[0][i] = 0;
       }
       else if(neigh_gen[0] == generation) {
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[0][i] = neighbor[0][i];
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[0][i] = neighbor[0][i];
       }
       else if(neigh_gen[0] == generation+1) {
-	EmTemp = (Element*) El_Table->lookup(neighbor[0]);
-	assert(EmTemp);
-	unsigned* bro_key = EmTemp->getfather();
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[0][i] = bro_key[i];
+        EmTemp = (Element*) El_Table->lookup(neighbor[0]);
+        assert(EmTemp);
+        unsigned* bro_key = EmTemp->getfather();
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[0][i] = bro_key[i];
       }
       else
-	assert(0);
+        assert(0);
       if(neigh_proc[1] == -1) {
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[2][i] = 0;
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[2][i] = 0;
       }
       else if(neigh_gen[1] == generation) {
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[2][i] = neighbor[1][i];
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[2][i] = neighbor[1][i];
       }
       else if(neigh_gen[1] == generation+1) {
-	EmTemp = (Element*) El_Table->lookup(neighbor[1]);
-	assert(EmTemp);
-	unsigned* bro_key = EmTemp->getfather();
-	for(i=0;i<KEYLENGTH;i++)
-	  brothers[2][i] = bro_key[i];
+        EmTemp = (Element*) El_Table->lookup(neighbor[1]);
+        assert(EmTemp);
+        unsigned* bro_key = EmTemp->getfather();
+        for(i=0;i<KEYLENGTH;i++)
+          brothers[2][i] = bro_key[i];
       }
       else 
-	assert(0);
+        assert(0);
       break;
   }
 
@@ -641,13 +641,13 @@ Element::Element(Element* sons[], HashTable* NodeTable, HashTable* El_Table,
     prev_state_vars[i] = 0.;
     if(i==0 || i==4 ) {
       for(j=0;j<4;j++) {
-	state_vars[i] += *(sons[j]->get_state_vars()+i)*.25;
-	prev_state_vars[i] += *(sons[j]->get_prev_state_vars()+i)*.25 ; 
+        state_vars[i] += *(sons[j]->get_state_vars()+i)*.25;
+        prev_state_vars[i] += *(sons[j]->get_prev_state_vars()+i)*.25 ; 
       }
     }else{
       for(j=0;j<4;j++) {
-	state_vars[i] += *(sons[j]->get_state_vars()+i) * 0.25;
-	prev_state_vars[i] += *(sons[j]->get_prev_state_vars()+i) * 0.25;
+        state_vars[i] += *(sons[j]->get_state_vars()+i) * 0.25;
+        prev_state_vars[i] += *(sons[j]->get_prev_state_vars()+i) * 0.25;
       }
 
     }
@@ -715,8 +715,8 @@ void Element::change_neighbor(unsigned* newneighbs, int which_side, int proc,
       assert(which_side<4);
       for(j=0; j<KEYLENGTH; j++)
       {
-	neighbor[which_side][j]=*(newneighbs+j);
-	neighbor[which_side+4][j]=*(newneighbs+KEYLENGTH+j);           
+        neighbor[which_side][j]=*(newneighbs+j);
+        neighbor[which_side+4][j]=*(newneighbs+KEYLENGTH+j);           
       }
       neigh_proc[which_side+4]=proc; //assuming no element movement
       neigh_gen[which_side]=neigh_gen[which_side+4]=neigh_gen[which_side]+1;
@@ -727,13 +727,13 @@ void Element::change_neighbor(unsigned* newneighbs, int which_side, int proc,
       j = 0;
     case 5:
       for(j=0; j<KEYLENGTH; j++)	
-	neighbor[which_side][j]=*(newneighbs+j);   
+        neighbor[which_side][j]=*(newneighbs+j);   
       neigh_gen[which_side]=neigh_gen[which_side]+1;
       break;
 
     case 6:
       for(j=0; j<KEYLENGTH; j++)	
-	neighbor[which_side][j]=neighbor[which_side+4][j]=*(newneighbs+j);     
+        neighbor[which_side][j]=neighbor[which_side+4][j]=*(newneighbs+j);     
       neigh_gen[which_side]=neigh_gen[which_side+4]=neigh_gen[which_side]+1;
       break;
 
@@ -742,8 +742,8 @@ void Element::change_neighbor(unsigned* newneighbs, int which_side, int proc,
       assert(which_side<4);
       for(j=0; j<KEYLENGTH; j++)
       {
-	neighbor[which_side][j]=*(newneighbs+j);
-	neighbor[which_side+4][j]=*(newneighbs+KEYLENGTH+j);           
+        neighbor[which_side][j]=*(newneighbs+j);
+        neighbor[which_side+4][j]=*(newneighbs+KEYLENGTH+j);           
       }
       neigh_proc[which_side+4]=proc;
 
@@ -752,7 +752,7 @@ void Element::change_neighbor(unsigned* newneighbs, int which_side, int proc,
 
     case 11:
       for(j=0; j<KEYLENGTH; j++)
-	neighbor[which_side][j]=neighbor[which_side+4][j]=*(newneighbs+j);
+        neighbor[which_side][j]=neighbor[which_side+4][j]=*(newneighbs+j);
       neigh_gen[which_side]=neigh_gen[which_side+4]=neigh_gen[which_side]+1;
       break;
 
@@ -798,23 +798,23 @@ void Element::get_nelb_icon(HashTable* NodeTable, HashTable* HT_Elem_Ptr,int* Ne
     {
 
       if(bcptr==NULL)
-	Nelb[i]=2;//the element has no bc at all
+        Nelb[i]=2;//the element has no bc at all
       else
       {
-	if(bcptr->type[i]==0)
-	  Nelb[i]=2;//no bc at that side
+        if(bcptr->type[i]==0)
+          Nelb[i]=2;//no bc at that side
 
-	else if(bcptr->type[i]==2)
-	  Nelb[i]=1;//stress applied
+        else if(bcptr->type[i]==2)
+          Nelb[i]=1;//stress applied
 
-	else if(bcptr->type[i]==1 && bcptr->value[i][0][0]==UN_CONSTRAINED)	    
-	  Nelb[i]=4;//y constrined
+        else if(bcptr->type[i]==1 && bcptr->value[i][0][0]==UN_CONSTRAINED)	    
+          Nelb[i]=4;//y constrined
 
-	else if(bcptr->type[i]==1 && bcptr->value[i][0][1]==UN_CONSTRAINED)	    
-	  Nelb[i]=3;//x constrined
+        else if(bcptr->type[i]==1 && bcptr->value[i][0][1]==UN_CONSTRAINED)	    
+          Nelb[i]=3;//x constrined
 
-	else if(bcptr->type[i]==1)
-	  Nelb[i]=5;//x, y constrained
+        else if(bcptr->type[i]==1)
+          Nelb[i]=5;//x, y constrained
       }
     }
 
@@ -831,8 +831,8 @@ void Element::get_nelb_icon(HashTable* NodeTable, HashTable* HT_Elem_Ptr,int* Ne
       int j=0; //<---indicates which son it is
       while(ElemPtr->son[j][0]!=key[0] || ElemPtr->son[j][1]!=key[1])//-- should use KEYLENGTH
       {
-	j++;
-	if(j==4) {cerr<<"error in get_el_stiffness\n\n"<<flush; exit(0);}
+        j++;
+        if(j==4) {cerr<<"error in get_el_stiffness\n\n"<<flush; exit(0);}
       }
 
       int a=j-1;
@@ -841,7 +841,7 @@ void Element::get_nelb_icon(HashTable* NodeTable, HashTable* HT_Elem_Ptr,int* Ne
       assert(NodePtr);
 
       if(NodePtr->getinfo()==S_C_CON)
-	icon[a]=-1;
+        icon[a]=-1;
 
       a=j+1;
       if(a==4) a=0;
@@ -849,7 +849,7 @@ void Element::get_nelb_icon(HashTable* NodeTable, HashTable* HT_Elem_Ptr,int* Ne
       assert(NodePtr);
 
       if(NodePtr->getinfo()==S_C_CON)
-	icon[j]=1;//-- j was changed to a
+        icon[j]=1;//-- j was changed to a
 
     }
   }
@@ -1103,17 +1103,17 @@ void Element::calc_wet_dry_orient(HashTable *El_Table)
     {
       EmTemp=(Element *) El_Table->lookup(neighbor[ineigh]);
       if(*(EmTemp->get_state_vars())>0/*>GEOFLOW_TINY*/)
-	//first neighbor on this side is wet
-	ifsidewet[ineigh]=1;
+        //first neighbor on this side is wet
+        ifsidewet[ineigh]=1;
       else if(neigh_proc[ineigh+4]==-2)
-	//only one neighbor on this side and it's not wet
-	ifsidewet[ineigh]=0;
+        //only one neighbor on this side and it's not wet
+        ifsidewet[ineigh]=0;
       else
       {
-	//since first neighbor on this side is not wet, 
-	//the edge has the wetness of the second neighbor on this side 
-	EmTemp=(Element *) El_Table->lookup(neighbor[ineigh+4]);
-	ifsidewet[ineigh]=(*(EmTemp->get_state_vars())>0/*>GEOFLOW_TINY*/)?1:0;
+        //since first neighbor on this side is not wet, 
+        //the edge has the wetness of the second neighbor on this side 
+        EmTemp=(Element *) El_Table->lookup(neighbor[ineigh+4]);
+        ifsidewet[ineigh]=(*(EmTemp->get_state_vars())>0/*>GEOFLOW_TINY*/)?1:0;
       }
     }
     numwetsides+=ifsidewet[ineigh];
@@ -1140,26 +1140,26 @@ void Element::calc_wet_dry_orient(HashTable *El_Table)
     if(ifsidewet[3]&&ifsidewet[0]) {
       iwetnode=0;
       if(Awet<=0.5)
-	drypoint[0]=drypoint[1]=-drypoint[0];
+        drypoint[0]=drypoint[1]=-drypoint[0];
     }
     else if(ifsidewet[0]&&ifsidewet[1]) {
       iwetnode=1;
       if(Awet<=0.5)
-	drypoint[1]=-drypoint[1];
+        drypoint[1]=-drypoint[1];
       else
-	drypoint[0]=-drypoint[0];
+        drypoint[0]=-drypoint[0];
     }
     else if(ifsidewet[1]&&ifsidewet[2]) {
       iwetnode=2;
       if(Awet>0.5)
-	drypoint[0]=drypoint[1]=-drypoint[0];
+        drypoint[0]=drypoint[1]=-drypoint[0];
     }
     else if(ifsidewet[2]&&ifsidewet[3]) {
       iwetnode=3;
       if(Awet>0.5)
-	drypoint[1]=-drypoint[1];
+        drypoint[1]=-drypoint[1];
       else
-	drypoint[0]=-drypoint[0];
+        drypoint[0]=-drypoint[0];
     }      
   }
   else{
@@ -1167,11 +1167,11 @@ void Element::calc_wet_dry_orient(HashTable *El_Table)
     if(numwetsides==1) {
       //find the one wet side
       for(ineigh=0;ineigh<4;ineigh++)
-	if(ifsidewet[ineigh]) break;}
+        if(ifsidewet[ineigh]) break;}
     else{
       //find the one dry side
       for(ineigh=0;ineigh<4;ineigh++)
-	if(!ifsidewet[ineigh]) break;
+        if(!ifsidewet[ineigh]) break;
       //find the wet side opposite the one dry side
       ineigh=(ineigh+2)%4;
     }
@@ -1181,23 +1181,23 @@ void Element::calc_wet_dry_orient(HashTable *El_Table)
     iwetnode=ineigh+4;
     switch(iwetnode) {
       case 4:
-	drypoint[0]=0.0;
-	drypoint[1]=-0.5+Swet;
-	break;
+        drypoint[0]=0.0;
+        drypoint[1]=-0.5+Swet;
+        break;
       case 5:
-	drypoint[0]=+0.5-Swet;
-	drypoint[1]=0.0;
-	break;
+        drypoint[0]=+0.5-Swet;
+        drypoint[1]=0.0;
+        break;
       case 6:
-	drypoint[0]=0.0;
-	drypoint[1]=+0.5-Swet;
-	break;
+        drypoint[0]=0.0;
+        drypoint[1]=+0.5-Swet;
+        break;
       case 7:
-	drypoint[0]=-0.5+Swet;
-	drypoint[1]=0.0;
-	break;
+        drypoint[0]=-0.5+Swet;
+        drypoint[1]=0.0;
+        break;
       default:
-	assert(0);
+        assert(0);
     }
   }    
 
@@ -1225,9 +1225,9 @@ double Element::calc_elem_edge_wet_fraction(int ineigh, int ifusewholeside) {
 
   if(iwetnode==8) {
     printf("calc_elem_edge_wet_fraction(): key={%20u,%20u} adapted=%d\n",
-	key[0],key[1],adapted);
+        key[0],key[1],adapted);
     printf("  iwetnode=%d, Awet=%g, Swet=%g, drypoint={%g,%g}\n",
-	iwetnode,Awet,Swet,drypoint[0],drypoint[1]);
+        iwetnode,Awet,Swet,drypoint[0],drypoint[1]);
     assert(iwetnode!=8);
   }
 
@@ -1241,107 +1241,107 @@ double Element::calc_elem_edge_wet_fraction(int ineigh, int ifusewholeside) {
     //there is only one neighbor on this side
     switch(iwetnode) {
       case 0:
-	switch(ineighm4) {
-	  case 3:
-	  case 0:
-	    if(Awet>0.5) return 1.0;
-	    else return Swet;
-	  case 2:
-	  case 1:
-	    if(Awet>0.5) return Swet;
-	    else return 0.0;
-	  default:
-	    assert(0);
-	}
+        switch(ineighm4) {
+          case 3:
+          case 0:
+            if(Awet>0.5) return 1.0;
+            else return Swet;
+          case 2:
+          case 1:
+            if(Awet>0.5) return Swet;
+            else return 0.0;
+          default:
+            assert(0);
+        }
       case 1:
-	switch(ineighm4) {
-	  case 0:
-	  case 1:
-	    if(Awet>0.5) return 1.0;
-	    else return Swet;
-	  case 3:
-	  case 2:
-	    if(Awet>0.5) return Swet;
-	    else return 0.0;
-	  default:
-	    assert(0);
-	}
+        switch(ineighm4) {
+          case 0:
+          case 1:
+            if(Awet>0.5) return 1.0;
+            else return Swet;
+          case 3:
+          case 2:
+            if(Awet>0.5) return Swet;
+            else return 0.0;
+          default:
+            assert(0);
+        }
       case 2:
-	switch(ineighm4) {
-	  case 1:
-	  case 2:
-	    if(Awet>0.5) return 1.0;
-	    else return Swet;
-	  case 0:
-	  case 3:
-	    if(Awet>0.5) return Swet;
-	    else return 0.0;
-	  default:
-	    assert(0);
-	}
+        switch(ineighm4) {
+          case 1:
+          case 2:
+            if(Awet>0.5) return 1.0;
+            else return Swet;
+          case 0:
+          case 3:
+            if(Awet>0.5) return Swet;
+            else return 0.0;
+          default:
+            assert(0);
+        }
       case 3:
-	switch(ineighm4) {
-	  case 2:
-	  case 3:
-	    if(Awet>0.5) return 1.0;
-	    else return Swet;
-	  case 1:
-	  case 0:
-	    if(Awet>0.5) return Swet;
-	    else return 0.0;
-	  default:
-	    assert(0);
-	}
+        switch(ineighm4) {
+          case 2:
+          case 3:
+            if(Awet>0.5) return 1.0;
+            else return Swet;
+          case 1:
+          case 0:
+            if(Awet>0.5) return Swet;
+            else return 0.0;
+          default:
+            assert(0);
+        }
       case 4:
-	switch(ineighm4) {
-	  case 0:
-	    return 1.0;
-	  case 3:
-	  case 1:
-	    return Swet;
-	  case 2:
-	    return 0.0;
-	  default:
-	    assert(0);
-	}
+        switch(ineighm4) {
+          case 0:
+            return 1.0;
+          case 3:
+          case 1:
+            return Swet;
+          case 2:
+            return 0.0;
+          default:
+            assert(0);
+        }
       case 5:
-	switch(ineighm4) {
-	  case 1:
-	    return 1.0;
-	  case 0:
-	  case 2:
-	    return Swet;
-	  case 3:
-	    return 0.0;
-	  default:
-	    assert(0);
-	}
+        switch(ineighm4) {
+          case 1:
+            return 1.0;
+          case 0:
+          case 2:
+            return Swet;
+          case 3:
+            return 0.0;
+          default:
+            assert(0);
+        }
       case 6:
-	switch(ineighm4) {
-	  case 2:
-	    return 1.0;
-	  case 1:
-	  case 3:
-	    return Swet;
-	  case 0:
-	    return 0.0;
-	  default:
-	    assert(0);
-	}
+        switch(ineighm4) {
+          case 2:
+            return 1.0;
+          case 1:
+          case 3:
+            return Swet;
+          case 0:
+            return 0.0;
+          default:
+            assert(0);
+        }
       case 7:
-	switch(ineighm4) {
-	  case 3:
-	    return 1.0;
-	  case 2:
-	  case 0:
-	    return Swet;
-	  case 1:
-	    return 0.0;
-	  default:
-	    assert(0);
-	}
+        switch(ineighm4) {
+          case 3:
+            return 1.0;
+          case 2:
+          case 0:
+            return Swet;
+          case 1:
+            return 0.0;
+          default:
+            assert(0);
+        }
       default:
-	assert(0);
+        assert(0);
     }
   }
   else{ 
@@ -1350,175 +1350,175 @@ double Element::calc_elem_edge_wet_fraction(int ineigh, int ifusewholeside) {
     //minus 0.5) for each
     switch(iwetnode) {
       case 0:
-	switch(ineigh) {
-	  case 7:
-	  case 0:
-	    if(Awet>0.125) return 1.0;
-	    else return 2.0*Swet;
-	  case 3:
-	  case 4:
-	    if(Awet<=0.125) return 0.0;
-	    else if(Awet>0.5) return 1.0;	
-	    else return 2.0*(Swet-0.5);
-	  case 6:
-	  case 1:
-	    if(Awet<=0.5) return 0.0;
-	    else if(Awet>0.875) return 1.0;
-	    else return 2.0*Swet;
-	  case 2:
-	  case 5:
-	    if(Awet<=0.875) return 0.0;
-	    else return 2.0*(Swet-0.5);
-	  default:
-	    assert(0);
-	}
+        switch(ineigh) {
+          case 7:
+          case 0:
+            if(Awet>0.125) return 1.0;
+            else return 2.0*Swet;
+          case 3:
+          case 4:
+            if(Awet<=0.125) return 0.0;
+            else if(Awet>0.5) return 1.0;	
+            else return 2.0*(Swet-0.5);
+          case 6:
+          case 1:
+            if(Awet<=0.5) return 0.0;
+            else if(Awet>0.875) return 1.0;
+            else return 2.0*Swet;
+          case 2:
+          case 5:
+            if(Awet<=0.875) return 0.0;
+            else return 2.0*(Swet-0.5);
+          default:
+            assert(0);
+        }
       case 1:
-	switch(ineigh) {
-	  case 4:
-	  case 1:
-	    if(Awet>0.125) return 1.0;
-	    else return 2.0*Swet;
-	  case 0:
-	  case 5:
-	    if(Awet<=0.125) return 0.0;
-	    else if(Awet>0.5) return 1.0;	
-	    else return 2.0*(Swet-0.5);
-	  case 7:
-	  case 2:
-	    if(Awet<=0.5) return 0.0;
-	    else if(Awet>0.875) return 1.0;
-	    else return 2.0*Swet;
-	  case 3:
-	  case 6:
-	    if(Awet<=0.875) return 0.0;
-	    else return 2.0*(Swet-0.5);
-	  default:
-	    assert(0);
-	}
+        switch(ineigh) {
+          case 4:
+          case 1:
+            if(Awet>0.125) return 1.0;
+            else return 2.0*Swet;
+          case 0:
+          case 5:
+            if(Awet<=0.125) return 0.0;
+            else if(Awet>0.5) return 1.0;	
+            else return 2.0*(Swet-0.5);
+          case 7:
+          case 2:
+            if(Awet<=0.5) return 0.0;
+            else if(Awet>0.875) return 1.0;
+            else return 2.0*Swet;
+          case 3:
+          case 6:
+            if(Awet<=0.875) return 0.0;
+            else return 2.0*(Swet-0.5);
+          default:
+            assert(0);
+        }
       case 2:
-	switch(ineigh) {
-	  case 5:
-	  case 2:
-	    if(Awet>0.125) return 1.0;
-	    else return 2.0*Swet;
-	  case 1:
-	  case 6:
-	    if(Awet<=0.125) return 0.0;
-	    else if(Awet>0.5) return 1.0;	
-	    else return 2.0*(Swet-0.5);
-	  case 4:
-	  case 3:
-	    if(Awet<=0.5) return 0.0;
-	    else if(Awet>0.875) return 1.0;
-	    else return 2.0*Swet;
-	  case 0:
-	  case 7:
-	    if(Awet<=0.875) return 0.0;
-	    else return 2.0*(Swet-0.5);
-	  default:
-	    assert(0);
-	}
+        switch(ineigh) {
+          case 5:
+          case 2:
+            if(Awet>0.125) return 1.0;
+            else return 2.0*Swet;
+          case 1:
+          case 6:
+            if(Awet<=0.125) return 0.0;
+            else if(Awet>0.5) return 1.0;	
+            else return 2.0*(Swet-0.5);
+          case 4:
+          case 3:
+            if(Awet<=0.5) return 0.0;
+            else if(Awet>0.875) return 1.0;
+            else return 2.0*Swet;
+          case 0:
+          case 7:
+            if(Awet<=0.875) return 0.0;
+            else return 2.0*(Swet-0.5);
+          default:
+            assert(0);
+        }
       case 3:
-	switch(ineigh) {
-	  case 5:
-	  case 2:
-	    if(Awet>0.125) return 1.0;
-	    else return 2.0*Swet;
-	  case 1:
-	  case 6:
-	    if(Awet<=0.125) return 0.0;
-	    else if(Awet>0.5) return 1.0;	
-	    else return 2.0*(Swet-0.5);
-	  case 4:
-	  case 3:
-	    if(Awet<=0.5) return 0.0;
-	    else if(Awet>0.875) return 1.0;
-	    else return 2.0*Swet;
-	  case 0:
-	  case 7:
-	    if(Awet<=0.875) return 0.0;
-	    else return 2.0*(Swet-0.5);
-	  default:
-	    assert(0);
-	}
+        switch(ineigh) {
+          case 5:
+          case 2:
+            if(Awet>0.125) return 1.0;
+            else return 2.0*Swet;
+          case 1:
+          case 6:
+            if(Awet<=0.125) return 0.0;
+            else if(Awet>0.5) return 1.0;	
+            else return 2.0*(Swet-0.5);
+          case 4:
+          case 3:
+            if(Awet<=0.5) return 0.0;
+            else if(Awet>0.875) return 1.0;
+            else return 2.0*Swet;
+          case 0:
+          case 7:
+            if(Awet<=0.875) return 0.0;
+            else return 2.0*(Swet-0.5);
+          default:
+            assert(0);
+        }
       case 4:
-	switch(ineigh) {
-	  case 0:
-	  case 4:
-	    return 1.0;
-	  case 7:
-	  case 1:
-	    if(Awet>0.5) return 1;
-	    else return 2.0*Swet;
-	  case 3:
-	  case 5:
-	    if(Awet>0.5) return 2.0*(Swet-0.5);
-	    else return 0.0;
-	  case 6:
-	  case 2:
-	    return 0.0;
-	  default:
-	    assert(0);
-	}	
+        switch(ineigh) {
+          case 0:
+          case 4:
+            return 1.0;
+          case 7:
+          case 1:
+            if(Awet>0.5) return 1;
+            else return 2.0*Swet;
+          case 3:
+          case 5:
+            if(Awet>0.5) return 2.0*(Swet-0.5);
+            else return 0.0;
+          case 6:
+          case 2:
+            return 0.0;
+          default:
+            assert(0);
+        }	
       case 5:
-	switch(ineigh) {
-	  case 1:
-	  case 5:
-	    return 1.0;
-	  case 4:
-	  case 2:
-	    if(Awet>0.5) return 1;
-	    else return 2.0*Swet;
-	  case 0:
-	  case 6:
-	    if(Awet>0.5) return 2.0*(Swet-0.5);
-	    else return 0.0;
-	  case 7:
-	  case 3:
-	    return 0.0;
-	  default:
-	    assert(0);
-	}	           
+        switch(ineigh) {
+          case 1:
+          case 5:
+            return 1.0;
+          case 4:
+          case 2:
+            if(Awet>0.5) return 1;
+            else return 2.0*Swet;
+          case 0:
+          case 6:
+            if(Awet>0.5) return 2.0*(Swet-0.5);
+            else return 0.0;
+          case 7:
+          case 3:
+            return 0.0;
+          default:
+            assert(0);
+        }	           
       case 6:
-	switch(ineigh) {
-	  case 2:
-	  case 6:
-	    return 1.0;
-	  case 5:
-	  case 3:
-	    if(Awet>0.5) return 1;
-	    else return 2.0*Swet;
-	  case 1:
-	  case 7:
-	    if(Awet>0.5) return 2.0*(Swet-0.5);
-	    else return 0.0;
-	  case 4:
-	  case 0:
-	    return 0.0;
-	  default:
-	    assert(0);
-	}	                 
+        switch(ineigh) {
+          case 2:
+          case 6:
+            return 1.0;
+          case 5:
+          case 3:
+            if(Awet>0.5) return 1;
+            else return 2.0*Swet;
+          case 1:
+          case 7:
+            if(Awet>0.5) return 2.0*(Swet-0.5);
+            else return 0.0;
+          case 4:
+          case 0:
+            return 0.0;
+          default:
+            assert(0);
+        }	                 
       case 7:
-	switch(ineigh) {
-	  case 3:
-	  case 7:
-	    return 1.0;
-	  case 6:
-	  case 0:
-	    if(Awet>0.5) return 1;
-	    else return 2.0*Swet;
-	  case 2:
-	  case 4:
-	    if(Awet>0.5) return 2.0*(Swet-0.5);
-	    else return 0.0;
-	  case 5:
-	  case 1:
-	    return 0.0;
-	  default:
-	    assert(0);
-	}	                 
+        switch(ineigh) {
+          case 3:
+          case 7:
+            return 1.0;
+          case 6:
+          case 0:
+            if(Awet>0.5) return 1;
+            else return 2.0*Swet;
+          case 2:
+          case 4:
+            if(Awet>0.5) return 2.0*(Swet-0.5);
+            else return 0.0;
+          case 5:
+          case 1:
+            return 0.0;
+          default:
+            assert(0);
+        }	                 
       default:
-	assert(0);
+        assert(0);
     }
   }
   assert(0);
@@ -1662,78 +1662,78 @@ double Element::convect_dryline(double VxVy[2], double dt) {
     case 0: //diagonal: \
       drypoint[0]=0.5*(drypoint[0]+drypoint[1]);
       if(drypoint[0]<-0.5)
-	Awet=0.0;
+        Awet=0.0;
       else if(drypoint[0]>0.5)
-	Awet=1.0;
+        Awet=1.0;
       else if(drypoint[0]<0.0)
-	Awet=2*(0.5+drypoint[0])*(0.5+drypoint[0]);
+        Awet=2*(0.5+drypoint[0])*(0.5+drypoint[0]);
       else
-	Awet=1.0-2.0*(0.5-drypoint[0])*(0.5-drypoint[0]);
+        Awet=1.0-2.0*(0.5-drypoint[0])*(0.5-drypoint[0]);
       return Awet;
     case 1: //diagonal: /
       drypoint[0]=0.5*(drypoint[0]-drypoint[1]);
       if(drypoint[0]>0.5)
-	Awet=0.0;
+        Awet=0.0;
       else if(drypoint[0]<-0.5)
-	Awet=1.0;
+        Awet=1.0;
       else if(drypoint[0]>0.0)
-	Awet=2.0*(0.5-drypoint[0])*(0.5-drypoint[0]);
+        Awet=2.0*(0.5-drypoint[0])*(0.5-drypoint[0]);
       else 
-	Awet=1.0-2*(0.5+drypoint[0])*(0.5+drypoint[0]);
+        Awet=1.0-2*(0.5+drypoint[0])*(0.5+drypoint[0]);
       return Awet;
     case 2: //diagonal: \
       drypoint[0]=0.5*(drypoint[0]+drypoint[1]);
       if(drypoint[0]>0.5)
-	Awet=0.0;
+        Awet=0.0;
       else if(drypoint[0]<-0.5)
-	Awet=1.0;
+        Awet=1.0;
       else if(drypoint[0]>0.0)
-	Awet=2.0*(0.5-drypoint[0])*(0.5-drypoint[0]);
+        Awet=2.0*(0.5-drypoint[0])*(0.5-drypoint[0]);
       else
-	Awet=1.0-2*(0.5+drypoint[0])*(0.5+drypoint[0]);
+        Awet=1.0-2*(0.5+drypoint[0])*(0.5+drypoint[0]);
       return Awet;
     case 3: //diagonal: /
       drypoint[0]=0.5*(drypoint[0]-drypoint[1]);
       if(drypoint[0]<-0.5)
-	Awet=0.0;
+        Awet=0.0;
       else if(drypoint[0]>0.5)
-	Awet=1.0;
+        Awet=1.0;
       else if(drypoint[0]<0.0)
-	Awet=2*(0.5+drypoint[0])*(0.5+drypoint[0]);
+        Awet=2*(0.5+drypoint[0])*(0.5+drypoint[0]);
       else
-	Awet=1.0-2.0*(0.5-drypoint[0])*(0.5-drypoint[0]);
+        Awet=1.0-2.0*(0.5-drypoint[0])*(0.5-drypoint[0]);
       return Awet;
     case 4: //horizontal: -
       if(drypoint[1]<-0.5)
-	Awet=0.0;
+        Awet=0.0;
       else if(drypoint[1]>0.5)
-	Awet=1.0;
+        Awet=1.0;
       else 
-	Awet=0.5+drypoint[1];
+        Awet=0.5+drypoint[1];
       return Awet;
     case 5: //vertical: |
       if(drypoint[0]>0.5)
-	Awet=0.0;
+        Awet=0.0;
       else if(drypoint[0]<-0.5)
-	Awet=1.0;
+        Awet=1.0;
       else
-	Awet=0.5-drypoint[0];
+        Awet=0.5-drypoint[0];
       return Awet;
     case 6: //horizontal: -
       if(drypoint[1]>0.5)
-	Awet=0.0;
+        Awet=0.0;
       else if(drypoint[1]<-0.5)
-	Awet=1.0;
+        Awet=1.0;
       else
-	Awet=0.5-drypoint[1];
+        Awet=0.5-drypoint[1];
       return Awet;
     case 7: //vertical: |
       if(drypoint[0]<-0.5)
-	Awet=0.0;
+        Awet=0.0;
       else if(drypoint[0]>0.5)
-	Awet=1.0;
+        Awet=1.0;
       else 
-	Awet=0.5+drypoint[0];
+        Awet=0.5+drypoint[0];
       return Awet;
     default:
       assert(0);
@@ -1862,7 +1862,7 @@ void Element::xdirflux(MatProps* matprops_ptr, double dz, double wetnessfactor,
 
     for (i=0; i<3; i++)
       for (j=0; j<NUM_STATE_VARS; j++)
-	hfv[i][j]=0.0;
+        hfv[i][j]=0.0;
   }
   else
   {
@@ -1918,8 +1918,8 @@ void Element::xdirflux(MatProps* matprops_ptr, double dz, double wetnessfactor,
     for (j=0; j<NUM_STATE_VARS; j++){
       hrfv[i][j]=hfv[i][j];
       if (isnan(hrfv[i][j])) {
-	printf("Nan in xdir flux i=%d j=%d phi=%f key=%d key1=%d\n",i,j,state_vars[0],key[0],key[1]); 
-	exit(1);}
+        printf("Nan in xdir flux i=%d j=%d phi=%f key=%d key1=%d\n",i,j,state_vars[0],key[0],key[1]); 
+        exit(1);}
     }
   return;
 }
@@ -1959,7 +1959,7 @@ void Element::ydirflux(MatProps* matprops_ptr, double dz, double wetnessfactor,
     }
     for (i=0; i<3; i++)
       for (j=0; j<NUM_STATE_VARS; j++)
-	hfv[i][j]=0.0; //state variables
+        hfv[i][j]=0.0; //state variables
   }
   else
   {
@@ -2015,11 +2015,11 @@ void Element::ydirflux(MatProps* matprops_ptr, double dz, double wetnessfactor,
     for (j=0; j<NUM_STATE_VARS; j++){
       hrfv[i][j]=hfv[i][j];
       if (isnan(hrfv[i][j])) {
-	printf("Nan in ydir flux\n"); 
-	exit(1);}}
+        printf("Nan in ydir flux\n"); 
+        exit(1);}}
 
 
-	return;
+        return;
 }
 void calc_intercell_vel(double hfvl[3][NUM_STATE_VARS],double hfvr[3][NUM_STATE_VARS] ,int dir,double *inter_cell_vel){
 
@@ -2116,95 +2116,95 @@ void riemannflux(double hfvl[3][NUM_STATE_VARS], double hfvr[3][NUM_STATE_VARS],
 
     if(sl>=0.0)
       for(ivar=0;ivar<NUM_STATE_VARS;ivar++)
-	flux[ivar]=hfvl[1][ivar];
+        flux[ivar]=hfvl[1][ivar];
     else if(sr<=0.0)
       for(ivar=0;ivar<NUM_STATE_VARS;ivar++)
-	flux[ivar]=hfvr[1][ivar];
+        flux[ivar]=hfvr[1][ivar];
     else
       for(ivar=0;ivar<NUM_STATE_VARS;ivar++){
-	flux[ivar]=(sr*hfvl[1][ivar]-sl*hfvr[1][ivar]+
-	    sl*sr*(hfvr[0][ivar]-hfvl[0][ivar]))
-	  /(sr-sl);
-	if (isnan(flux[ivar])) {
-	  printf("Nan in flux_ivar"); 
-	  exit(1);}}
+        flux[ivar]=(sr*hfvl[1][ivar]-sl*hfvr[1][ivar]+
+            sl*sr*(hfvr[0][ivar]-hfvl[0][ivar]))
+          /(sr-sl);
+        if (isnan(flux[ivar])) {
+          printf("Nan in flux_ivar"); 
+          exit(1);}}
 
-	  if (phi_flag_l){
-	    vel_l=vel_lp;
-	    phi_l=phi_lp;
-	  }else{
-	    phi_l=hfvl[0][0];
-	    if (hfvl[0][1]>0)
-	      vel_l=hfvl[0][2+dir]/hfvl[0][1];
-	    else 
-	      vel_l=0;
-	  }
+          if (phi_flag_l){
+            vel_l=vel_lp;
+            phi_l=phi_lp;
+          }else{
+            phi_l=hfvl[0][0];
+            if (hfvl[0][1]>0)
+              vel_l=hfvl[0][2+dir]/hfvl[0][1];
+            else 
+              vel_l=0;
+          }
 
-	  if (phi_flag_r){
-	    vel_r=vel_rp;
-	    phi_r=phi_rp;
-	  }else{
-	    phi_r=hfvr[0][0];
-	    if (hfvr[0][1]>0)
-	      vel_r=hfvr[0][2+dir]/hfvr[0][1];
-	    else 
-	      vel_r=0;
-	  }
+          if (phi_flag_r){
+            vel_r=vel_rp;
+            phi_r=phi_rp;
+          }else{
+            phi_r=hfvr[0][0];
+            if (hfvr[0][1]>0)
+              vel_r=hfvr[0][2+dir]/hfvr[0][1];
+            else 
+              vel_r=0;
+          }
 
-	  if(vel_l < 0){
-	    flux[0]=.5*(phi_r-phi_l)*(vel_r+vel_l);
-	    flux[4]=0;
-	  }else{
-	    flux[0]=0;
-	    flux[4]=.5*(phi_r-phi_l)*(vel_r+vel_l);
-	  }
+          if(vel_l < 0){
+            flux[0]=.5*(phi_r-phi_l)*(vel_r+vel_l);
+            flux[4]=0;
+          }else{
+            flux[0]=0;
+            flux[4]=.5*(phi_r-phi_l)*(vel_r+vel_l);
+          }
 
-	  // if (dir==0){
-	  // 	if(hfvl[0][1]>0) 
-	  // 	  vel_l=hfvl[0][2]/hfvl[0][1];
-	  // 	else
-	  // 	  vel_l=0;
-	  // 	if(hfvr[0][1]>0) 
-	  // 	  vel_r=hfvr[0][2]/hfvr[0][1];
-	  // 	else
-	  // 	  vel_r=0;
-	  // 	if(vel_l < 0){
-	  // 	  flux[0]=.5*(hfvr[0][0]-hfvl[0][0])*(vel_r+vel_l);
-	  // 	  flux[4]=0;
-	  // 	}else{
-	  // 	  flux[0]=0;
-	  // 	  flux[4]=.5*(hfvr[0][0]-hfvl[0][0])*(vel_r+vel_l);
-	  // 	}
-	  // }else{
+          // if (dir==0){
+          // 	if(hfvl[0][1]>0) 
+          // 	  vel_l=hfvl[0][2]/hfvl[0][1];
+          // 	else
+          // 	  vel_l=0;
+          // 	if(hfvr[0][1]>0) 
+          // 	  vel_r=hfvr[0][2]/hfvr[0][1];
+          // 	else
+          // 	  vel_r=0;
+          // 	if(vel_l < 0){
+          // 	  flux[0]=.5*(hfvr[0][0]-hfvl[0][0])*(vel_r+vel_l);
+          // 	  flux[4]=0;
+          // 	}else{
+          // 	  flux[0]=0;
+          // 	  flux[4]=.5*(hfvr[0][0]-hfvl[0][0])*(vel_r+vel_l);
+          // 	}
+          // }else{
 
-	  // 	if(hfvl[0][1]>0) 
-	  // 	  vel_l=hfvl[0][3]/hfvl[0][1];
-	  // 	else
-	  // 	  vel_l=0;
-	  // 	if(hfvr[0][1]>0) 
-	  // 	  vel_r=hfvr[0][3]/hfvr[0][1];
-	  // 	else
-	  // 	  vel_r=0;
-
-
-	  // 	if(vel_l < 0){
-	  // 	  flux[0]=.5*(hfvr[0][0]-hfvl[0][0])*(vel_r+vel_l);
-	  // 	  flux[4]=0;
-	  // 	}else{
-	  // 	  flux[0]=0;
-	  // 	  flux[4]=.5*(hfvr[0][0]-hfvl[0][0])*(vel_r+vel_l);
-	  // 	}
+          // 	if(hfvl[0][1]>0) 
+          // 	  vel_l=hfvl[0][3]/hfvl[0][1];
+          // 	else
+          // 	  vel_l=0;
+          // 	if(hfvr[0][1]>0) 
+          // 	  vel_r=hfvr[0][3]/hfvr[0][1];
+          // 	else
+          // 	  vel_r=0;
 
 
-	  //    }
+          // 	if(vel_l < 0){
+          // 	  flux[0]=.5*(hfvr[0][0]-hfvl[0][0])*(vel_r+vel_l);
+          // 	  flux[4]=0;
+          // 	}else{
+          // 	  flux[0]=0;
+          // 	  flux[4]=.5*(hfvr[0][0]-hfvl[0][0])*(vel_r+vel_l);
+          // 	}
 
-	  //calc_intercell_vel(hfvl,hfvr,dir,inter_cell_vel);
-	  //flux[0]=inter_cell_vel[0]*(hfvr[0][0]-hfvl[0][0]);
-	  //flux[4]=inter_cell_vel[1]*(hfvr[0][0]-hfvl[0][0]);
-	  if(isnan(flux[0])||isnan(flux[4]))
-	  { printf("there is something wrong flag1=%d flag2=%d vel_l=%f vel_r=%f dir=%d \n",phi_flag_l,phi_flag_r,vel_l,vel_r,dir);
-	    exit(1);
-	  }
+
+          //    }
+
+          //calc_intercell_vel(hfvl,hfvr,dir,inter_cell_vel);
+          //flux[0]=inter_cell_vel[0]*(hfvr[0][0]-hfvl[0][0]);
+          //flux[4]=inter_cell_vel[1]*(hfvr[0][0]-hfvl[0][0]);
+          if(isnan(flux[0])||isnan(flux[4]))
+          { printf("there is something wrong flag1=%d flag2=%d vel_l=%f vel_r=%f dir=%d \n",phi_flag_l,phi_flag_r,vel_l,vel_r,dir);
+            exit(1);
+          }
 
   }
 
@@ -2246,8 +2246,8 @@ void Element::calc_edge_states(HashTable* El_Table, HashTable* NodeTable,
       //outflow boundary conditions
       for(ivar=0;ivar<NUM_STATE_VARS;ivar++) 
       {
-	np->flux[ivar] = nm->flux[ivar]; 
-	np->refinementflux[ivar] = nm->refinementflux[ivar];
+        np->flux[ivar] = nm->flux[ivar]; 
+        np->refinementflux[ivar] = nm->refinementflux[ivar];
       }
     }
     else if(neigh_proc[zp]!=myid) {
@@ -2269,28 +2269,28 @@ void Element::calc_edge_states(HashTable* El_Table, HashTable* NodeTable,
 
       //note a rectangular domain ensures that neigh_proc[zm+4]!=-1
       if(neigh_proc[zp+4]==myid) {
-	zm2=elm2->which_neighbor(pass_key())%4;
-	nm2= (Node*) NodeTable->lookup(&elm2->node_key[zm2+4][0]);
+        zm2=elm2->which_neighbor(pass_key())%4;
+        nm2= (Node*) NodeTable->lookup(&elm2->node_key[zm2+4][0]);
 
-	riemannflux(hfv,hfv2,nm2->flux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
-	riemannflux(hrfv,hrfv2,nm2->refinementflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+        riemannflux(hfv,hfv2,nm2->flux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+        riemannflux(hrfv,hrfv2,nm2->refinementflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
 
-	for(ivar=0;ivar<NUM_STATE_VARS;ivar++) {
-	  np->flux[ivar]=0.5*(np->flux[ivar]+nm2->flux[ivar]);
-	  np->refinementflux[ivar]=
-	    0.5*(np->refinementflux[ivar]+nm2->refinementflux[ivar]);
-	}
+        for(ivar=0;ivar<NUM_STATE_VARS;ivar++) {
+          np->flux[ivar]=0.5*(np->flux[ivar]+nm2->flux[ivar]);
+          np->refinementflux[ivar]=
+            0.5*(np->refinementflux[ivar]+nm2->refinementflux[ivar]);
+        }
       }
       else
       {
-	riemannflux(hfv,hfv2,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
-	for(ivar=0;ivar<NUM_STATE_VARS;ivar++)
-	  np->flux[ivar]=0.5*(np->flux[ivar]+ghostflux[ivar]);
+        riemannflux(hfv,hfv2,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+        for(ivar=0;ivar<NUM_STATE_VARS;ivar++)
+          np->flux[ivar]=0.5*(np->flux[ivar]+ghostflux[ivar]);
 
-	riemannflux(hrfv,hrfv2,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);	
-	for(ivar=0;ivar<NUM_STATE_VARS;ivar++)
-	  np->refinementflux[ivar]=
-	    0.5*(np->refinementflux[ivar]+ghostflux[ivar]);
+        riemannflux(hrfv,hrfv2,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);	
+        for(ivar=0;ivar<NUM_STATE_VARS;ivar++)
+          np->refinementflux[ivar]=
+            0.5*(np->refinementflux[ivar]+ghostflux[ivar]);
       }
     }
     else {
@@ -2308,144 +2308,144 @@ void Element::calc_edge_states(HashTable* El_Table, HashTable* NodeTable,
 
 
       /* CASE I
-	 ------------------- -------------------               
-	 |                   |                   |               
-	 |                   |                   |               
-	 |                   |                   |               
-	 |                   |                   |               
-	 |                   |                   |       
-	 |      this       np|         elm1      |           
-	 |        h          |         hp        |        
-	 |    kactxy_gz      |    kactxy_gz_n    |        
-	 |                   |                   |   
-	 |                   |                   |       
-	 |                   |                   |       
-	 ------------------- -------------------
-       */
+         ------------------- -------------------               
+         |                   |                   |               
+         |                   |                   |               
+         |                   |                   |               
+         |                   |                   |               
+         |                   |                   |       
+         |      this       np|         elm1      |           
+         |        h          |         hp        |        
+         |    kactxy_gz      |    kactxy_gz_n    |        
+         |                   |                   |   
+         |                   |                   |       
+         |                   |                   |       
+         ------------------- -------------------
+         */
 
 
 
       /*
-	 Case II
+         Case II
 
-	 --------- ----------------------------         
-	 |         |         |                  |       
-	 |positive_z_side--->|<----zelmpos      |       
-	 |         | this  np|                  |       
-	 |         |   h     |                  |       
-	 |         |         |                  |
-	 |---------|---------|nm1   elm1        |
-	 |         |         |      hp          |
-	 |         |         |                  |
-	 |         | elm2 np2|                  |
-	 |         |         |                  |
-	 positive_z_side_2-->|                  |
-	 --------- ----------------------------
+         --------- ----------------------------         
+         |         |         |                  |       
+         |positive_z_side--->|<----zelmpos      |       
+         |         | this  np|                  |       
+         |         |   h     |                  |       
+         |         |         |                  |
+         |---------|---------|nm1   elm1        |
+         |         |         |      hp          |
+         |         |         |                  |
+         |         | elm2 np2|                  |
+         |         |         |                  |
+         positive_z_side_2-->|                  |
+         --------- ----------------------------
 
-       */
+*/
 
       if(np->info==S_S_CON) {
-	nm1 = NULL;
-	np2 = NULL;
+        nm1 = NULL;
+        np2 = NULL;
 
-	zelmpos=elm1->which_neighbor(pass_key());
-	assert (zelmpos > -1);
-	nm1=(Node*) NodeTable->lookup(&elm1->node_key[zelmpos%4+4][0]); 
+        zelmpos=elm1->which_neighbor(pass_key());
+        assert (zelmpos > -1);
+        nm1=(Node*) NodeTable->lookup(&elm1->node_key[zelmpos%4+4][0]); 
 
-	elm2 = (Element*) El_Table->lookup(&elm1->neighbor[(zelmpos+4)%8][0]);
-	assert(elm2);
+        elm2 = (Element*) El_Table->lookup(&elm1->neighbor[(zelmpos+4)%8][0]);
+        assert(elm2);
 
-	elm1->zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side,hfv1,hrfv1,elm2,dt,&vel1, &phi1 ,&phi_flag1);
-	elm2->zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side,hfv2,hrfv2,elm1,dt,&vel2, &phi2 ,&phi_flag2);
+        elm1->zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side,hfv1,hrfv1,elm2,dt,&vel1, &phi1 ,&phi_flag1);
+        elm2->zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side,hfv2,hrfv2,elm1,dt,&vel2, &phi2 ,&phi_flag2);
 
-	if(*(elm1->get_neigh_proc()+(zelmpos+4)%8)==myid) {
-	  zp2=elm2->which_neighbor(elm1->pass_key())%4;
-	  np2= (Node*) NodeTable->lookup(&elm2->node_key[zp2+4][0]);
-	  riemannflux(hfv2,hfv1,np2->flux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
-	  riemannflux(hrfv2,hrfv1,np2->refinementflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+        if(*(elm1->get_neigh_proc()+(zelmpos+4)%8)==myid) {
+          zp2=elm2->which_neighbor(elm1->pass_key())%4;
+          np2= (Node*) NodeTable->lookup(&elm2->node_key[zp2+4][0]);
+          riemannflux(hfv2,hfv1,np2->flux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+          riemannflux(hrfv2,hrfv1,np2->refinementflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
 
-	  for(ivar=0;ivar<NUM_STATE_VARS;ivar++) {
-	    nm1->flux[ivar] = 0.5*(np->flux[ivar]+np2->flux[ivar]);
-	    nm1->refinementflux[ivar] = 
-	      0.5*(np->refinementflux[ivar]+np2->refinementflux[ivar]);
-	  }
-	}
-	else{
+          for(ivar=0;ivar<NUM_STATE_VARS;ivar++) {
+            nm1->flux[ivar] = 0.5*(np->flux[ivar]+np2->flux[ivar]);
+            nm1->refinementflux[ivar] = 
+              0.5*(np->refinementflux[ivar]+np2->refinementflux[ivar]);
+          }
+        }
+        else{
 
-	  riemannflux(hfv2,hfv1,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
-	  for(ivar=0;ivar<NUM_STATE_VARS;ivar++)
-	    nm1->flux[ivar] = 0.5*(np->flux[ivar]+ghostflux[ivar]);
+          riemannflux(hfv2,hfv1,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+          for(ivar=0;ivar<NUM_STATE_VARS;ivar++)
+            nm1->flux[ivar] = 0.5*(np->flux[ivar]+ghostflux[ivar]);
 
-	  riemannflux(hrfv2,hrfv1,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
-	  for(ivar=0;ivar<NUM_STATE_VARS;ivar++)
-	    nm1->refinementflux[ivar] = 
-	      0.5*(np->refinementflux[ivar]+ghostflux[ivar]);
-	}
+          riemannflux(hrfv2,hrfv1,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+          for(ivar=0;ivar<NUM_STATE_VARS;ivar++)
+            nm1->refinementflux[ivar] = 
+              0.5*(np->refinementflux[ivar]+ghostflux[ivar]);
+        }
       }  
 
 
       /*  Case III
 
-	  ------------------- --------- ---------               
-	  |                   |         |         |
-	  |positive_z_side--->|<----zelmpos_2     |               
-	  |                   |nm2 elm2 |         |               
-	  |                   |     hp2 |         |               
-	  |                   |         |         |       
-	  |       this        |---------|---------               
-	  |        h          |         |         |        
-	  |                   |         |         |        
-	  |                   |nm1 elm1 |         |        
-	  |                   |     hp1 |         |       
-	  |                   |<----zelmpos       |       
-	  ------------------- --------- ---------
+          ------------------- --------- ---------               
+          |                   |         |         |
+          |positive_z_side--->|<----zelmpos_2     |               
+          |                   |nm2 elm2 |         |               
+          |                   |     hp2 |         |               
+          |                   |         |         |       
+          |       this        |---------|---------               
+          |        h          |         |         |        
+          |                   |         |         |        
+          |                   |nm1 elm1 |         |        
+          |                   |     hp1 |         |       
+          |                   |<----zelmpos       |       
+          ------------------- --------- ---------
 
 
-       */
+*/
 
       else if(np->info==S_C_CON) {
 
-	nm1 = NULL;
-	nm2 = NULL; 
+        nm1 = NULL;
+        nm2 = NULL; 
 
-	zelmpos=elm1->which_neighbor(pass_key())%4;
-	nm1=(Node*) NodeTable->lookup(&elm1->node_key[zelmpos+4][0]); 
+        zelmpos=elm1->which_neighbor(pass_key())%4;
+        nm1=(Node*) NodeTable->lookup(&elm1->node_key[zelmpos+4][0]); 
 
-	elm2=(Element*) (El_Table->lookup(&neighbor[zp+4][0]));
-	assert(elm2);
+        elm2=(Element*) (El_Table->lookup(&neighbor[zp+4][0]));
+        assert(elm2);
 
-	zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side,hfv,hrfv,elm2,dt,&vel1,&phi1,&phi_flag1);
-	elm2->zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side+2,hfv2,hrfv2,this,dt,&vel2,&phi2,&phi_flag2);
+        zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side,hfv,hrfv,elm2,dt,&vel1,&phi1,&phi_flag1);
+        elm2->zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side+2,hfv2,hrfv2,this,dt,&vel2,&phi2,&phi_flag2);
 
-	if(neigh_proc[zp+4]==myid) {
-	  zelmpos_2=elm2->which_neighbor(pass_key())%4;
-	  nm2=(Node*) NodeTable->lookup(&elm2->node_key[zelmpos_2+4][0]);
-	  riemannflux(hfv,hfv2,nm2->flux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
-	  riemannflux(hrfv,hrfv2,nm2->refinementflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+        if(neigh_proc[zp+4]==myid) {
+          zelmpos_2=elm2->which_neighbor(pass_key())%4;
+          nm2=(Node*) NodeTable->lookup(&elm2->node_key[zelmpos_2+4][0]);
+          riemannflux(hfv,hfv2,nm2->flux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+          riemannflux(hrfv,hrfv2,nm2->refinementflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
 
-	  for(ivar=0;ivar<NUM_STATE_VARS;ivar++) {
-	    nm1->flux[ivar]=np->flux[ivar];
-	    np->flux[ivar]=0.5*(nm1->flux[ivar]+nm2->flux[ivar]);	    
+          for(ivar=0;ivar<NUM_STATE_VARS;ivar++) {
+            nm1->flux[ivar]=np->flux[ivar];
+            np->flux[ivar]=0.5*(nm1->flux[ivar]+nm2->flux[ivar]);	    
 
-	    nm1->refinementflux[ivar]=np->refinementflux[ivar];
-	    np->refinementflux[ivar]=
-	      0.5*(nm1->refinementflux[ivar]+nm2->refinementflux[ivar]);	    
-	  }
-	}
-	else{
-	  riemannflux(hfv,hfv2,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
-	  for(ivar=0;ivar<NUM_STATE_VARS;ivar++) {
-	    nm1->flux[ivar]=np->flux[ivar];
-	    np->flux[ivar]=0.5*(nm1->flux[ivar]+ghostflux[ivar]);
-	  }
+            nm1->refinementflux[ivar]=np->refinementflux[ivar];
+            np->refinementflux[ivar]=
+              0.5*(nm1->refinementflux[ivar]+nm2->refinementflux[ivar]);	    
+          }
+        }
+        else{
+          riemannflux(hfv,hfv2,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+          for(ivar=0;ivar<NUM_STATE_VARS;ivar++) {
+            nm1->flux[ivar]=np->flux[ivar];
+            np->flux[ivar]=0.5*(nm1->flux[ivar]+ghostflux[ivar]);
+          }
 
-	  riemannflux(hrfv,hrfv2,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
-	  for(ivar=0;ivar<NUM_STATE_VARS;ivar++) {
-	    nm1->refinementflux[ivar]=np->refinementflux[ivar];
-	    np->refinementflux[ivar]=
-	      0.5*(nm1->refinementflux[ivar]+ghostflux[ivar]);
-	  }
-	}
+          riemannflux(hrfv,hrfv2,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+          for(ivar=0;ivar<NUM_STATE_VARS;ivar++) {
+            nm1->refinementflux[ivar]=np->refinementflux[ivar];
+            np->refinementflux[ivar]=
+              0.5*(nm1->refinementflux[ivar]+ghostflux[ivar]);
+          }
+        }
 
       }   
 
@@ -2455,107 +2455,107 @@ void Element::calc_edge_states(HashTable* El_Table, HashTable* NodeTable,
     if(neigh_proc[zm] != myid) {
 
       if(neigh_proc[zm] == -1) {
-	np = (Node*) NodeTable->lookup(&node_key[zp+4][0]);
-	nm = (Node*) NodeTable->lookup(&node_key[zm+4][0]);  
-	*outflow-=(np->flux[0])*dx[!side];
-	//outflow boundary conditions
-	for(ivar=0;ivar<NUM_STATE_VARS;ivar++) {
-	  nm->flux[ivar] = np->flux[ivar]; 
-	  nm->refinementflux[ivar] = np->refinementflux[ivar]; 
-	}
+        np = (Node*) NodeTable->lookup(&node_key[zp+4][0]);
+        nm = (Node*) NodeTable->lookup(&node_key[zm+4][0]);  
+        *outflow-=(np->flux[0])*dx[!side];
+        //outflow boundary conditions
+        for(ivar=0;ivar<NUM_STATE_VARS;ivar++) {
+          nm->flux[ivar] = np->flux[ivar]; 
+          nm->refinementflux[ivar] = np->refinementflux[ivar]; 
+        }
       }
       else {
-	/* if an interface is on the x-minus or y-minus side, need to 
-	   calculate those edgestates in this element */
-	// x-minus side
-	/*
+        /* if an interface is on the x-minus or y-minus side, need to 
+           calculate those edgestates in this element */
+        // x-minus side
+        /*
 
-	   interface   
-	   |
-	   |
-	   left cells-GHOST CELLS   |     
-	   (no need to        |
-	   calculate         |
-	   fluxes )         |
-	   v
-
-
-	   Case I
-
-	   ------------------- -------------------               
-	   |                   |                   |               
-	   |                   |<--zm              |               
-	   |                   |                   |               
-	   |                   |                   |               
-	   |                   |                   |       
-	   |       elm1        |nm      this       |           
-	   |        h          |         hp        |        
-	   |                   |                   |        
-	   |                   |                   |   
-	   |                   |                   |       
-	   |                   |                   |       
-	   ------------------- -------------------
+           interface   
+           |
+           |
+           left cells-GHOST CELLS   |     
+           (no need to        |
+           calculate         |
+           fluxes )         |
+           v
 
 
-	   Case II  
+           Case I
 
-	   --------- -----------------------------         
-	   |         |         |                   |       
-	   |         |         |<--zm(z-minus side)|       
-	   |         |  elm1   |                   |       
-	   |         |   h     |                   |       
-	   |         |         |                   |
-	   |---------|---------|nm    this         |
-	   |         |         |       hp          |
-	   |         |         |                   |
-	   |         | elm2    |                   |
-	   |         |   h2    |                   |
-	   |         |         |                   |
-	   --------- -----------------------------
-
-	 */
+           ------------------- -------------------               
+           |                   |                   |               
+           |                   |<--zm              |               
+           |                   |                   |               
+           |                   |                   |               
+           |                   |                   |       
+           |       elm1        |nm      this       |           
+           |        h          |         hp        |        
+           |                   |                   |        
+           |                   |                   |   
+           |                   |                   |       
+           |                   |                   |       
+           ------------------- -------------------
 
 
-	nm = (Node*) NodeTable->lookup(&node_key[zm+4][0]);
-	elm1 = (Element*) El_Table->lookup(&neighbor[zm][0]);
-	assert(elm1);
+           Case II  
 
-	zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side+2,hfv,hrfv,elm1,dt,&vel1,&phi1,&phi_flag1);
-	elm1->zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side,hfv1,hrfv1,this,dt,&vel2,&phi2,&phi_flag2);
-	riemannflux(hfv1,hfv,nm->flux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
-	riemannflux(hrfv1,hrfv,nm->refinementflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+           --------- -----------------------------         
+           |         |         |                   |       
+           |         |         |<--zm(z-minus side)|       
+           |         |  elm1   |                   |       
+           |         |   h     |                   |       
+           |         |         |                   |
+           |---------|---------|nm    this         |
+           |         |         |       hp          |
+           |         |         |                   |
+           |         | elm2    |                   |
+           |         |   h2    |                   |
+           |         |         |                   |
+           --------- -----------------------------
+
+*/
 
 
-	elm2=(Element*) El_Table->lookup(&neighbor[zm+4][0]);
-	assert(elm2);
+        nm = (Node*) NodeTable->lookup(&node_key[zm+4][0]);
+        elm1 = (Element*) El_Table->lookup(&neighbor[zm][0]);
+        assert(elm1);
 
-	zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side+2,hfv,hrfv,elm2,dt,&vel1,&phi1,&phi_flag1);
-	elm2->zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side,hfv2,hrfv2,this,dt,&vel2,&phi2,&phi_flag2);
+        zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side+2,hfv,hrfv,elm1,dt,&vel1,&phi1,&phi_flag1);
+        elm1->zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side,hfv1,hrfv1,this,dt,&vel2,&phi2,&phi_flag2);
+        riemannflux(hfv1,hfv,nm->flux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+        riemannflux(hrfv1,hrfv,nm->refinementflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
 
-	//note a rectangular domain ensures that neigh_proc[zm+4]!=-1
-	if(neigh_proc[zm+4]==myid) {
-	  zp2=elm2->which_neighbor(pass_key())%4;
-	  np2= (Node*) NodeTable->lookup(&elm2->node_key[zp2+4][0]);
 
-	  riemannflux(hfv2,hfv,np2->flux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
-	  riemannflux(hrfv2,hrfv,np2->refinementflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+        elm2=(Element*) El_Table->lookup(&neighbor[zm+4][0]);
+        assert(elm2);
 
-	  for(ivar=0;ivar<NUM_STATE_VARS;ivar++) {
-	    nm->flux[ivar]=0.5*(nm->flux[ivar]+np2->flux[ivar]);
-	    nm->refinementflux[ivar]=
-	      0.5*(nm->refinementflux[ivar]+np2->refinementflux[ivar]);
-	  }
-	}
-	else{
-	  riemannflux(hfv2,hfv,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);	  
-	  for(ivar=0;ivar<NUM_STATE_VARS;ivar++)
-	    nm->flux[ivar]=0.5*(nm->flux[ivar]+ghostflux[ivar]);
+        zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side+2,hfv,hrfv,elm2,dt,&vel1,&phi1,&phi_flag1);
+        elm2->zdirflux(El_Table,NodeTable,matprops_ptr,*order_flag,side,hfv2,hrfv2,this,dt,&vel2,&phi2,&phi_flag2);
 
-	  riemannflux(hrfv2,hrfv,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);	  
-	  for(ivar=0;ivar<NUM_STATE_VARS;ivar++)
-	    nm->refinementflux[ivar]=
-	      0.5*(nm->refinementflux[ivar]+ghostflux[ivar]);
-	}
+        //note a rectangular domain ensures that neigh_proc[zm+4]!=-1
+        if(neigh_proc[zm+4]==myid) {
+          zp2=elm2->which_neighbor(pass_key())%4;
+          np2= (Node*) NodeTable->lookup(&elm2->node_key[zp2+4][0]);
+
+          riemannflux(hfv2,hfv,np2->flux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+          riemannflux(hrfv2,hrfv,np2->refinementflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);
+
+          for(ivar=0;ivar<NUM_STATE_VARS;ivar++) {
+            nm->flux[ivar]=0.5*(nm->flux[ivar]+np2->flux[ivar]);
+            nm->refinementflux[ivar]=
+              0.5*(nm->refinementflux[ivar]+np2->refinementflux[ivar]);
+          }
+        }
+        else{
+          riemannflux(hfv2,hfv,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);	  
+          for(ivar=0;ivar<NUM_STATE_VARS;ivar++)
+            nm->flux[ivar]=0.5*(nm->flux[ivar]+ghostflux[ivar]);
+
+          riemannflux(hrfv2,hrfv,ghostflux,side,vel1,vel2,phi1,phi2,phi_flag1,phi_flag2);	  
+          for(ivar=0;ivar<NUM_STATE_VARS;ivar++)
+            nm->refinementflux[ivar]=
+              0.5*(nm->refinementflux[ivar]+ghostflux[ivar]);
+        }
 
       }
     }
@@ -2587,7 +2587,7 @@ void Element::calc_shortspeed(double inv_dt)
   if(state_vars[0]>GEOFLOW_TINY) 
   {
     double  Vmag=sqrt(state_vars[2]*state_vars[2]+
-	state_vars[3]*state_vars[3]);
+        state_vars[3]*state_vars[3]);
     if(!(Vmag>0.0)) return;
 
     double invnormhv=1.0/Vmag;
@@ -2596,11 +2596,11 @@ void Element::calc_shortspeed(double inv_dt)
     assert(Vmag0>0.0);
 
     double doubleswap_h  =(state_vars[2]*d_state_vars[1]+
-	state_vars[3]*d_state_vars[NUM_STATE_VARS+1])*invnormhv;
+        state_vars[3]*d_state_vars[NUM_STATE_VARS+1])*invnormhv;
     double doubleswap_hvx=(state_vars[2]*d_state_vars[2]+
-	state_vars[3]*d_state_vars[NUM_STATE_VARS+2])*invnormhv;
+        state_vars[3]*d_state_vars[NUM_STATE_VARS+2])*invnormhv;
     double doubleswap_hvy=(state_vars[2]*d_state_vars[3]+
-	state_vars[3]*d_state_vars[NUM_STATE_VARS+3])*invnormhv;
+        state_vars[3]*d_state_vars[NUM_STATE_VARS+3])*invnormhv;
     double doubleswap_h_2, doubleswap_hvx_2, doubleswap_hvy_2;
 
     double f, df, d2f, df2, d2f2, dVmag, absdVmag0, VmagOld=-1.0, dVmag2=-1.0;
@@ -2615,54 +2615,54 @@ void Element::calc_shortspeed(double inv_dt)
 
 
       /* f could be greater or less than zero but f2 is always non-negative, 
-	 note however that minimum/optimal value of f2 could be > 0 so solving 
-	 for f2==0 isn't full proof, instead we want minium f2 which means solve
-	 for df2==0, but df2==0 could be min or max. but in newton if you take
-	 the absolute value d2f2 in the denominator you cause f2 to ALWAYS 
-	 decrease, and thus you are guarenteed to find a local mimimum, recall 
-	 we do want a minimum because f2 is guaranteed >= 0 */
+         note however that minimum/optimal value of f2 could be > 0 so solving 
+         for f2==0 isn't full proof, instead we want minium f2 which means solve
+         for df2==0, but df2==0 could be min or max. but in newton if you take
+         the absolute value d2f2 in the denominator you cause f2 to ALWAYS 
+         decrease, and thus you are guarenteed to find a local mimimum, recall 
+         we do want a minimum because f2 is guaranteed >= 0 */
 
       f=Vmag*Vmag*
-	doubleswap_h_2  *doubleswap_h_2  -
-	doubleswap_hvx_2*doubleswap_hvx_2-
-	doubleswap_hvy_2*doubleswap_hvy_2;
+        doubleswap_h_2  *doubleswap_h_2  -
+        doubleswap_hvx_2*doubleswap_hvx_2-
+        doubleswap_hvy_2*doubleswap_hvy_2;
 
       df=2.0*(
-	  Vmag*doubleswap_h_2*doubleswap_h_2+
-	  Vmag*Vmag*doubleswap_h_2*doubleswap_h-
-	  doubleswap_hvx_2*doubleswap_hvx-
-	  doubleswap_hvy_2*doubleswap_hvy);
+          Vmag*doubleswap_h_2*doubleswap_h_2+
+          Vmag*Vmag*doubleswap_h_2*doubleswap_h-
+          doubleswap_hvx_2*doubleswap_hvx-
+          doubleswap_hvy_2*doubleswap_hvy);
       d2f=2.0*(doubleswap_h_2*doubleswap_h_2+4.0*Vmag*doubleswap_h_2*doubleswap_h+
-	  Vmag*Vmag*doubleswap_h*doubleswap_h-doubleswap_hvx*doubleswap_hvx-
-	  doubleswap_hvy*doubleswap_hvy);
+          Vmag*Vmag*doubleswap_h*doubleswap_h-doubleswap_hvx*doubleswap_hvx-
+          doubleswap_hvy*doubleswap_hvy);
       //f2=f*f;  
       df2=2.0*f*df; //solving for df2==0 is either min or max of f2
       d2f2=2.0*(f*d2f+df*df);
       dVmag=(df2)?(-df2/fabs(d2f2)):0.0;  //fabs(d2f2) will cause f2 to always decrease and since f2 can't be less than zero we always want it to decrease, also need to prevent division of zero by zero = nan
 
       if(!(shortspeed>=0.0)) {
-	printf("inewt=%d Vmag0=%g Vmag=%g doubleswap_h_2=%g doubleswap_hvx_2=%g doubleswap_hvy_2=%g f=%g df=%g d2f=%g df2=%g d2f2=%g\n",
-	    inewt,Vmag0,Vmag,doubleswap_h_2,doubleswap_hvx_2,doubleswap_hvy_2,f,df,d2f, df2, d2f2);
-	assert(0); }
+        printf("inewt=%d Vmag0=%g Vmag=%g doubleswap_h_2=%g doubleswap_hvx_2=%g doubleswap_hvy_2=%g f=%g df=%g d2f=%g df2=%g d2f2=%g\n",
+            inewt,Vmag0,Vmag,doubleswap_h_2,doubleswap_hvx_2,doubleswap_hvy_2,f,df,d2f, df2, d2f2);
+        assert(0); }
 
-	VmagOld=Vmag;
-	Vmag+=dVmag;
+        VmagOld=Vmag;
+        Vmag+=dVmag;
 
-	if(Vmag<0.0) Vmag=0.0; //safety in case it finds wrong root but this 
-	//shouldn't be a problem equation looks like it should be smooth in 
-	//the region were interested in
+        if(Vmag<0.0) Vmag=0.0; //safety in case it finds wrong root but this 
+        //shouldn't be a problem equation looks like it should be smooth in 
+        //the region were interested in
 
-	dVmag2=Vmag-VmagOld;
+        dVmag2=Vmag-VmagOld;
 
-	if(fabs(dVmag2)<0.0)
-	  printf("VmagOld=%g dVmag2=%g yada=%d\n",VmagOld,dVmag2,yada);
+        if(fabs(dVmag2)<0.0)
+          printf("VmagOld=%g dVmag2=%g yada=%d\n",VmagOld,dVmag2,yada);
 
-	yada=yada+yada;
+        yada=yada+yada;
 
-	if(inewt==0)
-	  absdVmag0=fabs(dVmag);
-	else if((absdVmag0*toler>=fabs(dVmag2))||(Vmag*toler>=fabs(dVmag2)))
-	  break;
+        if(inewt==0)
+          absdVmag0=fabs(dVmag);
+        else if((absdVmag0*toler>=fabs(dVmag2))||(Vmag*toler>=fabs(dVmag2)))
+          break;
     }
 
     assert(inewt>=0.0);
@@ -2835,7 +2835,7 @@ void Element::calc_lap_phi(HashTable* El_Table, HashTable* NodeTable) {
     em2 = (Element*) (El_Table->lookup(&neighbor[ym+4][0]));
     if(!(neigh_proc[ym+4] >= 0 && em2)){
       printf("ym=%d neigh_proc[ym+4]=%d em2=%d\n",
-	  ym,neigh_proc[ym+4],em2);
+          ym,neigh_proc[ym+4],em2);
     }
 
     assert(neigh_proc[ym+4] >= 0 && em2);
@@ -3062,7 +3062,7 @@ void Element::put_coord(double* coord_in) {
 
 /*
    using elm_loc, which_son is calculated
- */
+   */
 void Element::calc_which_son() {
   if(elm_loc[0] %2 == 0) {
     if(elm_loc[1] %2 == 0)
@@ -3092,7 +3092,7 @@ void Element::find_opposite_brother(HashTable* El_Table)
     brothers[(which_son+2)%4][ikey]=0;
   unsigned nullkey[2]={0,0};
   if(!(compare_key(brothers[(which_son+1)%4],nullkey)&&
-	compare_key(brothers[(which_son+3)%4],nullkey))) {
+        compare_key(brothers[(which_son+3)%4],nullkey))) {
     //use space filling curve to compute the key of opposite
     //brother from it's bubble node coordinates
     double bro_norm_coord[2];    
@@ -3100,17 +3100,17 @@ void Element::find_opposite_brother(HashTable* El_Table)
 
     if((which_son==0)||(which_son==3))
       bro_norm_coord[0]=El_Table->get_invdxrange()*
-	(coord[0]+dx[0]-*(El_Table->get_Xrange()+0));
+        (coord[0]+dx[0]-*(El_Table->get_Xrange()+0));
     else
       bro_norm_coord[0]=El_Table->get_invdxrange()*
-	(coord[0]-dx[0]-*(El_Table->get_Xrange()+0));
+        (coord[0]-dx[0]-*(El_Table->get_Xrange()+0));
 
     if((which_son==0)||(which_son==1))
       bro_norm_coord[1]=El_Table->get_invdyrange()*
-	(coord[1]+dx[1]-*(El_Table->get_Yrange()+0));
+        (coord[1]+dx[1]-*(El_Table->get_Yrange()+0));
     else
       bro_norm_coord[1]=El_Table->get_invdyrange()*
-	(coord[1]-dx[1]-*(El_Table->get_Yrange()+0));
+        (coord[1]-dx[1]-*(El_Table->get_Yrange()+0));
 
     fhsfc2d_(bro_norm_coord,&nkey,brothers[(which_son+2)%4]);
 
@@ -3135,157 +3135,157 @@ void Element::find_opposite_brother(HashTable* El_Table)
   switch(which_son) {
     case 0:
       if(neigh_proc[2] != -1 && neigh_proc[1] != -1) {
-	if(neigh_proc[2] == myid) {
-	  EmTemp = (Element*) El_Table->lookup(neighbor[2]);
-	  if(*(EmTemp->get_neigh_gen()+1) == generation) {
-	    for(i=0;i<KEYLENGTH;i++)
-	      brothers[2][i] = *(EmTemp->get_neighbors()+KEYLENGTH+i);
-	    opposite_brother_flag = 1;
-	  }
-	  else {
-	    EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors()+KEYLENGTH);
-	    if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
-	      unsigned* elm_father = EmTemp->getfather();
-	      for(i=0;i<KEYLENGTH;i++)
-		brothers[2][i] = elm_father[i];
-	      opposite_brother_flag = 1;
-	    }
-	  }
-	}
-	else if(neigh_proc[1] == myid) {
-	  EmTemp = (Element*) El_Table->lookup(neighbor[5]);
-	  if(*(EmTemp->get_neigh_gen()+2) == generation) {
-	    for(i=0;i<KEYLENGTH;i++)
-	      brothers[2][i] = *(EmTemp->get_neighbors()+2*KEYLENGTH+i);
-	    opposite_brother_flag = 1;
-	  }
-	  else {
-	    EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors()+6*KEYLENGTH);
-	    if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
-	      unsigned* elm_father = EmTemp->getfather();
-	      for(i=0;i<KEYLENGTH;i++)
-		brothers[2][i] = elm_father[i];
-	      opposite_brother_flag = 1;	    
-	    }
-	  }
+        if(neigh_proc[2] == myid) {
+          EmTemp = (Element*) El_Table->lookup(neighbor[2]);
+          if(*(EmTemp->get_neigh_gen()+1) == generation) {
+            for(i=0;i<KEYLENGTH;i++)
+              brothers[2][i] = *(EmTemp->get_neighbors()+KEYLENGTH+i);
+            opposite_brother_flag = 1;
+          }
+          else {
+            EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors()+KEYLENGTH);
+            if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
+              unsigned* elm_father = EmTemp->getfather();
+              for(i=0;i<KEYLENGTH;i++)
+                brothers[2][i] = elm_father[i];
+              opposite_brother_flag = 1;
+            }
+          }
+        }
+        else if(neigh_proc[1] == myid) {
+          EmTemp = (Element*) El_Table->lookup(neighbor[5]);
+          if(*(EmTemp->get_neigh_gen()+2) == generation) {
+            for(i=0;i<KEYLENGTH;i++)
+              brothers[2][i] = *(EmTemp->get_neighbors()+2*KEYLENGTH+i);
+            opposite_brother_flag = 1;
+          }
+          else {
+            EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors()+6*KEYLENGTH);
+            if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
+              unsigned* elm_father = EmTemp->getfather();
+              for(i=0;i<KEYLENGTH;i++)
+                brothers[2][i] = elm_father[i];
+              opposite_brother_flag = 1;	    
+            }
+          }
 
-	}
+        }
       }
       break;
     case 1:
       if(neigh_proc[2] != -1 && neigh_proc[3] != -1) {
-	if(neigh_proc[2] == myid) {
-	  EmTemp = (Element*) El_Table->lookup(neighbor[6]);
-	  if(*(EmTemp->get_neigh_gen()+3) == generation) {
-	    for(i=0;i<KEYLENGTH;i++)
-	      brothers[3][i] = *(EmTemp->get_neighbors()+3*KEYLENGTH+i);
-	    opposite_brother_flag = 1;
-	  }
-	  else {
-	    EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors()+7*KEYLENGTH);
-	    if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
-	      unsigned* elm_father = EmTemp->getfather();
-	      for(i=0;i<KEYLENGTH;i++)
-		brothers[3][i] = elm_father[i];
-	      opposite_brother_flag = 1;
-	    }
-	  }
-	}
-	else if(neigh_proc[3] == myid) {
-	  EmTemp = (Element*) El_Table->lookup(neighbor[3]);
-	  if(*(EmTemp->get_neigh_gen()+2) == generation) {
-	    for(i=0;i<KEYLENGTH;i++)
-	      brothers[3][i] = *(EmTemp->get_neighbors()+2*KEYLENGTH+i);
-	    opposite_brother_flag = 1;
-	  }
-	  else {
-	    EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors()+2*KEYLENGTH);
-	    if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
-	      unsigned* elm_father = EmTemp->getfather();
-	      for(i=0;i<KEYLENGTH;i++)
-		brothers[3][i] = elm_father[i];
-	      opposite_brother_flag = 1;	    
-	    }
-	  }
+        if(neigh_proc[2] == myid) {
+          EmTemp = (Element*) El_Table->lookup(neighbor[6]);
+          if(*(EmTemp->get_neigh_gen()+3) == generation) {
+            for(i=0;i<KEYLENGTH;i++)
+              brothers[3][i] = *(EmTemp->get_neighbors()+3*KEYLENGTH+i);
+            opposite_brother_flag = 1;
+          }
+          else {
+            EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors()+7*KEYLENGTH);
+            if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
+              unsigned* elm_father = EmTemp->getfather();
+              for(i=0;i<KEYLENGTH;i++)
+                brothers[3][i] = elm_father[i];
+              opposite_brother_flag = 1;
+            }
+          }
+        }
+        else if(neigh_proc[3] == myid) {
+          EmTemp = (Element*) El_Table->lookup(neighbor[3]);
+          if(*(EmTemp->get_neigh_gen()+2) == generation) {
+            for(i=0;i<KEYLENGTH;i++)
+              brothers[3][i] = *(EmTemp->get_neighbors()+2*KEYLENGTH+i);
+            opposite_brother_flag = 1;
+          }
+          else {
+            EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors()+2*KEYLENGTH);
+            if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
+              unsigned* elm_father = EmTemp->getfather();
+              for(i=0;i<KEYLENGTH;i++)
+                brothers[3][i] = elm_father[i];
+              opposite_brother_flag = 1;	    
+            }
+          }
 
-	}
+        }
       }
       break;
     case 2:
       if(neigh_proc[0] != -1 && neigh_proc[3] != -1) {
-	if(neigh_proc[0] == myid) {
-	  EmTemp = (Element*) El_Table->lookup(neighbor[0]);
-	  if(*(EmTemp->get_neigh_gen()+3) == generation) {
-	    for(i=0;i<KEYLENGTH;i++)
-	      brothers[0][i] = *(EmTemp->get_neighbors()+3*KEYLENGTH+i);
-	    opposite_brother_flag = 1;
-	  }
-	  else {
-	    EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors()+3*KEYLENGTH);
-	    if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
-	      unsigned* elm_father = EmTemp->getfather();
-	      for(i=0;i<KEYLENGTH;i++)
-		brothers[0][i] = elm_father[i];
-	      opposite_brother_flag = 1;
-	    }
-	  }
-	}
-	else if(neigh_proc[3] == myid) {
-	  EmTemp = (Element*) El_Table->lookup(neighbor[3]);
-	  if(*(EmTemp->get_neigh_gen()) == generation) {
-	    for(i=0;i<KEYLENGTH;i++)
-	      brothers[0][i] = *(EmTemp->get_neighbors()+i);
-	    opposite_brother_flag = 1;
-	  }
-	  else {
-	    EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors());
-	    if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
-	      unsigned* elm_father = EmTemp->getfather();
-	      for(i=0;i<KEYLENGTH;i++)
-		brothers[0][i] = elm_father[i];
-	      opposite_brother_flag = 1;	    
-	    }
-	  }
+        if(neigh_proc[0] == myid) {
+          EmTemp = (Element*) El_Table->lookup(neighbor[0]);
+          if(*(EmTemp->get_neigh_gen()+3) == generation) {
+            for(i=0;i<KEYLENGTH;i++)
+              brothers[0][i] = *(EmTemp->get_neighbors()+3*KEYLENGTH+i);
+            opposite_brother_flag = 1;
+          }
+          else {
+            EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors()+3*KEYLENGTH);
+            if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
+              unsigned* elm_father = EmTemp->getfather();
+              for(i=0;i<KEYLENGTH;i++)
+                brothers[0][i] = elm_father[i];
+              opposite_brother_flag = 1;
+            }
+          }
+        }
+        else if(neigh_proc[3] == myid) {
+          EmTemp = (Element*) El_Table->lookup(neighbor[3]);
+          if(*(EmTemp->get_neigh_gen()) == generation) {
+            for(i=0;i<KEYLENGTH;i++)
+              brothers[0][i] = *(EmTemp->get_neighbors()+i);
+            opposite_brother_flag = 1;
+          }
+          else {
+            EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors());
+            if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
+              unsigned* elm_father = EmTemp->getfather();
+              for(i=0;i<KEYLENGTH;i++)
+                brothers[0][i] = elm_father[i];
+              opposite_brother_flag = 1;	    
+            }
+          }
 
-	}
+        }
       }
       break;
     case 3:
       if(neigh_proc[4] != -1 && neigh_proc[1] != -1) {
-	if(neigh_proc[4] == myid) {
-	  EmTemp = (Element*) El_Table->lookup(neighbor[4]);
-	  if(*(EmTemp->get_neigh_gen()+1) == generation) {
-	    for(i=0;i<KEYLENGTH;i++)
-	      brothers[1][i] = *(EmTemp->get_neighbors()+KEYLENGTH+i);
-	    opposite_brother_flag = 1;
-	  }
-	  else {
-	    EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors()+KEYLENGTH);
-	    if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
-	      unsigned* elm_father = EmTemp->getfather();
-	      for(i=0;i<KEYLENGTH;i++)
-		brothers[1][i] = elm_father[i];
-	      opposite_brother_flag = 1;
-	    }
-	  }
-	}
-	else if(neigh_proc[1] == myid) {
-	  EmTemp = (Element*) El_Table->lookup(neighbor[1]);
-	  if(*(EmTemp->get_neigh_gen()) == generation) {
-	    for(i=0;i<KEYLENGTH;i++)
-	      brothers[1][i] = *(EmTemp->get_neighbors()+i);
-	    opposite_brother_flag = 1;
-	  }
-	  else {
-	    EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors());
-	    if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
-	      unsigned* elm_father = EmTemp->getfather();
-	      for(i=0;i<KEYLENGTH;i++)
-		brothers[1][i] = elm_father[i];
-	      opposite_brother_flag = 1;	    
-	    }
-	  }	
-	}
+        if(neigh_proc[4] == myid) {
+          EmTemp = (Element*) El_Table->lookup(neighbor[4]);
+          if(*(EmTemp->get_neigh_gen()+1) == generation) {
+            for(i=0;i<KEYLENGTH;i++)
+              brothers[1][i] = *(EmTemp->get_neighbors()+KEYLENGTH+i);
+            opposite_brother_flag = 1;
+          }
+          else {
+            EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors()+KEYLENGTH);
+            if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
+              unsigned* elm_father = EmTemp->getfather();
+              for(i=0;i<KEYLENGTH;i++)
+                brothers[1][i] = elm_father[i];
+              opposite_brother_flag = 1;
+            }
+          }
+        }
+        else if(neigh_proc[1] == myid) {
+          EmTemp = (Element*) El_Table->lookup(neighbor[1]);
+          if(*(EmTemp->get_neigh_gen()) == generation) {
+            for(i=0;i<KEYLENGTH;i++)
+              brothers[1][i] = *(EmTemp->get_neighbors()+i);
+            opposite_brother_flag = 1;
+          }
+          else {
+            EmTemp = (Element*) El_Table->lookup(EmTemp->get_neighbors());
+            if(EmTemp != NULL && EmTemp->get_refined_flag() != GHOST && EmTemp->get_gen() == (generation+1)) {
+              unsigned* elm_father = EmTemp->getfather();
+              for(i=0;i<KEYLENGTH;i++)
+                brothers[1][i] = elm_father[i];
+              opposite_brother_flag = 1;	    
+            }
+          }	
+        }
       }
       break;
   }
@@ -3299,7 +3299,7 @@ void Element::find_opposite_brother(HashTable* El_Table)
    immediately after k_active/passive is calculated AND in init_piles.C when
    computing the initial "deposited" volume.
 
- */
+*/
 void Element::calc_stop_crit(MatProps *matprops_ptr) 
 {
 
@@ -3321,784 +3321,788 @@ int Element::if_phase_boundary(HashTable *ElemTable){
     for(int ineigh=0;ineigh<8;ineigh++)
       if(neigh_proc[ineigh]>=0) //don't check outside map boundary or duplicate neighbor
       {
-	ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
-	assert(ElemNeigh);
-	if(*(ElemNeigh->get_state_vars())<0.)
-	  return(1); //inside of phase contour line
+        ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
+        assert(ElemNeigh);
+        if(*(ElemNeigh->get_state_vars())<0.)
+          return(1); //inside of phase contour line
       }
   }else{
     for(int ineigh=0;ineigh<8;ineigh++)
       if(neigh_proc[ineigh]>=0) //don't check outside map boundary or duplicate neighbor
       {
-	ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
-	assert(ElemNeigh);
-	if(*(ElemNeigh->get_state_vars())>=0.)
-	  return(2); //inside of phase contour line
+        ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
+        assert(ElemNeigh);
+        if(*(ElemNeigh->get_state_vars())>=0.)
+          return(2); //inside of phase contour line
       }
   }
 
   return(0); //not on contour line
 }
-
-
 int Element::if_pile_boundary(HashTable *ElemTable, double contour_height){
-
-  int ineigh;
-  Element* ElemNeigh;
-  // if (!(state_vars[0]>=0)){//((state_vars[0]<0)||(isnan(state_vars[0])))  {
-  //   int i;
-  //   printf("ElemKey: %u      %u\n", *(this->pass_key()),*(this->pass_key()+1));
-  //   printf("state_vars: \n");
-  //   for (i=0; i<NUM_STATE_VARS; i++)
-  //     printf("%10.5e, ", state_vars[i]);
-  //   printf("\n");
-
-  //   printf("d_state_vars: \n");
-  //   for (i=0; i<2*NUM_STATE_VARS; i++)
-  //     {printf("%10.5e, ", d_state_vars[i]);if(i==NUM_STATE_VARS-1) printf("\n");}
-  //   printf("\n");
-
-  //   printf("prev_state_vars: \n");
-  //   for (i=0; i<NUM_STATE_VARS; i++)
-  //     printf("%10.5e, ", prev_state_vars[i]);
-  //   printf("\n");
-  // }
-
-  //assert(state_vars[1]>=0.0);
-  if(dabs(state_vars[0])<=contour_height)
-  {
-    for(ineigh=0;ineigh<8;ineigh++)
-      if(neigh_proc[ineigh]>=0) //don't check outside map boundary or duplicate neighbor
-      {
-        ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
-        if(ElemNeigh==NULL){
-          printf("ElemNeigh==NULL ineigh=%d\n mykey   ={%u,%u} myprocess =%d generation=%d refined=%d adapted=%d\n",
-              ineigh,key[0],key[1],myprocess,generation,refined,adapted);
-          printf(" neighbor={%u,%u} neigh_proc=%d neigh_gen =%d\n\n",
-              neighbor[ineigh][0],neighbor[ineigh][1],neigh_proc[ineigh],neigh_gen[ineigh]);
-          fflush(stdout);
-        }
-        assert(ElemNeigh);
-        if(dabs(*(ElemNeigh->get_state_vars()))>contour_height)
-          return(2); //inside of pileheight contour line
-      }
-  }
-  else
-  {
-    for(ineigh=0;ineigh<8;ineigh++)
-      if(neigh_proc[ineigh]>=0) //don't check outside map boundary or duplicate neighbor
-      {
-        ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
-        if(ElemNeigh==NULL){
-          printf("ElemNeigh==NULL\n mykey   ={%u,%u} myprocess =%d generation=%d refined=%d adapted=%d\n",
-              key[0],key[1],myprocess,generation,refined,adapted);
-          printf(" neighbor={%u,%u} neigh_proc=%d neigh_gen =%d\n ineigh=%d\n",
-              neighbor[ineigh][0],neighbor[ineigh][1],neigh_proc[ineigh],neigh_gen[ineigh],ineigh);
-          fflush(stdout);
-        }
-        assert(ElemNeigh);
-        if(dabs(*(ElemNeigh->get_state_vars()))<=contour_height)
-          return(1); //outside of pileheight contour line
-      }
-  } 
-
-  return(0); //not on pileheight contour line
+  if (dabs(state_vars[0])<1.0)
+    return 1;
+  return -1;
 }
 
-
-int Element::if_source_boundary(HashTable *ElemTable){
-
-  int ineigh;
-  Element* ElemNeigh;
-
-  if(!(Influx[1]>=0.0))
-  { 
-    printf("if_source_boundary() Influx[1]=%g\n",Influx[1]); fflush(stdout);
-  }
-  assert(Influx[1]>=0.0); //currently mass sinks are not allowed
-
-  if(Influx[1]>0.0){
-    for(ineigh=0;ineigh<8;ineigh++)
-      if(neigh_proc[ineigh]>=0){ //don't check outside map boundary or duplicate neighbor
-        ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
-        if(ElemNeigh==NULL)
-        {
-          printf("ElemNeigh==NULL\n mykey   ={%u,%u} myprocess =%d generation=%d refined=%d adapted=%d\n",
-              key[0],key[1],myprocess,generation,refined,adapted);
-          printf(" neighbor={%u,%u} neigh_proc=%d neigh_gen =%d\n\n",
-              neighbor[ineigh][0],neighbor[ineigh][1],neigh_proc[ineigh],neigh_gen[ineigh]);
-          fflush(stdout);
-        }
-        assert(ElemNeigh);
-        if(*(ElemNeigh->get_influx()+1)<=0.0)
-          return(2); //inside of line bounding area with a mass source 
-      }
-    //else if(neigh_proc[ineigh%4]==-1) return(2); //mass source on boundary of domain
-  }
-
-  else if(Influx[1]==0.0){
-    for(ineigh=0;ineigh<8;ineigh++)
-      if(neigh_proc[ineigh]>=0.0){ //don't check outside map boundary or duplicate neighbor
-        ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
-        if(ElemNeigh==NULL){
-          printf("ElemNeigh==NULL\n mykey   ={%u,%u} myprocess =%d generation=%d refined=%d adapted=%d\n",
-              key[0],key[1],myprocess,generation,refined,adapted);
-          printf(" neighbor={%u,%u} neigh_proc=%d neigh_gen =%d\n\n",
-              neighbor[ineigh][0],neighbor[ineigh][1],neigh_proc[ineigh],neigh_gen[ineigh]);
-          fflush(stdout);
-        }
-        assert(ElemNeigh);
-        assert(*(ElemNeigh->get_influx()+1)>=0.0);
-        if(*(ElemNeigh->get_influx()+1)!=0.0)
-          return(1); //outside of line bounding area with a mass source/sink 
-      }
-  }    
-  else if(Influx[1]<0.0){
-    for(ineigh=0;ineigh<8;ineigh++)
-      if(neigh_proc[ineigh]>=0.0){ //don't check outside map boundary or duplicate neighbor
-        ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
-        if(ElemNeigh==NULL){
-          printf("ElemNeigh==NULL\n mykey   ={%u,%u} myprocess =%d generation=%d refined=%d adapted=%d\n",
-              key[0],key[1],myprocess,generation,refined,adapted);
-          printf(" neighbor={%u,%u} neigh_proc=%d neigh_gen =%d\n\n",
-              neighbor[ineigh][0],neighbor[ineigh][1],neigh_proc[ineigh],neigh_gen[ineigh]);
-          fflush(stdout);
-        }
-        assert(ElemNeigh);
-        if(*(ElemNeigh->get_influx()+1)>=0.0)
-          return(-1); //inside of line bounding area with a mass sink 
-      }
-    //else if(neigh_proc[ineigh%4]==-1) return(-1); //mass sink on boundary of domain
-  } 
-
-  return(0); //not on line bounding area with mass source/sink
-}
-
-int Element::if_first_buffer_boundary(HashTable *ElemTable, double contour_height){
-
-  int ineigh;
-  Element* ElemNeigh;
-  int iffirstbuffer=0;
-
-  if(adapted<=0)
-    return(adapted-1);
-  // if (!(state_vars[0]>=0)){//((state_vars[0]<0)||(isnan(state_vars[0])))  {
-  //   int i;
-  //   printf("ElemKey: %u      %u\n", *(this->pass_key()),*(this->pass_key()+1));
-  //   printf("state_vars: \n");
-  //   for (i=0; i<NUM_STATE_VARS; i++)
-  //     printf("%10.5e, ", state_vars[i]);
-  //   printf("\n");
-
-  //   printf("d_state_vars: \n");
-  //   for (i=0; i<2*NUM_STATE_VARS; i++)
-  //     {printf("%10.5e, ", d_state_vars[i]);if(i==NUM_STATE_VARS-1) printf("\n");}
-  //   printf("\n");
-
-  //   printf("prev_state_vars: \n");
-  //   for (i=0; i<NUM_STATE_VARS; i++)
-  //     printf("%10.5e, ", prev_state_vars[i]);
-  //   printf("\n");
-  // }
+  //int Element::if_pile_boundary(HashTable *ElemTable, double contour_height){
+  //
+  //  int ineigh;
+  //  Element* ElemNeigh;
+  //  // if (!(state_vars[0]>=0)){//((state_vars[0]<0)||(isnan(state_vars[0])))  {
+  //  //   int i;
+  //  //   printf("ElemKey: %u      %u\n", *(this->pass_key()),*(this->pass_key()+1));
+  //  //   printf("state_vars: \n");
+  //  //   for (i=0; i<NUM_STATE_VARS; i++)
+  //  //     printf("%10.5e, ", state_vars[i]);
+  //  //   printf("\n");
+  //
+  //  //   printf("d_state_vars: \n");
+  //  //   for (i=0; i<2*NUM_STATE_VARS; i++)
+  //  //     {printf("%10.5e, ", d_state_vars[i]);if(i==NUM_STATE_VARS-1) printf("\n");}
+  //  //   printf("\n");
+  //
+  //  //   printf("prev_state_vars: \n");
+  //  //   for (i=0; i<NUM_STATE_VARS; i++)
+  //  //     printf("%10.5e, ", prev_state_vars[i]);
+  //  //   printf("\n");
+  //  // }
+  //
+  //  //assert(state_vars[1]>=0.0);
+  //  if(dabs(state_vars[0])<=contour_height)
+  //  {
+  //    for(ineigh=0;ineigh<8;ineigh++)
+  //      if(neigh_proc[ineigh]>=0) //don't check outside map boundary or duplicate neighbor
+  //      {
+  //        ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
+  //        if(ElemNeigh==NULL){
+  //          printf("ElemNeigh==NULL ineigh=%d\n mykey   ={%u,%u} myprocess =%d generation=%d refined=%d adapted=%d\n",
+  //              ineigh,key[0],key[1],myprocess,generation,refined,adapted);
+  //          printf(" neighbor={%u,%u} neigh_proc=%d neigh_gen =%d\n\n",
+  //              neighbor[ineigh][0],neighbor[ineigh][1],neigh_proc[ineigh],neigh_gen[ineigh]);
+  //          fflush(stdout);
+  //        }
+  //        assert(ElemNeigh);
+  //        if(dabs(*(ElemNeigh->get_state_vars()))>contour_height)
+  //          return(2); //inside of pileheight contour line
+  //      }
+  //  }
+  //  else
+  //  {
+  //    for(ineigh=0;ineigh<8;ineigh++)
+  //      if(neigh_proc[ineigh]>=0) //don't check outside map boundary or duplicate neighbor
+  //      {
+  //        ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
+  //        if(ElemNeigh==NULL){
+  //          printf("ElemNeigh==NULL\n mykey   ={%u,%u} myprocess =%d generation=%d refined=%d adapted=%d\n",
+  //              key[0],key[1],myprocess,generation,refined,adapted);
+  //          printf(" neighbor={%u,%u} neigh_proc=%d neigh_gen =%d\n ineigh=%d\n",
+  //              neighbor[ineigh][0],neighbor[ineigh][1],neigh_proc[ineigh],neigh_gen[ineigh],ineigh);
+  //          fflush(stdout);
+  //        }
+  //        assert(ElemNeigh);
+  //        if(dabs(*(ElemNeigh->get_state_vars()))<=contour_height)
+  //          return(1); //outside of pileheight contour line
+  //      }
+  //  } 
+  //
+  //  return(0); //not on pileheight contour line
+  //}
 
 
-  //assert(state_vars[1]>=0.0);
-  //assert(Influx[1]>=0.0);
-  if((dabs(state_vars[0])<contour_height)&&
-      (Influx[1]==0.0)){
-    for(ineigh=0;ineigh<8;ineigh++)
-      if(neigh_proc[ineigh]>=0){ //don't check outside map boundary or duplicate neighbor
-        ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
-        assert(ElemNeigh);
-        if((dabs(*(ElemNeigh->get_state_vars()))>=contour_height)||
-            (*(ElemNeigh->get_influx()+1)>0.0))
-        {
-          iffirstbuffer=1;
-          break;
-        }
-      }
-  }
-  else
-  {
-    for(ineigh=0;ineigh<8;ineigh++)
-      if(neigh_proc[ineigh]>=0) //don't check outside map boundary or duplicate neighbor
-      {
-        ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
-        assert(ElemNeigh);
-        if((dabs(*(ElemNeigh->get_state_vars()))<contour_height)&&
-            (*(ElemNeigh->get_influx()+1)==0.0))
-        {
-          iffirstbuffer=1;
-          break;
-        }
-      }
-  }
+  int Element::if_source_boundary(HashTable *ElemTable){
 
-  if(iffirstbuffer)
-  {
-    if((adapted>=NEWSON)||
-        (generation==REFINE_LEVEL))
-      return(2); //is a member of the buffer but doesn't need to be refined
-    else return(1); //needs to be refined and some of its sons will be members
-  }
+    int ineigh;
+    Element* ElemNeigh;
 
-  return(0);
-}
+    if(!(Influx[1]>=0.0))
+    { 
+      printf("if_source_boundary() Influx[1]=%g\n",Influx[1]); fflush(stdout);
+    }
+    assert(Influx[1]>=0.0); //currently mass sinks are not allowed
 
-int Element::if_next_buffer_boundary(HashTable *ElemTable, HashTable *NodeTable, double contour_height){
-
-  int ineigh;
-  Element* ElemNeigh;
-  int ifnextbuffer;
-  ifnextbuffer=0;
-  if(adapted<=0)
-    //GHOST element or element that should be deleted soon
-    return(adapted-1); 
-
-  if((adapted!=BUFFER) && //this element is not in the buffer
-      ((Influx[1]==0.0))) //&& //this element is OUTSIDE the buffer layer "circle"
-    for(ineigh=0;ineigh<8;ineigh++)
-      if(neigh_proc[ineigh]>=0) //don't check outside map boundary or duplicate neighbor
-      {
-        ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
-        if(!ElemNeigh)
-        {
-          printf("Elem={%10u,%10u} missing neighbor ineigh=%d {%10u,%10u}\n",
-              key[0],key[1],ineigh,neighbor[ineigh][0],neighbor[ineigh][1]);
-          ElemBackgroundCheck(ElemTable,NodeTable,key,stdout);
+    if(Influx[1]>0.0){
+      for(ineigh=0;ineigh<8;ineigh++)
+        if(neigh_proc[ineigh]>=0){ //don't check outside map boundary or duplicate neighbor
+          ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
+          if(ElemNeigh==NULL)
+          {
+            printf("ElemNeigh==NULL\n mykey   ={%u,%u} myprocess =%d generation=%d refined=%d adapted=%d\n",
+                key[0],key[1],myprocess,generation,refined,adapted);
+            printf(" neighbor={%u,%u} neigh_proc=%d neigh_gen =%d\n\n",
+                neighbor[ineigh][0],neighbor[ineigh][1],neigh_proc[ineigh],neigh_gen[ineigh]);
+            fflush(stdout);
+          }
           assert(ElemNeigh);
+          if(*(ElemNeigh->get_influx()+1)<=0.0)
+            return(2); //inside of line bounding area with a mass source 
         }
+      //else if(neigh_proc[ineigh%4]==-1) return(2); //mass source on boundary of domain
+    }
 
-        if((abs(ElemNeigh->get_adapted_flag())==BUFFER)&&
-            (state_vars[0]<=*(ElemNeigh->get_state_vars())))//for levelset >=
-        { //this element is next to a member of the old buffer layer
-          ifnextbuffer=1; //which means this element is a member of the next outer boundary of the buffer layer
-          break;
+    else if(Influx[1]==0.0){
+      for(ineigh=0;ineigh<8;ineigh++)
+        if(neigh_proc[ineigh]>=0.0){ //don't check outside map boundary or duplicate neighbor
+          ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
+          if(ElemNeigh==NULL){
+            printf("ElemNeigh==NULL\n mykey   ={%u,%u} myprocess =%d generation=%d refined=%d adapted=%d\n",
+                key[0],key[1],myprocess,generation,refined,adapted);
+            printf(" neighbor={%u,%u} neigh_proc=%d neigh_gen =%d\n\n",
+                neighbor[ineigh][0],neighbor[ineigh][1],neigh_proc[ineigh],neigh_gen[ineigh]);
+            fflush(stdout);
+          }
+          assert(ElemNeigh);
+          assert(*(ElemNeigh->get_influx()+1)>=0.0);
+          if(*(ElemNeigh->get_influx()+1)!=0.0)
+            return(1); //outside of line bounding area with a mass source/sink 
         }
-      }
+    }    
+    else if(Influx[1]<0.0){
+      for(ineigh=0;ineigh<8;ineigh++)
+        if(neigh_proc[ineigh]>=0.0){ //don't check outside map boundary or duplicate neighbor
+          ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
+          if(ElemNeigh==NULL){
+            printf("ElemNeigh==NULL\n mykey   ={%u,%u} myprocess =%d generation=%d refined=%d adapted=%d\n",
+                key[0],key[1],myprocess,generation,refined,adapted);
+            printf(" neighbor={%u,%u} neigh_proc=%d neigh_gen =%d\n\n",
+                neighbor[ineigh][0],neighbor[ineigh][1],neigh_proc[ineigh],neigh_gen[ineigh]);
+            fflush(stdout);
+          }
+          assert(ElemNeigh);
+          if(*(ElemNeigh->get_influx()+1)>=0.0)
+            return(-1); //inside of line bounding area with a mass sink 
+        }
+      //else if(neigh_proc[ineigh%4]==-1) return(-1); //mass sink on boundary of domain
+    } 
 
-  if(ifnextbuffer==1)
-  {
-    if((adapted>=NEWSON)||
-        (generation==REFINE_LEVEL))
-      return(2); //is a member of the buffer but doesn't need to be refined
-    else return(1); //needs to be refined and some of its sons will be members
+    return(0); //not on line bounding area with mass source/sink
   }
 
-  return(0);
-}
-void Element::save_elem(FILE* fp, FILE *fptxt) {
+  int Element::if_first_buffer_boundary(HashTable *ElemTable, double contour_height){
 
-  FourBytes  temp4;
-  EightBytes temp8;
-  unsigned writespace[138];
+    int ineigh;
+    Element* ElemNeigh;
+    int iffirstbuffer=0;
 
-  int Itemp=0, itemp, jtemp;
-  for(itemp=0;itemp<2;itemp++) {
-    temp4.i=elm_loc[itemp];
-    writespace[Itemp++]=temp4.u; } 
-    assert(Itemp==2);
+    if(adapted<=0)
+      return(adapted-1);
+    // if (!(state_vars[0]>=0)){//((state_vars[0]<0)||(isnan(state_vars[0])))  {
+    //   int i;
+    //   printf("ElemKey: %u      %u\n", *(this->pass_key()),*(this->pass_key()+1));
+    //   printf("state_vars: \n");
+    //   for (i=0; i<NUM_STATE_VARS; i++)
+    //     printf("%10.5e, ", state_vars[i]);
+    //   printf("\n");
+
+    //   printf("d_state_vars: \n");
+    //   for (i=0; i<2*NUM_STATE_VARS; i++)
+    //     {printf("%10.5e, ", d_state_vars[i]);if(i==NUM_STATE_VARS-1) printf("\n");}
+    //   printf("\n");
+
+    //   printf("prev_state_vars: \n");
+    //   for (i=0; i<NUM_STATE_VARS; i++)
+    //     printf("%10.5e, ", prev_state_vars[i]);
+    //   printf("\n");
+    // }
+
+
+    //assert(state_vars[1]>=0.0);
+    //assert(Influx[1]>=0.0);
+    if((dabs(state_vars[0])<contour_height)&&
+        (Influx[1]==0.0)){
+      for(ineigh=0;ineigh<8;ineigh++)
+        if(neigh_proc[ineigh]>=0){ //don't check outside map boundary or duplicate neighbor
+          ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
+          assert(ElemNeigh);
+          if((dabs(*(ElemNeigh->get_state_vars()))>=contour_height)||
+              (*(ElemNeigh->get_influx()+1)>0.0))
+          {
+            iffirstbuffer=1;
+            break;
+          }
+        }
+    }
+    else
+    {
+      for(ineigh=0;ineigh<8;ineigh++)
+        if(neigh_proc[ineigh]>=0) //don't check outside map boundary or duplicate neighbor
+        {
+          ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
+          assert(ElemNeigh);
+          if((dabs(*(ElemNeigh->get_state_vars()))<contour_height)&&
+              (*(ElemNeigh->get_influx()+1)==0.0))
+          {
+            iffirstbuffer=1;
+            break;
+          }
+        }
+    }
+
+    if(iffirstbuffer)
+    {
+      if((adapted>=NEWSON)||
+          (generation==REFINE_LEVEL))
+        return(2); //is a member of the buffer but doesn't need to be refined
+      else return(1); //needs to be refined and some of its sons will be members
+    }
+
+    return(0);
+  }
+
+  int Element::if_next_buffer_boundary(HashTable *ElemTable, HashTable *NodeTable, double contour_height){
+
+    int ineigh;
+    Element* ElemNeigh;
+    int ifnextbuffer;
+    ifnextbuffer=0;
+    if(adapted<=0)
+      //GHOST element or element that should be deleted soon
+      return(adapted-1); 
+
+    if((adapted!=BUFFER) && //this element is not in the buffer
+        ((Influx[1]==0.0))) //&& //this element is OUTSIDE the buffer layer "circle"
+      for(ineigh=0;ineigh<8;ineigh++)
+        if(neigh_proc[ineigh]>=0) //don't check outside map boundary or duplicate neighbor
+        {
+          ElemNeigh=(Element*) ElemTable->lookup(neighbor[ineigh]);
+          if(!ElemNeigh)
+          {
+            printf("Elem={%10u,%10u} missing neighbor ineigh=%d {%10u,%10u}\n",
+                key[0],key[1],ineigh,neighbor[ineigh][0],neighbor[ineigh][1]);
+            ElemBackgroundCheck(ElemTable,NodeTable,key,stdout);
+            assert(ElemNeigh);
+          }
+
+          if((abs(ElemNeigh->get_adapted_flag())==BUFFER)&&
+              (state_vars[0]<=*(ElemNeigh->get_state_vars())))//for levelset >=
+          { //this element is next to a member of the old buffer layer
+            ifnextbuffer=1; //which means this element is a member of the next outer boundary of the buffer layer
+            break;
+          }
+        }
+
+    if(ifnextbuffer==1)
+    {
+      if((adapted>=NEWSON)||
+          (generation==REFINE_LEVEL))
+        return(2); //is a member of the buffer but doesn't need to be refined
+      else return(1); //needs to be refined and some of its sons will be members
+    }
+
+    return(0);
+  }
+  void Element::save_elem(FILE* fp, FILE *fptxt) {
+
+    FourBytes  temp4;
+    EightBytes temp8;
+    unsigned writespace[138];
+
+    int Itemp=0, itemp, jtemp;
+    for(itemp=0;itemp<2;itemp++) {
+      temp4.i=elm_loc[itemp];
+      writespace[Itemp++]=temp4.u; } 
+      assert(Itemp==2);
 
 
 #ifdef DEBUG_SAVE_ELEM
-    //FILE *fpdb=fopen("save_elem.debug","w");
-    FILE *fpdb=fptxt;
-    fprintf(fpdb,"\n\nelm_loc=%d %d\n",elm_loc[0],elm_loc[1]); 
+      //FILE *fpdb=fopen("save_elem.debug","w");
+      FILE *fpdb=fptxt;
+      fprintf(fpdb,"\n\nelm_loc=%d %d\n",elm_loc[0],elm_loc[1]); 
 #endif
 
-    temp4.i=generation;
-    writespace[Itemp++]=temp4.u; 
-    assert(Itemp==3);
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"generation=%d\n",generation);
-#endif
-
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"order={ ");
-#endif
-    for(itemp=0;itemp<5;itemp++) {
-      temp4.i=order[itemp];
+      temp4.i=generation;
       writespace[Itemp++]=temp4.u; 
+      assert(Itemp==3);
 #ifdef DEBUG_SAVE_ELEM
-      fprintf(fpdb,"%d ",order[itemp]);
-#endif
-    } 
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"}\n");
-#endif
-    assert(Itemp==8);
-
-    temp4.i=opposite_brother_flag;
-    writespace[Itemp++]=temp4.u; 
-    assert(Itemp==9);
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"opposite_brother_flag=%d\n",opposite_brother_flag);
-#endif
-
-    temp4.i=new_old;
-    writespace[Itemp++]=temp4.u; 
-    assert(Itemp==10);
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"new_old=%d\n",new_old);
-#endif
-
-    temp4.i=material;
-    writespace[Itemp++]=temp4.u; 
-    assert(Itemp==11);
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"material=%d\n",material);
-#endif
-
-
-    temp4.i=ndof;
-    writespace[Itemp++]=temp4.u; 
-    assert(Itemp==12);
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"ndof=%d\n",ndof);
-#endif
-
-    temp4.i=refined;
-    writespace[Itemp++]=temp4.u; 
-    assert(Itemp==13);
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"refined=%d\n",refined);
-#endif
-
-    temp4.i=adapted;
-    writespace[Itemp++]=temp4.u; 
-    assert(Itemp==14);
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"adapted=%d\n",adapted);
-#endif
-
-    temp8.d=lb_weight;
-    writespace[Itemp++]=temp8.u[0]; 
-    writespace[Itemp++]=temp8.u[1]; 
-    assert(Itemp==16);
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"lb_weight=%g\n",lb_weight);
-#endif
-
-    for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
-      writespace[Itemp++]=lb_key[jtemp]; } 
-    assert(Itemp==18);
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"lb_key=%u %u\n",lb_key[0],lb_key[1]);
+      fprintf(fpdb,"generation=%d\n",generation);
 #endif
 
 #ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"neigh_proc={ ");
+      fprintf(fpdb,"order={ ");
 #endif
-    for(itemp=0;itemp<8;itemp++) {
-      temp4.i=neigh_proc[itemp];
-      writespace[Itemp++]=temp4.u; 
+      for(itemp=0;itemp<5;itemp++) {
+        temp4.i=order[itemp];
+        writespace[Itemp++]=temp4.u; 
 #ifdef DEBUG_SAVE_ELEM
-      fprintf(fpdb,"%d ",neigh_proc[itemp]);
+        fprintf(fpdb,"%d ",order[itemp]);
 #endif
-    } 
-    assert(Itemp==26);
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"}\nneigh_gen={ ");
-#endif
-    for(itemp=0;itemp<8;itemp++) {
-      temp4.i=neigh_gen[itemp];
-      writespace[Itemp++]=temp4.u;
-#ifdef DEBUG_SAVE_ELEM
-      fprintf(fpdb,"%d ",neigh_gen[itemp]);
-#endif 
-    } 
-    assert(Itemp==34);
-
-    for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
-      writespace[Itemp++]=key[jtemp]; } 
-    assert(Itemp==36);
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"}\nkey=%u %u\nnode_key={ ",key[0],key[1]);
-#endif  
-
-    for(itemp=0;itemp<8;itemp++) {
-      for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
-	writespace[Itemp++]=node_key[itemp][jtemp];
       } 
 #ifdef DEBUG_SAVE_ELEM
-      fprintf(fpdb,"(%u %u) ",node_key[itemp][0],node_key[itemp][1]);
-#endif 
-    }
-    assert(Itemp==52);
-
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"}\nneighbor={ ");
-#endif 
-    for(itemp=0;itemp<8;itemp++) {
-      for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
-	writespace[Itemp++]=neighbor[itemp][jtemp]; } 
-#ifdef DEBUG_SAVE_ELEM
-      fprintf(fpdb,"(%u %u) ",neighbor[itemp][0],neighbor[itemp][1]);
-#endif 
-    }
-    assert(Itemp==68);
-
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"}\nbrothers={ ");
-#endif 
-    for(itemp=0;itemp<4;itemp++) {
-      for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
-	writespace[Itemp++]=brothers[itemp][jtemp]; } 
-#ifdef DEBUG_SAVE_ELEM
-      fprintf(fpdb,"(%u %u) ",brothers[itemp][0],brothers[itemp][1]);
-#endif 
-    }
-    assert(Itemp==76);
-
-#ifdef DEBUG_SAVE_ELEM
-    fprintf(fpdb,"}\nson={ ");
-#endif 
-    for(itemp=0;itemp<4;itemp++) {
-      for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
-	writespace[Itemp++]=son[itemp][jtemp]; } 
-#ifdef DEBUG_SAVE_ELEM
-      fprintf(fpdb,"(%u %u) ",son[itemp][0],son[itemp][1]);
-#endif 
-    }
-    assert(Itemp==84);
-
-    for(itemp=0;itemp<NUM_STATE_VARS;itemp++) {
-      temp8.d=state_vars[itemp];
-      writespace[Itemp++]=temp8.u[0];
-      writespace[Itemp++]=temp8.u[1]; } 
-      assert(Itemp==96);
-
-      //don't need prev_state_vars or d_state_vars do need shortspeed
-      temp8.d=shortspeed;
-      writespace[Itemp++]=temp8.u[0];
-      writespace[Itemp++]=temp8.u[1]; 
-      assert(Itemp==98);
-
-#ifdef DEBUG_SAVE_ELEM
-      fprintf(fpdb,"}\nstate_vars={ %g %g %g }\nshortspeed=%g\n",
-	  state_vars[0],state_vars[1],state_vars[2],shortspeed);
-#endif 
-      temp8.i[0]=iwetnode;
-      writespace[Itemp++]=temp8.u[0];
-      assert(Itemp==99);
-
-      temp8.d=Awet;
-      writespace[Itemp++]=temp8.u[0];
-      writespace[Itemp++]=temp8.u[1];
-      assert(Itemp==101);
-
-      temp8.d=Swet;
-      writespace[Itemp++]=temp8.u[0];
-      writespace[Itemp++]=temp8.u[1];
-      assert(Itemp==103);
-
-      temp8.d=drypoint[0];
-      writespace[Itemp++]=temp8.u[0];
-      writespace[Itemp++]=temp8.u[1];
-      assert(Itemp==105);
-
-      temp8.d=drypoint[1];
-      writespace[Itemp++]=temp8.u[0];
-      writespace[Itemp++]=temp8.u[1];
-      assert(Itemp==107);
-
-      //boundary conditions start here
-      if(bcptr==NULL) {
-	writespace[Itemp++]=0;
-	assert(Itemp==108);
-#ifdef DEBUG_SAVE_ELEM
-	fprintf(fpdb,"num_extra=0\n");
+      fprintf(fpdb,"}\n");
 #endif
-      }
-      else {
-	writespace[Itemp++]=20;
-#ifdef DEBUG_SAVE_ELEM
-	fprintf(fpdb,"num_extra=20\nbcptr->type={ ");
-#endif
-	for(itemp=0;itemp<4;itemp++) {
-	  temp4.i=bcptr->type[itemp];
-	  writespace[Itemp++]=temp4.u; 
-#ifdef DEBUG_SAVE_ELEM
-	  fprintf(fpdb,"%d ",bcptr->type[itemp]);
-#endif
-	}
-	//assert(Itemp==122);
-	assert(Itemp==112);
-#ifdef DEBUG_SAVE_ELEM
-	fprintf(fpdb,"}\n");
-#endif
-	for(itemp=0;itemp<4;itemp++) {
-	  temp4.f=bcptr->value[itemp][0][0];
-	  writespace[Itemp++]=temp4.u; 
-	  temp4.f=bcptr->value[itemp][0][1];
-	  writespace[Itemp++]=temp4.u; 
-	  temp4.f=bcptr->value[itemp][1][0];
-	  writespace[Itemp++]=temp4.u; 
-	  temp4.f=bcptr->value[itemp][1][1];
-	  writespace[Itemp++]=temp4.u; 
-#ifdef DEBUG_SAVE_ELEM
-	  fprintf(fpdb,"bcptr->value={ %f %f %f %f }\n",
-	      bcptr->value[itemp][0][0],bcptr->value[itemp][0][1],
-	      bcptr->value[itemp][1][0],bcptr->value[itemp][1][1]);
-#endif      
-	}
-	assert(Itemp==128);
-      }
-#ifdef DEBUG_SAVE_ELEM
-      //fclose(fpdb);
-#endif
-
-      fwrite(writespace,sizeof(unsigned),Itemp,fp);
-
-      return;
-}
-
-Element::Element(FILE* fp, HashTable* NodeTable, MatProps* matprops_ptr, 
-    int myid) {
-  counted=0; //for debugging only
-
-  for(int ikey=0;ikey<KEYLENGTH;ikey++)
-    father[ikey]=
-      brothers[0][ikey]=
-      brothers[1][ikey]=
-      brothers[2][ikey]=
-      brothers[3][ikey]=
-      son[0][ikey]=
-      son[1][ikey]=
-      son[2][ikey]=
-      son[3][ikey]=0;
-
-  for (int i=0; i<NUM_STATE_VARS; i++)
-    Influx[i]=0.0;
-  myprocess=myid;
-  no_of_eqns=EQUATIONS;
-  //refined=0;
-
-  FourBytes  temp4;
-  EightBytes temp8;
-  unsigned readspace[102];
-
-  fread(readspace,sizeof(unsigned),102,fp);
-
-  //read the element here
-  int Itemp=0, itemp, jtemp;
-  for(itemp=0;itemp<2;itemp++) {
-    temp4.u=readspace[Itemp++];
-    elm_loc[itemp]=temp4.i; } 
-    assert(Itemp==2);
-
-    temp4.u=readspace[Itemp++];
-    generation=temp4.i; 
-    assert(Itemp==3);
-
-    for(itemp=0;itemp<5;itemp++) {    
-      temp4.u=readspace[Itemp++];
-      order[itemp]=temp4.i; } 
       assert(Itemp==8);
 
-      temp4.u=readspace[Itemp++];
-      opposite_brother_flag=temp4.i;
+      temp4.i=opposite_brother_flag;
+      writespace[Itemp++]=temp4.u; 
       assert(Itemp==9);
+#ifdef DEBUG_SAVE_ELEM
+      fprintf(fpdb,"opposite_brother_flag=%d\n",opposite_brother_flag);
+#endif
 
-      temp4.u=readspace[Itemp++];
-      new_old=temp4.i;
+      temp4.i=new_old;
+      writespace[Itemp++]=temp4.u; 
       assert(Itemp==10);
+#ifdef DEBUG_SAVE_ELEM
+      fprintf(fpdb,"new_old=%d\n",new_old);
+#endif
 
-      temp4.u=readspace[Itemp++];
-      material=temp4.i;
+      temp4.i=material;
+      writespace[Itemp++]=temp4.u; 
       assert(Itemp==11);
+#ifdef DEBUG_SAVE_ELEM
+      fprintf(fpdb,"material=%d\n",material);
+#endif
 
-      temp4.u=readspace[Itemp++];
-      ndof=temp4.i;
+
+      temp4.i=ndof;
+      writespace[Itemp++]=temp4.u; 
       assert(Itemp==12);
+#ifdef DEBUG_SAVE_ELEM
+      fprintf(fpdb,"ndof=%d\n",ndof);
+#endif
 
-      temp4.u=readspace[Itemp++];
-      refined=temp4.i;
+      temp4.i=refined;
+      writespace[Itemp++]=temp4.u; 
       assert(Itemp==13);
+#ifdef DEBUG_SAVE_ELEM
+      fprintf(fpdb,"refined=%d\n",refined);
+#endif
 
-      temp4.u=readspace[Itemp++];
-      adapted=temp4.i;
+      temp4.i=adapted;
+      writespace[Itemp++]=temp4.u; 
       assert(Itemp==14);
+#ifdef DEBUG_SAVE_ELEM
+      fprintf(fpdb,"adapted=%d\n",adapted);
+#endif
 
-      temp8.u[0]=readspace[Itemp++];
-      temp8.u[1]=readspace[Itemp++];
-      lb_weight=temp8.d;
+      temp8.d=lb_weight;
+      writespace[Itemp++]=temp8.u[0]; 
+      writespace[Itemp++]=temp8.u[1]; 
       assert(Itemp==16);
+#ifdef DEBUG_SAVE_ELEM
+      fprintf(fpdb,"lb_weight=%g\n",lb_weight);
+#endif
 
       for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
-	lb_key[jtemp]=readspace[Itemp++]; } 
-      assert(Itemp==18); 
+        writespace[Itemp++]=lb_key[jtemp]; } 
+      assert(Itemp==18);
+#ifdef DEBUG_SAVE_ELEM
+      fprintf(fpdb,"lb_key=%u %u\n",lb_key[0],lb_key[1]);
+#endif
+
+#ifdef DEBUG_SAVE_ELEM
+      fprintf(fpdb,"neigh_proc={ ");
+#endif
+      for(itemp=0;itemp<8;itemp++) {
+        temp4.i=neigh_proc[itemp];
+        writespace[Itemp++]=temp4.u; 
+#ifdef DEBUG_SAVE_ELEM
+        fprintf(fpdb,"%d ",neigh_proc[itemp]);
+#endif
+      } 
+      assert(Itemp==26);
+#ifdef DEBUG_SAVE_ELEM
+      fprintf(fpdb,"}\nneigh_gen={ ");
+#endif
+      for(itemp=0;itemp<8;itemp++) {
+        temp4.i=neigh_gen[itemp];
+        writespace[Itemp++]=temp4.u;
+#ifdef DEBUG_SAVE_ELEM
+        fprintf(fpdb,"%d ",neigh_gen[itemp]);
+#endif 
+      } 
+      assert(Itemp==34);
+
+      for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
+        writespace[Itemp++]=key[jtemp]; } 
+      assert(Itemp==36);
+#ifdef DEBUG_SAVE_ELEM
+      fprintf(fpdb,"}\nkey=%u %u\nnode_key={ ",key[0],key[1]);
+#endif  
 
       for(itemp=0;itemp<8;itemp++) {
-	temp4.u=readspace[Itemp++];
-	neigh_proc[itemp]=temp4.i; } 
-	assert(Itemp==26);
+        for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
+          writespace[Itemp++]=node_key[itemp][jtemp];
+        } 
+#ifdef DEBUG_SAVE_ELEM
+        fprintf(fpdb,"(%u %u) ",node_key[itemp][0],node_key[itemp][1]);
+#endif 
+      }
+      assert(Itemp==52);
 
-	for(itemp=0;itemp<8;itemp++) {
-	  temp4.u=readspace[Itemp++];
-	  neigh_gen[itemp]=temp4.i; }
-	  assert(Itemp==34);
+#ifdef DEBUG_SAVE_ELEM
+      fprintf(fpdb,"}\nneighbor={ ");
+#endif 
+      for(itemp=0;itemp<8;itemp++) {
+        for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
+          writespace[Itemp++]=neighbor[itemp][jtemp]; } 
+#ifdef DEBUG_SAVE_ELEM
+        fprintf(fpdb,"(%u %u) ",neighbor[itemp][0],neighbor[itemp][1]);
+#endif 
+      }
+      assert(Itemp==68);
 
-	  for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
-	    key[jtemp]=readspace[Itemp++]; } 
-	  assert(Itemp==36);
+#ifdef DEBUG_SAVE_ELEM
+      fprintf(fpdb,"}\nbrothers={ ");
+#endif 
+      for(itemp=0;itemp<4;itemp++) {
+        for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
+          writespace[Itemp++]=brothers[itemp][jtemp]; } 
+#ifdef DEBUG_SAVE_ELEM
+        fprintf(fpdb,"(%u %u) ",brothers[itemp][0],brothers[itemp][1]);
+#endif 
+      }
+      assert(Itemp==76);
 
-	  for(itemp=0;itemp<8;itemp++) 
-	    for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
-	      node_key[itemp][jtemp]=readspace[Itemp++]; } 
-	  assert(Itemp==52);
+#ifdef DEBUG_SAVE_ELEM
+      fprintf(fpdb,"}\nson={ ");
+#endif 
+      for(itemp=0;itemp<4;itemp++) {
+        for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
+          writespace[Itemp++]=son[itemp][jtemp]; } 
+#ifdef DEBUG_SAVE_ELEM
+        fprintf(fpdb,"(%u %u) ",son[itemp][0],son[itemp][1]);
+#endif 
+      }
+      assert(Itemp==84);
 
-	  for(itemp=0;itemp<8;itemp++) 
-	    for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
-	      neighbor[itemp][jtemp]=readspace[Itemp++]; } 
-	  assert(Itemp==68);
+      for(itemp=0;itemp<NUM_STATE_VARS;itemp++) {
+        temp8.d=state_vars[itemp];
+        writespace[Itemp++]=temp8.u[0];
+        writespace[Itemp++]=temp8.u[1]; } 
+        assert(Itemp==96);
 
-	  for(itemp=0;itemp<4;itemp++) 
-	    for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
-	      brothers[itemp][jtemp]=readspace[Itemp++]; } 
-	  assert(Itemp==76);
+        //don't need prev_state_vars or d_state_vars do need shortspeed
+        temp8.d=shortspeed;
+        writespace[Itemp++]=temp8.u[0];
+        writespace[Itemp++]=temp8.u[1]; 
+        assert(Itemp==98);
 
-	  for(itemp=0;itemp<4;itemp++) 
-	    for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
-	      son[itemp][jtemp]=readspace[Itemp++]; } 
-	  assert(Itemp==84);
+#ifdef DEBUG_SAVE_ELEM
+        fprintf(fpdb,"}\nstate_vars={ %g %g %g }\nshortspeed=%g\n",
+            state_vars[0],state_vars[1],state_vars[2],shortspeed);
+#endif 
+        temp8.i[0]=iwetnode;
+        writespace[Itemp++]=temp8.u[0];
+        assert(Itemp==99);
 
-	  for(itemp=0;itemp<NUM_STATE_VARS;itemp++) {
-	    temp8.u[0]=readspace[Itemp++];
-	    temp8.u[1]=readspace[Itemp++];
-	    state_vars[itemp]=temp8.d; }
-	    assert(Itemp==90);
+        temp8.d=Awet;
+        writespace[Itemp++]=temp8.u[0];
+        writespace[Itemp++]=temp8.u[1];
+        assert(Itemp==101);
 
-	    //don't need prev_state_vars or d_state_vars do need shortspeed
-	    temp8.u[0]=readspace[Itemp++];
-	    temp8.u[1]=readspace[Itemp++];
-	    shortspeed=temp8.d;
-	    assert(Itemp==92);
+        temp8.d=Swet;
+        writespace[Itemp++]=temp8.u[0];
+        writespace[Itemp++]=temp8.u[1];
+        assert(Itemp==103);
 
-	    for (int i=0; i<NUM_STATE_VARS; i++)
-	    {
-	      prev_state_vars[i]=0.;
-	      d_state_vars[i]=0.;
-	      d_state_vars[NUM_STATE_VARS+i]=0.;
-	    }
+        temp8.d=drypoint[0];
+        writespace[Itemp++]=temp8.u[0];
+        writespace[Itemp++]=temp8.u[1];
+        assert(Itemp==105);
 
-	    temp8.u[0]=readspace[Itemp++];
-	    iwetnode=temp8.i[0];
-	    assert(Itemp==93);
+        temp8.d=drypoint[1];
+        writespace[Itemp++]=temp8.u[0];
+        writespace[Itemp++]=temp8.u[1];
+        assert(Itemp==107);
 
-	    temp8.u[0]=readspace[Itemp++];
-	    temp8.u[1]=readspace[Itemp++];
-	    Awet=temp8.d;
-	    assert(Itemp==95);
+        //boundary conditions start here
+        if(bcptr==NULL) {
+          writespace[Itemp++]=0;
+          assert(Itemp==108);
+#ifdef DEBUG_SAVE_ELEM
+          fprintf(fpdb,"num_extra=0\n");
+#endif
+        }
+        else {
+          writespace[Itemp++]=20;
+#ifdef DEBUG_SAVE_ELEM
+          fprintf(fpdb,"num_extra=20\nbcptr->type={ ");
+#endif
+          for(itemp=0;itemp<4;itemp++) {
+            temp4.i=bcptr->type[itemp];
+            writespace[Itemp++]=temp4.u; 
+#ifdef DEBUG_SAVE_ELEM
+            fprintf(fpdb,"%d ",bcptr->type[itemp]);
+#endif
+          }
+          //assert(Itemp==122);
+          assert(Itemp==112);
+#ifdef DEBUG_SAVE_ELEM
+          fprintf(fpdb,"}\n");
+#endif
+          for(itemp=0;itemp<4;itemp++) {
+            temp4.f=bcptr->value[itemp][0][0];
+            writespace[Itemp++]=temp4.u; 
+            temp4.f=bcptr->value[itemp][0][1];
+            writespace[Itemp++]=temp4.u; 
+            temp4.f=bcptr->value[itemp][1][0];
+            writespace[Itemp++]=temp4.u; 
+            temp4.f=bcptr->value[itemp][1][1];
+            writespace[Itemp++]=temp4.u; 
+#ifdef DEBUG_SAVE_ELEM
+            fprintf(fpdb,"bcptr->value={ %f %f %f %f }\n",
+                bcptr->value[itemp][0][0],bcptr->value[itemp][0][1],
+                bcptr->value[itemp][1][0],bcptr->value[itemp][1][1]);
+#endif      
+          }
+          assert(Itemp==128);
+        }
+#ifdef DEBUG_SAVE_ELEM
+        //fclose(fpdb);
+#endif
 
-	    temp8.u[0]=readspace[Itemp++];
-	    temp8.u[1]=readspace[Itemp++];
-	    Swet=temp8.d;
-	    assert(Itemp==97);
+        fwrite(writespace,sizeof(unsigned),Itemp,fp);
 
-	    temp8.u[0]=readspace[Itemp++];
-	    temp8.u[1]=readspace[Itemp++];
-	    drypoint[0]=temp8.d;
-	    assert(Itemp==99);
-
-	    temp8.u[0]=readspace[Itemp++];
-	    temp8.u[1]=readspace[Itemp++];
-	    drypoint[1]=temp8.d;
-	    assert(Itemp==101);
-
-	    if(readspace[Itemp]>0) {
-	      int num_extra=readspace[Itemp];
-	      fread(readspace,sizeof(unsigned),num_extra,fp);
-	      Itemp=0;
-
-	      bcptr=new BC;
-
-	      //boundary conditions start here
-	      for(itemp=0;itemp<4;itemp++) {
-		temp4.u=readspace[Itemp++];
-		bcptr->type[itemp]=temp4.i; }
-		assert(Itemp==4);
-
-		for(itemp=0;itemp<4;itemp++) {
-		  temp4.u=readspace[Itemp++];
-		  bcptr->value[itemp][0][0]=temp4.f;
-
-		  temp4.u=readspace[Itemp++];
-		  bcptr->value[itemp][0][1]=temp4.f;
-
-		  temp4.u=readspace[Itemp++];
-		  bcptr->value[itemp][1][0]=temp4.f;
-
-		  temp4.u=readspace[Itemp++];
-		  bcptr->value[itemp][1][1]=temp4.f;
-		}
-		assert(Itemp==20);
-	    }
-	    else bcptr=NULL;
-
-	    find_positive_x_side(NodeTable);
-	    calculate_dx(NodeTable);
-	    calc_topo_data(matprops_ptr);
-	    calc_gravity_vector(matprops_ptr);
-	    calc_which_son();
-	    return;
-}
-
-/* //for debugging purposes only, had to trick ddd into working right
-   int Element::get_adapted_flag() {return adapted;} 
-
-   void Element::put_adapted_flag(int new_adapted_status) {adapted = new_adapted_status;}
- */
-
-//#define DEBUGLIST
-#ifdef DEBUGLIST
-ElemPtrList::ElemPtrList(){
-  init(1024);
-  return;
-}
-
-//! this constructor allocates space for user specified initial-size, the size_increment equals the initial size.
-ElemPtrList::ElemPtrList(int initial_size){
-  if(initial_size==0) initial_size=1024;
-  init(initial_size);
-  return;
-}
-
-//! the destructor frees the list space so the programmer never has to worry about it
-ElemPtrList:: ~ElemPtrList(){
-  //printf("list_space=%d, num_elem=%d, inewstart=%d\n",list_space,num_elem,inewstart);
-  free(list);
-  return;
-}
-
-//! add an element pointer to the list, it will increase the size of the list by the size_increment if necessary, the size_increment is the initial size.
-void ElemPtrList::add(Element* EmTemp){
-  if(num_elem==list_space-1){
-    list_space+=size_increment;
-    list=(Element**) realloc(list,list_space*sizeof(Element *));
+        return;
   }
 
-  list[num_elem]=EmTemp;
-  num_elem++;
-  return;
-}
+  Element::Element(FILE* fp, HashTable* NodeTable, MatProps* matprops_ptr, 
+      int myid) {
+    counted=0; //for debugging only
 
-void ElemPtrList::init(int initial_size){
-  list_space=size_increment=initial_size;    
-  num_elem=inewstart=0;
-  list=(Element **) malloc(list_space*sizeof(Element*));
-  for(int i=0;i<list_space;i++) list[i]=NULL;
-}
+    for(int ikey=0;ikey<KEYLENGTH;ikey++)
+      father[ikey]=
+        brothers[0][ikey]=
+        brothers[1][ikey]=
+        brothers[2][ikey]=
+        brothers[3][ikey]=
+        son[0][ikey]=
+        son[1][ikey]=
+        son[2][ikey]=
+        son[3][ikey]=0;
 
-Element*  ElemPtrList::get(int i){return (((i>=0)&&(i<num_elem))?list[i]:NULL);};
-unsigned* ElemPtrList::get_key(int i){return (((i>=0)&&(i<num_elem))?list[i]->pass_key():NULL);};
-int       ElemPtrList::get_inewstart(){return inewstart;};
-void      ElemPtrList::set_inewstart(int inewstart_in){inewstart=inewstart_in; return;};
-int       ElemPtrList::get_num_elem(){return num_elem;};
+    for (int i=0; i<NUM_STATE_VARS; i++)
+      Influx[i]=0.0;
+    myprocess=myid;
+    no_of_eqns=EQUATIONS;
+    //refined=0;
 
-void      ElemPtrList::trashlist(){
-  for(int i=0;i<num_elem;i++) list[i]=NULL; 
-  num_elem=inewstart=0; 
-  return;
-};
+    FourBytes  temp4;
+    EightBytes temp8;
+    unsigned readspace[102];
+
+    fread(readspace,sizeof(unsigned),102,fp);
+
+    //read the element here
+    int Itemp=0, itemp, jtemp;
+    for(itemp=0;itemp<2;itemp++) {
+      temp4.u=readspace[Itemp++];
+      elm_loc[itemp]=temp4.i; } 
+      assert(Itemp==2);
+
+      temp4.u=readspace[Itemp++];
+      generation=temp4.i; 
+      assert(Itemp==3);
+
+      for(itemp=0;itemp<5;itemp++) {    
+        temp4.u=readspace[Itemp++];
+        order[itemp]=temp4.i; } 
+        assert(Itemp==8);
+
+        temp4.u=readspace[Itemp++];
+        opposite_brother_flag=temp4.i;
+        assert(Itemp==9);
+
+        temp4.u=readspace[Itemp++];
+        new_old=temp4.i;
+        assert(Itemp==10);
+
+        temp4.u=readspace[Itemp++];
+        material=temp4.i;
+        assert(Itemp==11);
+
+        temp4.u=readspace[Itemp++];
+        ndof=temp4.i;
+        assert(Itemp==12);
+
+        temp4.u=readspace[Itemp++];
+        refined=temp4.i;
+        assert(Itemp==13);
+
+        temp4.u=readspace[Itemp++];
+        adapted=temp4.i;
+        assert(Itemp==14);
+
+        temp8.u[0]=readspace[Itemp++];
+        temp8.u[1]=readspace[Itemp++];
+        lb_weight=temp8.d;
+        assert(Itemp==16);
+
+        for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
+          lb_key[jtemp]=readspace[Itemp++]; } 
+        assert(Itemp==18); 
+
+        for(itemp=0;itemp<8;itemp++) {
+          temp4.u=readspace[Itemp++];
+          neigh_proc[itemp]=temp4.i; } 
+          assert(Itemp==26);
+
+          for(itemp=0;itemp<8;itemp++) {
+            temp4.u=readspace[Itemp++];
+            neigh_gen[itemp]=temp4.i; }
+            assert(Itemp==34);
+
+            for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
+              key[jtemp]=readspace[Itemp++]; } 
+            assert(Itemp==36);
+
+            for(itemp=0;itemp<8;itemp++) 
+              for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
+                node_key[itemp][jtemp]=readspace[Itemp++]; } 
+            assert(Itemp==52);
+
+            for(itemp=0;itemp<8;itemp++) 
+              for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
+                neighbor[itemp][jtemp]=readspace[Itemp++]; } 
+            assert(Itemp==68);
+
+            for(itemp=0;itemp<4;itemp++) 
+              for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
+                brothers[itemp][jtemp]=readspace[Itemp++]; } 
+            assert(Itemp==76);
+
+            for(itemp=0;itemp<4;itemp++) 
+              for(jtemp=0;jtemp<KEYLENGTH;jtemp++) {
+                son[itemp][jtemp]=readspace[Itemp++]; } 
+            assert(Itemp==84);
+
+            for(itemp=0;itemp<NUM_STATE_VARS;itemp++) {
+              temp8.u[0]=readspace[Itemp++];
+              temp8.u[1]=readspace[Itemp++];
+              state_vars[itemp]=temp8.d; }
+              assert(Itemp==90);
+
+              //don't need prev_state_vars or d_state_vars do need shortspeed
+              temp8.u[0]=readspace[Itemp++];
+              temp8.u[1]=readspace[Itemp++];
+              shortspeed=temp8.d;
+              assert(Itemp==92);
+
+              for (int i=0; i<NUM_STATE_VARS; i++)
+              {
+                prev_state_vars[i]=0.;
+                d_state_vars[i]=0.;
+                d_state_vars[NUM_STATE_VARS+i]=0.;
+              }
+
+              temp8.u[0]=readspace[Itemp++];
+              iwetnode=temp8.i[0];
+              assert(Itemp==93);
+
+              temp8.u[0]=readspace[Itemp++];
+              temp8.u[1]=readspace[Itemp++];
+              Awet=temp8.d;
+              assert(Itemp==95);
+
+              temp8.u[0]=readspace[Itemp++];
+              temp8.u[1]=readspace[Itemp++];
+              Swet=temp8.d;
+              assert(Itemp==97);
+
+              temp8.u[0]=readspace[Itemp++];
+              temp8.u[1]=readspace[Itemp++];
+              drypoint[0]=temp8.d;
+              assert(Itemp==99);
+
+              temp8.u[0]=readspace[Itemp++];
+              temp8.u[1]=readspace[Itemp++];
+              drypoint[1]=temp8.d;
+              assert(Itemp==101);
+
+              if(readspace[Itemp]>0) {
+                int num_extra=readspace[Itemp];
+                fread(readspace,sizeof(unsigned),num_extra,fp);
+                Itemp=0;
+
+                bcptr=new BC;
+
+                //boundary conditions start here
+                for(itemp=0;itemp<4;itemp++) {
+                  temp4.u=readspace[Itemp++];
+                  bcptr->type[itemp]=temp4.i; }
+                  assert(Itemp==4);
+
+                  for(itemp=0;itemp<4;itemp++) {
+                    temp4.u=readspace[Itemp++];
+                    bcptr->value[itemp][0][0]=temp4.f;
+
+                    temp4.u=readspace[Itemp++];
+                    bcptr->value[itemp][0][1]=temp4.f;
+
+                    temp4.u=readspace[Itemp++];
+                    bcptr->value[itemp][1][0]=temp4.f;
+
+                    temp4.u=readspace[Itemp++];
+                    bcptr->value[itemp][1][1]=temp4.f;
+                  }
+                  assert(Itemp==20);
+              }
+              else bcptr=NULL;
+
+              find_positive_x_side(NodeTable);
+              calculate_dx(NodeTable);
+              calc_topo_data(matprops_ptr);
+              calc_gravity_vector(matprops_ptr);
+              calc_which_son();
+              return;
+  }
+
+  /* //for debugging purposes only, had to trick ddd into working right
+     int Element::get_adapted_flag() {return adapted;} 
+
+     void Element::put_adapted_flag(int new_adapted_status) {adapted = new_adapted_status;}
+     */
+
+  //#define DEBUGLIST
+#ifdef DEBUGLIST
+  ElemPtrList::ElemPtrList(){
+    init(1024);
+    return;
+  }
+
+  //! this constructor allocates space for user specified initial-size, the size_increment equals the initial size.
+  ElemPtrList::ElemPtrList(int initial_size){
+    if(initial_size==0) initial_size=1024;
+    init(initial_size);
+    return;
+  }
+
+  //! the destructor frees the list space so the programmer never has to worry about it
+  ElemPtrList:: ~ElemPtrList(){
+    //printf("list_space=%d, num_elem=%d, inewstart=%d\n",list_space,num_elem,inewstart);
+    free(list);
+    return;
+  }
+
+  //! add an element pointer to the list, it will increase the size of the list by the size_increment if necessary, the size_increment is the initial size.
+  void ElemPtrList::add(Element* EmTemp){
+    if(num_elem==list_space-1){
+      list_space+=size_increment;
+      list=(Element**) realloc(list,list_space*sizeof(Element *));
+    }
+
+    list[num_elem]=EmTemp;
+    num_elem++;
+    return;
+  }
+
+  void ElemPtrList::init(int initial_size){
+    list_space=size_increment=initial_size;    
+    num_elem=inewstart=0;
+    list=(Element **) malloc(list_space*sizeof(Element*));
+    for(int i=0;i<list_space;i++) list[i]=NULL;
+  }
+
+  Element*  ElemPtrList::get(int i){return (((i>=0)&&(i<num_elem))?list[i]:NULL);};
+  unsigned* ElemPtrList::get_key(int i){return (((i>=0)&&(i<num_elem))?list[i]->pass_key():NULL);};
+  int       ElemPtrList::get_inewstart(){return inewstart;};
+  void      ElemPtrList::set_inewstart(int inewstart_in){inewstart=inewstart_in; return;};
+  int       ElemPtrList::get_num_elem(){return num_elem;};
+
+  void      ElemPtrList::trashlist(){
+    for(int i=0;i<num_elem;i++) list[i]=NULL; 
+    num_elem=inewstart=0; 
+    return;
+  };
 #endif
