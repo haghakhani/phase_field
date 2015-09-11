@@ -96,7 +96,7 @@ void correct(HashTable* NodeTable, HashTable* El_Table,
   double Vfluid[DIMENSION], Vsolid[DIMENSION];
   // double volf;
 
-  if ( state_vars[0] > 0 && state_vars[1]>GEOFLOW_TINY) //GEOFLOW
+  if ( state_vars[1]>GEOFLOW_TINY) //GEOFLOW
     {
       for (i=0; i<DIMENSION; i++)
 	kactxy[i]=*(EmTemp->get_effect_kactxy()+i);

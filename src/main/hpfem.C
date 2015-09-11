@@ -135,6 +135,8 @@ int main(int argc, char *argv[])
     init_piles(BT_Elem_Ptr, BT_Node_Ptr, myid, numprocs, adaptflag,
         &matprops, &timeprops, &mapnames, &pileprops, &fluxprops,
         &statprops);
+
+    setup_geoflow(BT_Elem_Ptr, BT_Node_Ptr, myid, numprocs, &matprops,&timeprops);
   }
 
 
