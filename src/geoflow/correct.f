@@ -17,34 +17,31 @@ C     *
 
 C***********************************************************************
       subroutine correct(uvec, uprev, fluxxp, fluxyp, fluxxm, fluxym,
-     1     tiny, dtdx, dtdy, dt, dUdx, dUdy,lap_phi, xslope, yslope,
+     1     tiny, dtdx, dtdy, dt, dUdx, dUdy,lap_phi,
      2     curv,intfrictang, bedfrictang, g, kactxy,  dgdx, 
      3     frict_tiny, forceint,forcebed, dragfoce ,DO_EROSION,
-     4     eroded, v_solid, v_fluid,den_solid, den_fluid, terminal_vel,
-     5     eps, IF_STOPPED, fluxsrc, navslip,eta,capwid,elsrelti)
+     4     eroded, Vel, terminal_vel,
+     5     eps, IF_STOPPED, fluxsrc,eta,min_dx,elsrelti)
 C***********************************************************************
 
       implicit none
-      double precision forceint, forcebed, eroded, speed,yaru
+      double precision forceint, forcebed, eroded, speed
       double precision forceintx, forceinty
-      double precision forcebedx, forcebedy, navslip
+      double precision forcebedx, forcebedy
       double precision forcebedmax, forcebedequil, forcegrav
-      double precision unitvx, unitvy, v_solid(2), v_fluid(2)
-      double precision den_frac, den_solid, den_fluid
+      double precision unitvx, unitvy, Vel(2)
       double precision alphaxx, alphayy, alphaxy, alphayz
       double precision tanbed, terminal_vel, dragfoce(2)
-
       double precision fluxxp(6),fluxyp(6),tiny, uprev(6), ustore(6)
       double precision fluxxm(6), fluxym(6)
       double precision uvec(6), dUdx(6), dUdy(6),lap_phi(2)
-      double precision h_inv, hphi_inv, curv(2), frict_tiny
+      double precision h_inv, curv(2), frict_tiny
       double precision intfrictang, bedfrictang, kactxy, dgdx(2)
-      double precision dtdx, dtdy, dt, g(3), sgn_dudy, sgn_dvdx, tmp
+      double precision dtdx, dtdy, dt, g(3), sgn_dudy, sgn_dvdx,tmp
       double precision dnorm, fluxsrc(6)
-      double precision xslope,yslope,slope
-      double precision t1, t2, t3, t4,aaa
-      double precision erosion_rate,threshold,es,totalShear
-      double precision eps, drag(4),tempox,tempoy,eta,elsrelti,capwid
+      double precision t1, t2, t3, t4,dvx,dvy
+      double precision erosion_rate,threshold,es,gama
+      double precision eps, drag(4),eta,elsrelti,min_dx,cap_width
 
 !     function calls
       double precision sgn
@@ -62,10 +59,9 @@ c     initialize to zero
       unitvy=0.d0
       eroded=0.d0
 
-      slope=dsqrt(xslope*xslope+yslope*yslope)
 c     -------------------------------Hossein-------------------------------------
 
-      do 10 i = 1,4
+      do 10 i = 2,4
          ustore(i)=uprev(i)+dt*fluxsrc(i)
      1        -dtdx*(fluxxp(i)-fluxxm(i))
      2        -dtdy*(fluxyp(i)-fluxym(i))
@@ -75,58 +71,59 @@ c     -------------------------------Hossein------------------------------------
      $     -dtdx*(fluxxp(1)+fluxxm(5))
      $     -dtdy*(fluxyp(1)+fluxym(5))
 
-      t3=uvec(1)*(uvec(1)**2-1)
-c      t3=2*uvec(1)*(2*uvec(1)**2-3*uvec(1)+1)
-      ustore(1)=ustore(1)+dt*elsrelti*(-t3+eta)/(16*capwid*capwid)
+      cap_width=6*min_dx
+      gama=.01*min_dx*min_dx
+
+c     we set relaxation_time to (min_dx**2)
+c     and eta to 5 min_dx so 1/eta**2=1/(25*(min_dx**2))
+c     2 terms of RHS of phase field equation is updated in explicit
+c     time scheme which are t2 or lagrange multiplier
+c     to conserve the mass and d_F/d_phi term or t1
+c     for t1 we have dt*((min_dx**2)/dt*eta*d_F/d_phi)
+c     which is equal to t1=.04*uvec(1)*(uvec(1)**2-1)
+      t1=gama*(uvec(1)*(uvec(1)**2-1)/(cap_width*cap_width))
+
+      t2=gama*eta*(1-uvec(1)**2)/(cap_width*cap_width)
+
+
+c      ustore(1)=ustore(1)+dt*(t2-t1)
 c      (f-eta)/(capwid^2)  capwid=4*mindx
 !      print *,"coefficient is:  ", dt*elsrelti/(16*capwid*capwid)
 !      print *,"source is:       ", -t3+eta
-
-      tempox=dtdx*(fluxxp(1)-fluxxm(1))
-      tempoy=dtdy*(fluxyp(1)-fluxym(1))
-
-c      if (dabs(t3).gt.0)  print *," dt*t3 is  ", dt*t3*scale_coef,
-c     $ " flux x is ",tempox, " flux y is ", tempoy,
-c     $ " usoter is ", ustore(1)
       
-      ustore(2) = max(ustore(2),0.)
+      ustore(2) = max(ustore(2),0.d0)
 c      ustore(1) = max(ustore(1),0.)
       ustore(5) = uvec(5)
-      ustore(6) = 1.d0 
+      ustore(6) = uvec(6)
 
-      if(uvec(2).gt.0.d0) then !tiny
+      if(uvec(2).gt.tiny) then !tiny
 c     Source terms ...
 c     here speed is speed squared
-         speed=v_solid(1)**2+v_solid(2)**2
-         if(speed.gt.0.0) then
+         speed=Vel(1)**2+Vel(2)**2
+         if(speed.gt.0.d0) then
 c     here speed is speed
             speed=dsqrt(speed)
-            unitvx=v_solid(1)/speed
-            unitvy=v_solid(2)/speed
+            unitvx=Vel(1)/speed
+            unitvy=Vel(2)/speed
          else
-            unitvx=0.0
-            unitvy=0.0
+            unitvx=0.d0
+            unitvy=0.d0
          endif
          tanbed=dtan(bedfrictang)
-c     +++++++++++++++++++++++= Very important, please be careful +++++++++++++++++++
-
          h_inv = 1.0/uvec(2)
-c++++++++++++++++++++++++++++++++++++++++++++++++++++++++====
-         alphaxx = kactxy
-         alphayy = kactxy
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c     x-direction source terms
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c     alphaxy -- see pitman-le (2005)
-         tmp = h_inv*(dUdy(3)-v_solid(1)*dUdy(2))
-         sgn_dudy = sgn(tmp, frict_tiny)
+         dvx = h_inv*(dUdy(3)-Vel(1)*dUdy(2))
+         sgn_dudy = sgn(dvx, frict_tiny)
          alphaxy = sgn_dudy*dsin(intfrictang)*kactxy
 
          t2=alphaxy*uvec(2)*(g(3)*dUdy(2)
      $        +dgdx(2)*uvec(2))
          t3=unitvx*
-     $        dmax1(g(3)*uvec(2)+v_solid(1)*uvec(3)*curv(1),0.0d0)
+     $        dmax1(g(3)*uvec(2)+Vel(1)*uvec(3)*curv(1),0.d0)
      $        *tanbed
 
          t4 = uvec(2)*g(1)
@@ -138,15 +135,15 @@ c     update ustore
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c     solid fraction y-direction source terms
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-         tmp = h_inv*(dUdx(4)-v_solid(2)*dUdx(2))
-         sgn_dvdx = sgn(tmp, frict_tiny)
+         dvy = h_inv*(dUdx(4)-Vel(2)*dUdx(2))
+         sgn_dvdx = sgn(dvy, frict_tiny)
          alphaxy = sgn_dvdx*dsin(intfrictang)*kactxy
 
          t2=alphaxy*uvec(2)*(g(3)*dUdx(2)
      $        +dgdx(1)*uvec(2))
 c     ------------------------------------------------  the internal friction force ------------------------------------
          t3=unitvy*
-     $        dmax1(g(3)*uvec(2)+v_solid(2)*uvec(4)*curv(2),0.0d0)
+     $        dmax1(g(3)*uvec(2)+Vel(2)*uvec(4)*curv(2),0.d0)
      $        *tanbed
 
 c-------------------------------the bed friction force for fast moving flow---------------------------------------
@@ -154,9 +151,6 @@ c-------------------------------the bed friction force for fast moving flow-----
 
          ustore(4) = ustore(4) + dt*(t4-t2-t3)
       endif
-      
-      forceint=unitvx*forceintx+unitvy*forceinty
-      forcebed=unitvx*forcebedx+unitvy*forcebedy
 
       do 20 i = 1,4
          uvec(i)=ustore(i)

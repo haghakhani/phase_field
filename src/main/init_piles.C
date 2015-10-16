@@ -27,11 +27,9 @@
 //#define POPO
 //#define ID1
 //#define ID2
-int get_elem_elev(HashTable *HT_Node_Ptr, MatProps *matprops, Element *EmTemp,
-		double *elevation);
+int get_elem_elev(HashTable *HT_Node_Ptr, MatProps *matprops, Element *EmTemp, double *elevation);
 
-void print_grid(HashTable* HT_Elem_Ptr, HashTable* HT_Node_Ptr,
-		MatProps* matprops) {
+void print_grid(HashTable* HT_Elem_Ptr, HashTable* HT_Node_Ptr, MatProps* matprops) {
 
 	FILE *fp = fopen("gridplot00.txt", "w");
 
@@ -50,9 +48,8 @@ void print_grid(HashTable* HT_Elem_Ptr, HashTable* HT_Node_Ptr,
 				get_elem_elev(HT_Node_Ptr, matprops, EmTemp, &elevation);
 
 				fprintf(fp, "%20.14g %20.14g %20.14g\n",
-						(*(EmTemp->get_coord())) * (matprops)->LENGTH_SCALE,
-						(*(EmTemp->get_coord() + 1)) * (matprops)->LENGTH_SCALE,
-						elevation);
+				    (*(EmTemp->get_coord())) * (matprops)->LENGTH_SCALE,
+				    (*(EmTemp->get_coord() + 1)) * (matprops)->LENGTH_SCALE, elevation);
 			}
 			entryp = entryp->next;
 		}
@@ -65,24 +62,22 @@ void print_grid(HashTable* HT_Elem_Ptr, HashTable* HT_Node_Ptr,
 	return;
 }
 
-void elliptical_pile_height(HashTable* HT_Node_Ptr, Element *EmTemp,
-		MatProps* matprops_ptr, PileProps* pileprops_ptr);
+void elliptical_pile_height(HashTable* HT_Node_Ptr, Element *EmTemp, MatProps* matprops_ptr,
+    PileProps* pileprops_ptr);
 
-void init_piles(HashTable* HT_Elem_Ptr, HashTable* HT_Node_Ptr, int myid,
-		int numprocs, int adaptflag, MatProps* matprops,
-		TimeProps* timeprops_ptr, MapNames* mapnames, PileProps* pileprops,
-		FluxProps *fluxprops, StatProps* statprops) {
+void init_piles(HashTable* HT_Elem_Ptr, HashTable* HT_Node_Ptr, int myid, int numprocs,
+    int adaptflag, MatProps* matprops, TimeProps* timeprops_ptr, MapNames* mapnames,
+    PileProps* pileprops, FluxProps *fluxprops, StatProps* statprops) {
 
 	unsigned nodes[9][KEYLENGTH], *node_key;
 	int num_buckets = HT_Elem_Ptr->get_no_of_buckets();
 
 	if (!adaptflag)
-		H_adapt_to_level(HT_Elem_Ptr, HT_Node_Ptr, matprops, pileprops,
-				fluxprops, timeprops_ptr, REFINE_LEVEL);
+		H_adapt_to_level(HT_Elem_Ptr, HT_Node_Ptr, matprops, pileprops, fluxprops, timeprops_ptr,
+		    REFINE_LEVEL);
 #if defined PARABALOID || defined CYLINDER 
 	if (adaptflag)
-		initial_H_adapt(HT_Elem_Ptr, HT_Node_Ptr, 0, matprops, pileprops,
-				fluxprops, timeprops_ptr, 4);
+		initial_H_adapt(HT_Elem_Ptr, HT_Node_Ptr, 0, matprops, pileprops, fluxprops, timeprops_ptr, 4);
 #else
 	for(int ibucket=0; ibucket<num_buckets; ibucket++)
 	{
@@ -109,7 +104,7 @@ void init_piles(HashTable* HT_Elem_Ptr, HashTable* HT_Node_Ptr, int myid,
 	for (int i = 0; i < pileprops->numpiles; i++) {
 
 		pileprops->pilevol += PI / 2 * *(pileprops->pileheight + i)
-				* *(pileprops->majorrad + i) * *(pileprops->minorrad + i);
+		* *(pileprops->majorrad + i) * *(pileprops->minorrad + i);
 //				* (matprops->LENGTH_SCALE) * (matprops->LENGTH_SCALE)
 //				* (matprops->HEIGHT_SCALE);
 //		printf("\n Hello \n \n");
@@ -118,8 +113,8 @@ void init_piles(HashTable* HT_Elem_Ptr, HashTable* HT_Node_Ptr, int myid,
 #elif defined CYLINDER
 	for (int i = 0; i < pileprops->numpiles; i++) {
 
-		pileprops->pilevol +=PI * *(pileprops->pileheight + i)
-				* *(pileprops->majorrad + i) * *(pileprops->minorrad + i);
+		pileprops->pilevol += PI * *(pileprops->pileheight + i) * *(pileprops->majorrad + i)
+		    * *(pileprops->minorrad + i);
 //				* (matprops->LENGTH_SCALE) * (matprops->LENGTH_SCALE)
 //				* (matprops->HEIGHT_SCALE);
 //		printf("\n Hello \n \n");
@@ -131,8 +126,7 @@ void init_piles(HashTable* HT_Elem_Ptr, HashTable* HT_Node_Ptr, int myid,
 
 	/* initial calculation of actual volume on the map */
 
-	double realvolume = 0.0, depositedvol = 0.0, forcebed = 0.0,
-			meanslope = 0.0;
+	double realvolume = 0.0, depositedvol = 0.0, forcebed = 0.0, meanslope = 0.0;
 	double epsilon[2] = { matprops->epsilon, matprops->epsilon };
 
 	HashEntryPtr* buck = HT_Elem_Ptr->getbucketptr();
@@ -147,8 +141,7 @@ void init_piles(HashTable* HT_Elem_Ptr, HashTable* HT_Node_Ptr, int myid,
 
 				if (Curr_El->get_adapted_flag() > 0) { //if this is a refined element don't involve!!!
 					double *dxy = Curr_El->get_dx();
-					double dvol = dxy[0] * dxy[1]
-							* *(Curr_El->get_state_vars() + 1);
+					double dvol = dxy[0] * dxy[1] * *(Curr_El->get_state_vars() + 1);
 					realvolume += dvol;
 
 					Curr_El->put_kactxy(epsilon);
@@ -158,35 +151,12 @@ void init_piles(HashTable* HT_Elem_Ptr, HashTable* HT_Node_Ptr, int myid,
 
 					double resolution = 0, xslope = 0, yslope = 0;
 					Get_max_resolution(&resolution);
-					Get_slope(resolution,
-							*((Curr_El->get_coord())) * matprops->LENGTH_SCALE,
-							*((Curr_El->get_coord()) + 1)
-									* matprops->LENGTH_SCALE, &xslope, &yslope);
+					Get_slope(resolution, *((Curr_El->get_coord())) * matprops->LENGTH_SCALE,
+					    *((Curr_El->get_coord()) + 1) * matprops->LENGTH_SCALE, &xslope, &yslope);
 					double slope = sqrt(xslope * xslope + yslope * yslope);
 
 					forcebed += dvol * 9.8 / sqrt(1.0 + slope * slope)
-							* tan(matprops->bedfrict[Curr_El->get_material()]);
-					Curr_El->level_set(HT_Elem_Ptr);
-
-				}
-				currentPtr = currentPtr->next;
-			}
-		}
-
-//=========================================================================================================================
-
-	for (int ibucket = 0; ibucket < HT_Elem_Ptr->get_no_of_buckets(); ibucket++)
-		if (*(buck + ibucket)) {
-
-			HashEntryPtr currentPtr = *(buck + ibucket);
-			while (currentPtr) {
-
-				Element* Curr_El = (Element*) (currentPtr->value);
-				assert(Curr_El);
-
-				if (Curr_El->get_adapted_flag() > 0) {
-					if (*(Curr_El->get_state_vars() + 5) == 3)
-						*(Curr_El->get_state_vars()) = 0.0; //to make zero phi on the boundary
+					    * tan(matprops->bedfrict[Curr_El->get_material()]);
 				}
 				currentPtr = currentPtr->next;
 			}
@@ -199,12 +169,12 @@ void init_piles(HashTable* HT_Elem_Ptr, HashTable* HT_Node_Ptr, int myid,
 
 	MPI_Reduce(tempin, tempout, 3, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
-	statprops->realvolume = tempout[0] * (matprops->HEIGHT_SCALE)
-			* (matprops->LENGTH_SCALE) * (matprops->LENGTH_SCALE);
+	statprops->realvolume = tempout[0] * (matprops->HEIGHT_SCALE) * (matprops->LENGTH_SCALE)
+	    * (matprops->LENGTH_SCALE);
 	statprops->outflowvol = 0.0;
 	statprops->erodedvol = 0.0;
-	statprops->depositedvol = tempout[2] * (matprops->HEIGHT_SCALE)
-			* (matprops->LENGTH_SCALE) * (matprops->LENGTH_SCALE);
+	statprops->depositedvol = tempout[2] * (matprops->HEIGHT_SCALE) * (matprops->LENGTH_SCALE)
+	    * (matprops->LENGTH_SCALE);
 
 	statprops->forceint = 0.0;
 	statprops->forcebed = tempout[1] / tempout[0];
@@ -216,8 +186,8 @@ void init_piles(HashTable* HT_Elem_Ptr, HashTable* HT_Node_Ptr, int myid,
 /* the pile can be either parabolic (in the z direction) or be     */
 /* cylindrical (have uniform pile height)                          */
 /*******************************************************************/
-void elliptical_pile_height(HashTable* HT_Node_Ptr, Element *EmTemp,
-		MatProps* matprops, PileProps* pileprops) {
+void elliptical_pile_height(HashTable* HT_Node_Ptr, Element *EmTemp, MatProps* matprops,
+    PileProps* pileprops) {
 
 	unsigned nodes[9][2];
 
@@ -261,25 +231,24 @@ void elliptical_pile_height(HashTable* HT_Node_Ptr, Element *EmTemp,
 
 			/* "undo" elliptical pile rotation ... from (x,y)->(major,minor) 
 			 also make  nondimensional (by dividing by major and minor radius) */
-			double doubleswap = (major * pileprops->cosrot[ipile]
-					+ minor * pileprops->sinrot[ipile])
-					/ pileprops->majorrad[ipile];
+			double doubleswap = (major * pileprops->cosrot[ipile] + minor * pileprops->sinrot[ipile])
+			    / pileprops->majorrad[ipile];
 
-			minor = (-major * pileprops->sinrot[ipile]
-					+ minor * pileprops->cosrot[ipile])
-					/ pileprops->minorrad[ipile];
+			minor = (-major * pileprops->sinrot[ipile] + minor * pileprops->cosrot[ipile])
+			    / pileprops->minorrad[ipile];
 			major = doubleswap;
 
 			/* calculate pile height based on non dimensional position relative to
 			 center of pile */
 #ifdef PARABALOID      
 			height = pileprops->pileheight[ipile]
-					* (1. - major * major - minor * minor);
+			* (1. - major * major - minor * minor);
 #elif defined CYLINDER
 
-			if (major*major+minor*minor<1.0)
-			height = pileprops->pileheight[ipile];
-			else height =0.0;
+			if (major * major + minor * minor < 1.0)
+				height = pileprops->pileheight[ipile];
+			else
+				height = 0.0;
 
 #endif
 			height = (height >= 0.0) ? height : 0.0;
@@ -307,32 +276,27 @@ void elliptical_pile_height(HashTable* HT_Node_Ptr, Element *EmTemp,
 	 corner nodes which are not repeated; each edge node is repeated
 	 twice */
 	double pileheight = (			//corner nodes
-	node_pile_height[0] + node_pile_height[1] + node_pile_height[2]
-			+ node_pile_height[3] +
-			//edge nodes 
-			2.0
-					* (node_pile_height[4] + node_pile_height[5]
-							+ node_pile_height[6] + node_pile_height[7]) +
-			//center node
-			4.0 * node_pile_height[8]) / 16.0;
+	node_pile_height[0] + node_pile_height[1] + node_pile_height[2] + node_pile_height[3]
+	    +
+	    //edge nodes
+	    2.0 * (node_pile_height[4] + node_pile_height[5] + node_pile_height[6] + node_pile_height[7])
+	    +
+	    //center node
+	    4.0 * node_pile_height[8]) / 16.0;
 
 	double xmom = (			//corner nodes
 	sum_node_xmom[0] + sum_node_xmom[1] + sum_node_xmom[2] + sum_node_xmom[3] +
 	//edge nodes
-			2.0
-					* (sum_node_xmom[4] + sum_node_xmom[5] + sum_node_xmom[6]
-							+ sum_node_xmom[7]) +
-			//center node
-			4.0 * sum_node_xmom[8]) / 16.0;
+	    2.0 * (sum_node_xmom[4] + sum_node_xmom[5] + sum_node_xmom[6] + sum_node_xmom[7]) +
+	    //center node
+	    4.0 * sum_node_xmom[8]) / 16.0;
 
 	double ymom = (			//corner nodes
 	sum_node_ymom[0] + sum_node_ymom[1] + sum_node_ymom[2] + sum_node_ymom[3] +
 	//edge nodes
-			2.0
-					* (sum_node_ymom[4] + sum_node_ymom[5] + sum_node_ymom[6]
-							+ sum_node_ymom[7]) +
-			//center node
-			4.0 * sum_node_ymom[8]) / 16.0;
+	    2.0 * (sum_node_ymom[4] + sum_node_ymom[5] + sum_node_ymom[6] + sum_node_ymom[7]) +
+	    //center node
+	    4.0 * sum_node_ymom[8]) / 16.0;
 
 	//double TIME_SCALE= sqrt(matprops->LENGTH_SCALE/matprops->GRAVITY_SCALE);
 	//if (pileheight>GEOFLOW_TINY) phi=1/TIME_SCALE;

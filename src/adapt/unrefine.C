@@ -88,8 +88,8 @@ void unrefine(HashTable* El_Table, HashTable* NodeTable, double target,
 				//  need to get currentPtr->next now since currentPtr might get deleted!
 				currentPtr = currentPtr->next;
 				if (Curr_El->get_adapted_flag() == NOTRECADAPTED
-						&& /*!(Curr_El->if_phase_boundary(El_Table))*/
-            dabs(*(Curr_El->get_state_vars()))<1.
+//						&& /*!(Curr_El->if_phase_boundary(El_Table))*/
+//            dabs(*(Curr_El->get_state_vars()))<1.
             )
              {//if this is a refined element don't involve!!!
 
