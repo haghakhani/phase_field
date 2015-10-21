@@ -40,7 +40,7 @@ double compute_eta(HashTable* El_Table, PileProps *pileprops) {
 					height = *(Curr_El->get_state_vars() + 1);
 
 					local_int1 += height * dx[0] * dx[1] * phi * (phi * phi - 1);
-					local_int2 += height * dx[0] * dx[1] * phi * phi * (1 - phi * phi);
+					local_int2 += height * dx[0] * dx[1] * phi * (1 - phi * phi);
 
 				}
 				currentPtr = currentPtr->next;

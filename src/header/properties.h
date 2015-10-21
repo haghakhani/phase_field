@@ -621,7 +621,7 @@ struct OutLine {
 		//pileheight2=CAllocD2(Ny,Nx);
 		for (iy = 0; iy < Ny; iy++)
 			for (ix = 0; ix < Nx; ix++) {
-				pileheight[iy][ix] = 1.0; //since we want to store min(abs(pileheight)) to track the interface
+				pileheight[iy][ix] = -2.; //since we want to store min(abs(pileheight)) to track the interface
 				//pileheight2[iy][ix]=0.0;
 			}
 		return;
@@ -699,7 +699,7 @@ struct OutLine {
 	void output(MatProps* matprops_ptr, StatProps* statprops_ptr, TimeProps *timeprops_ptr) {
 		int ix, iy;
 		char filename[256];
-		sprintf(filename, "pileheightrecord.%06d.%06d", statprops_ptr->runid, timeprops_ptr->iter);
+		sprintf(filename, "pileheightrecord.%06d", statprops_ptr->runid, timeprops_ptr->iter);
 		FILE *fp = fopen(filename, "w");
 
 		//FILE *fp=fopen("outline.pileheight","w");

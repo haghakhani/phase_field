@@ -42,7 +42,7 @@ Element::Element(unsigned nodekeys[][KEYLENGTH], unsigned neigh[][KEYLENGTH], in
 		d_state_vars[i] = 0.;
 
 	for (int i = 0; i < DIMENSION; i++)
-		lap_phi[i] = 0;
+		lap_phi[i] = 0.;
 
 	for (int ikey = 0; ikey < KEYLENGTH; ikey++)
 		father[ikey] = brothers[0][ikey] = brothers[1][ikey] = brothers[2][ikey] = brothers[3][ikey] =
@@ -151,7 +151,7 @@ Element::Element(unsigned nodekeys[][KEYLENGTH], unsigned neigh[][KEYLENGTH], in
 
 	iwetnode = 8;
 	drypoint[0] = drypoint[1] = 0.0;
-	Awet = Swet = (pile_height > GEOFLOW_TINY) ? 1.0 : 0.0;
+//	Awet = Swet = (pile_height > GEOFLOW_TINY) ? 1.0 : 0.0;
 
 	prev_state_vars[0] = prev_state_vars[4] = 0;
 	//if(pile_height>0) prev_state_vars[0]=prev_state_vars[4]=1.;
@@ -266,15 +266,15 @@ Element::Element(unsigned nodekeys[][KEYLENGTH], unsigned neigh[][KEYLENGTH], in
 	drypoint[0] = drypoint_in[0];
 	drypoint[1] = drypoint_in[1];
 
-	double myfractionoffather;
-	if ((Awetfather == 0.0) || (Awetfather == 1.0)) {
-		Awet = Awetfather;
-		myfractionoffather = 1.0;
-	} else {
-		Awet = convect_dryline(dx, 0.0); //dx is a dummy stand in for convection speed... value doesn't matter because it's being multiplied by a timestep of zero
-		myfractionoffather = Awet / Awetfather;
-	}
-	Swet = 1.0;
+//	double myfractionoffather;
+//	if ((Awetfather == 0.0) || (Awetfather == 1.0)) {
+//		Awet = Awetfather;
+//		myfractionoffather = 1.0;
+//	} else {
+//		Awet = convect_dryline(dx, 0.0); //dx is a dummy stand in for convection speed... value doesn't matter because it's being multiplied by a timestep of zero
+//		myfractionoffather = Awet / Awetfather;
+//	}
+//	Swet = 1.0;
 
 	double dxx = coord_in[0] - fthTemp->coord[0];
 	double dyy = coord_in[1] - fthTemp->coord[1];
@@ -285,9 +285,6 @@ Element::Element(unsigned nodekeys[][KEYLENGTH], unsigned neigh[][KEYLENGTH], in
 		shortspeed = fthTemp->shortspeed;
 
 	}
-
-	//if(state_vars[0] < 0.)
-	//state_vars[0] = 0.;
 
 	find_positive_x_side(NodeTable);
 
@@ -578,15 +575,15 @@ Element::Element(Element* sons[], HashTable* NodeTable, HashTable* El_Table,
 		}
 
 	}
-	Awet = 0.0;
-	for (int ison = 0; ison < 4; ison++)
-		Awet += sons[ison]->get_Awet();
-	Awet *= 0.25;
+//	Awet = 0.0;
+//	for (int ison = 0; ison < 4; ison++)
+//		Awet += sons[ison]->get_Awet();
+//	Awet *= 0.25;
 
-	//uninitialized flag values... will fix shortly
-	drypoint[0] = drypoint[1] = 0.0;
-	iwetnode = 8;
-	Swet = 1.0;
+//	//uninitialized flag values... will fix shortly
+//	drypoint[0] = drypoint[1] = 0.0;
+//	iwetnode = 8;
+//	Swet = 1.0;
 
 	//calculate the shortspeed
 	shortspeed = 0.0;
