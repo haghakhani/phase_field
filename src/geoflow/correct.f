@@ -83,10 +83,10 @@ c     for t1 we have dt*((min_dx**2)/dt*eta*d_F/d_phi)
 c     which is equal to t1=.04*uvec(1)*(uvec(1)**2-1)
       t1=gama*(uvec(1)*(uvec(1)**2-1)/(cap_width*cap_width))
 
-      t2=gama*eta*(1-uvec(1)**2)/(cap_width*cap_width)
+      t2=gama*eta*(uvec(1)**2-1)/(cap_width*cap_width)
 
 
-c      ustore(1)=ustore(1)+dt*(t2-t1)
+      ustore(1)=ustore(1)+dt*(t2-t1)
 c      (f-eta)/(capwid^2)  capwid=4*mindx
 !      print *,"coefficient is:  ", dt*elsrelti/(16*capwid*capwid)
 !      print *,"source is:       ", -t3+eta

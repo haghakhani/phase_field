@@ -179,20 +179,6 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump, MatProp
 
 	double eta = compute_eta(El_Table, pileprops_ptr);
 
-	// ====================================================Implicit Solver==========================
-	//	if (timeprops_ptr->iter % 5 == 4 || timeprops_ptr->iter == 1
-	//	    || timeprops_ptr->time >= timeprops_ptr->ndnextoutput) {
-	double timedelta = (timeprops_ptr->time - timeprops_ptr->implicit);
-	//cout<<"time data not scaled  "<<timeprops_ptr->time-timeprops_ptr->implicit<<"   scaled time is   "<<timedelta<<"  Time Scale is "<<timeprops_ptr->TIME_SCALE<<endl;
-
-	timeprops_ptr->implicit = timeprops_ptr->time;
-
-	double scelsrelti =.01* mindx*mindx;
-
-	implicit_solver(El_Table, NodeTable, dt, scelsrelti, timeprops_ptr);
-
-	//	}
-
 	for (i = 0; i < El_Table->get_no_of_buckets(); i++)
 		if (*(buck + i)) {
 			HashEntryPtr currentPtr = *(buck + i);
@@ -235,6 +221,20 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump, MatProp
 			}
 		}
 
+	// ====================================================Implicit Solver==========================
+	//	if (timeprops_ptr->iter % 5 == 4 || timeprops_ptr->iter == 1
+	//	    || timeprops_ptr->time >= timeprops_ptr->ndnextoutput) {
+	double timedelta = (timeprops_ptr->time - timeprops_ptr->implicit);
+	//cout<<"time data not scaled  "<<timeprops_ptr->time-timeprops_ptr->implicit<<"   scaled time is   "<<timedelta<<"  Time Scale is "<<timeprops_ptr->TIME_SCALE<<endl;
+
+	timeprops_ptr->implicit = timeprops_ptr->time;
+
+	double scelsrelti =.01* mindx*mindx;
+
+	implicit_solver(El_Table, NodeTable, dt, scelsrelti, timeprops_ptr);
+
+	//	}
+
 	for (i = 0; i < El_Table->get_no_of_buckets(); i++) {
 		if (*(buck + i)) {
 			HashEntryPtr currentPtr = *(buck + i);
@@ -243,15 +243,10 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump, MatProp
 				if (Curr_El->get_adapted_flag() > 0) {
 					phi = *(Curr_El->get_state_vars());
 					if (phi > 1)
-						phi = 1;
+						phi = 1.;
 					if (phi < -1)
-						phi = -1;
+						phi = -1.;
 
-					//if(phi*timeprops_ptr->TIME_SCALE>1) phi=1/timeprops_ptr->TIME_SCALE;
-					//if(phi*timeprops_ptr->TIME_SCALE<-1) phi=-1/timeprops_ptr->TIME_SCALE;
-					//}
-					//else
-					//phi=0;
 					*(Curr_El->get_state_vars()) = phi;
 #ifdef MAX_DEPTH_MAP
 					double *coord = Curr_El->get_coord();

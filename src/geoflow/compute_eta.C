@@ -40,7 +40,7 @@ double compute_eta(HashTable* El_Table, PileProps *pileprops) {
 					height = *(Curr_El->get_state_vars() + 1);
 
 					local_int1 += height * dx[0] * dx[1] * phi * (phi * phi - 1);
-					local_int2 += height * dx[0] * dx[1] * phi * (1 - phi * phi);
+					local_int2 += height * dx[0] * dx[1] * (phi * phi - 1);
 
 				}
 				currentPtr = currentPtr->next;
@@ -52,7 +52,8 @@ double compute_eta(HashTable* El_Table, PileProps *pileprops) {
 	MPI_Allreduce(&local_int1, &int1, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
 	MPI_Allreduce(&local_int2, &int2, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
 
-	eta = int1 / int2;
+	if (int2!=0.)
+		eta = int1 / int2;
 
 	return eta;
 }
