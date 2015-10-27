@@ -26,21 +26,15 @@ AC_SYS_LARGEFILE
 # checks for mpich installation
 AC_CHECK_LIB([pthread],[pthread_create])
 AC_ARG_WITH([mpi],[AS_HELP_STRING([--with-mpi],[MPI is required to build titan])])
+# if MPI is installed in non-standard location
+AC_ARG_WITH([mpi-includes],[AS_HELP_STRING([--with-mpi-includes],[path to mpi headers])])
+if  test -n "$with_mpi_includes"; then
+    CPPFLAGS="$CPPFLAGS -I$with_mpi_includes"
+fi
 
-if test -n "$with_mpi"; then
-    CFLAGS="$CFLAGS -I$with_mpi/include"
-    CXXFLAGS="$CXXFLAGS -I$with_mpi/include"
-    CPPFLAGS="$CPPFLAGS -I$with_mpi/include"
-    LDFLAGS="$LDFLAGS -L$with_mpi/lib"
-    AC_CHECK_LIB([mpich],[MPI_Init],, \
-                   AC_CHECK_LIB([mpi],[MPI_Init],, \
-                                  AC_MSG_FAILURE([could not find MPI libraries \
-                                                 in specified location])))
-else
-    AC_CHECK_LIB([mpich],[MPI_Init],, \
-                   AC_CHECK_LIB([mpi],[MPI_Init],, \
-                                  AC_MSG_FAILURE([could not find MPI libraries \
-                                                 run configure --with-mpi=/path/to/mpi dir])))
+AC_ARG_WITH([mpi-libs],[AS_HELP_STRING([--with-mpi-libs],[path to mpi libraries])])
+if  test -n "$with_mpi_libs"; then
+    LDFLAGS="$LDFLAGS -L$with_mpi_libs"
 fi
 
 ## checks for HDF5 intalltion

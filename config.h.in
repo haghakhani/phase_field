@@ -21,12 +21,6 @@
 /* Define to 1 if you have the `m' library (-lm). */
 #undef HAVE_LIBM
 
-/* Define to 1 if you have the `mpi' library (-lmpi). */
-#undef HAVE_LIBMPI
-
-/* Define to 1 if you have the `mpich' library (-lmpich). */
-#undef HAVE_LIBMPICH
-
 /* Define to 1 if you have the `nsl' library (-lnsl). */
 #undef HAVE_LIBNSL
 
