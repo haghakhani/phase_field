@@ -600,11 +600,7 @@ int print_bubble_node(FILE *fp, HashTable* NodeTable, MatProps* matprops,
     get_elem_elev(NodeTable,matprops,EmTemp,&elevation);
 
   double Vel[4];
-//  double phi ;
-//  if (*(EmTemp->get_state_vars()) > 0 /*GEOFLOW_TINY*/)
-//    phi=*(EmTemp->get_state_vars());
-//  else
-//    phi=0;
+
   EmTemp->eval_velocity(0.0,0.0,Vel);
   fprintf(fp, "%e %e %e %e %e %e %e %e %e %e %e %e\n",
 	  (*(EmTemp->get_coord()))*(matprops)->LENGTH_SCALE,
@@ -614,7 +610,7 @@ int print_bubble_node(FILE *fp, HashTable* NodeTable, MatProps* matprops,
 	  *(EmTemp->get_state_vars())/*TIME_SCALE*/,
 	  *(EmTemp->get_state_vars()+2)*momentum_scale, 
 	  *(EmTemp->get_state_vars()+3)*momentum_scale, 
-	  *(EmTemp->get_state_vars()+4)/**momentum_scale*/, 
+	  *(EmTemp->get_phase_update())/**(EmTemp->get_state_vars()+4)*momentum_scale*/,
 	  *(EmTemp->get_state_vars()+5)*momentum_scale, 
 	  elevation, 
 	  sqrt(Vel[0]*Vel[0]+Vel[1]*Vel[1])*velocity_scale,
@@ -875,7 +871,7 @@ void meshplotter(HashTable* El_Table, HashTable* NodeTable,
           assert(NodeTemp);
           int jj = j;
           if (NodeTemp->getinfo() != S_C_CON) 
-            fprintf ( fp, "%e %e %e %e %e %e %e %e %e %e %e %e %e %e %e\n", 
+            fprintf ( fp, "%e %e %e %e %e %e %e %e %e %e %e %e %e %d %e\n",
                       (*(NodeTemp->get_coord()))*(matprops)->LENGTH_SCALE,
                       (*(NodeTemp->get_coord()+1))*(matprops)->LENGTH_SCALE, 
                       NodeTemp->get_elevation()*(matprops->LENGTH_SCALE), 
@@ -883,7 +879,7 @@ void meshplotter(HashTable* El_Table, HashTable* NodeTable,
                       state_vars[2]*momentum_scale, state_vars[3]*momentum_scale,
                       state_vars[4]/**momentum_scale*/, state_vars[5]*momentum_scale,
                       Vel[0], Vel[1], Vel[2], Vel[3], state_vars[0],
-                      *(EmTemp->get_drag()), *(EmTemp->get_drag()+1));
+                      *(EmTemp->get_phase_update()), *(EmTemp->get_drag()+1));
 
           else  // S_C_CON will have a discontinuity in the elevation so fix that by interpolation
           {
@@ -926,7 +922,7 @@ void meshplotter(HashTable* El_Table, HashTable* NodeTable,
 
 	    NodeTemp2 = (Node*) NodeTable->lookup(EmTemp2->getNode()+j*KEYLENGTH);
 	    elev += .5 * NodeTemp2->get_elevation();
-            fprintf ( fp, "%e %e %e %e %e %e %e %e %e %e %e %e %e %e %e\n", 
+            fprintf ( fp, "%e %e %e %e %e %e %e %e %e %e %e %e %e %d %e\n",
                       (*(NodeTemp->get_coord()))*(matprops)->LENGTH_SCALE,
                       (*(NodeTemp->get_coord()+1))*(matprops)->LENGTH_SCALE, 
                       elev*(matprops->LENGTH_SCALE), 
@@ -934,7 +930,7 @@ void meshplotter(HashTable* El_Table, HashTable* NodeTable,
                       state_vars[2]*momentum_scale, state_vars[3]*momentum_scale,
                       state_vars[4]/**momentum_scale*/, state_vars[5]*momentum_scale,
                       Vel[0], Vel[1], Vel[2], Vel[3], state_vars[0],
-                      *(EmTemp->get_drag()), *(EmTemp->get_drag()+1));
+                      *(EmTemp->get_phase_update()), *(EmTemp->get_drag()+1));
 	  } 
 	} 
       }

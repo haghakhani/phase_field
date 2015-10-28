@@ -41,6 +41,7 @@ struct ElemPack{
   int        elm_loc[2];                                             // 56
   int        opposite_brother_flag;                                  // 57
   int        iwetnode;                                               // 58
+  int        phase_update;                                           // 59
 
   unsigned   key[KEYLENGTH];/*contains the 9th node key*/   //  1
   unsigned   node_key[8][KEYLENGTH];                        //  9

@@ -207,20 +207,11 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump, MatProp
 					realvolume += dxy[0] * dxy[1] * *(Curr_El->get_state_vars() + 1);
 					eroded += elemeroded;
 					deposited += elemdeposited;
-
-#ifdef APPLY_BC
-					for (j = 0; j < 4; j++)
-						if (*(Curr_El->get_neigh_proc() + j) == INIT) { // this is a boundary!
-							*(Curr_El->get_state_vars()) = -1.;
-							for (k = 1; k < NUM_STATE_VARS; k++)
-								*(Curr_El->get_state_vars() + k) = 0;
-						}
-#endif
 				}
 				currentPtr = currentPtr->next;
 			}
 		}
-
+	move_data(nump, myid, El_Table, NodeTable, timeprops_ptr);
 	// ====================================================Implicit Solver==========================
 	//	if (timeprops_ptr->iter % 5 == 4 || timeprops_ptr->iter == 1
 	//	    || timeprops_ptr->time >= timeprops_ptr->ndnextoutput) {
@@ -229,11 +220,13 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump, MatProp
 
 //	timeprops_ptr->implicit = timeprops_ptr->time;
 
-	double scelsrelti =.01* mindx*mindx;
+	double scelsrelti = .01 * mindx * mindx;
 
 	implicit_solver(El_Table, NodeTable, dt, scelsrelti, timeprops_ptr);
 
-	//	}
+	update_phase_flag(El_Table, NodeTable, nump, myid, timeprops_ptr, matprops_ptr);
+
+//	}
 
 	for (i = 0; i < El_Table->get_no_of_buckets(); i++) {
 		if (*(buck + i)) {
@@ -241,6 +234,14 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump, MatProp
 			while (currentPtr) {
 				Element* Curr_El = (Element*) (currentPtr->value);
 				if (Curr_El->get_adapted_flag() > 0) {
+#ifdef APPLY_BC
+					for (j = 0; j < 4; j++)
+						if (*(Curr_El->get_neigh_proc() + j) == INIT) { // this is a boundary!
+							*(Curr_El->get_state_vars()) = -1.;
+							for (k = 1; k < NUM_STATE_VARS; k++)
+								*(Curr_El->get_state_vars() + k) = 0;
+						}
+#endif
 					phi = *(Curr_El->get_state_vars());
 					if (phi > 1)
 						phi = 1.;
@@ -248,6 +249,7 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump, MatProp
 						phi = -1.;
 
 					*(Curr_El->get_state_vars()) = phi;
+
 #ifdef MAX_DEPTH_MAP
 					double *coord = Curr_El->get_coord();
 					double *dxy = Curr_El->get_dx();
@@ -261,21 +263,6 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump, MatProp
 			}
 		}
 	}
-
-	//update the orientation of the "dryline" (divides partially wetted cells
-	//into wet and dry parts solely based on which neighbors currently have
-	//pileheight greater than GEOFLOW_TINY
-	//for(i=0; i<El_Table->get_no_of_buckets(); i++)
-	// {
-	//     HashEntryPtr currentPtr = *(buck+i);
-	//    while(currentPtr)
-	//	{
-	//	  Element* Curr_El=(Element*)(currentPtr->value);
-	//	  currentPtr=currentPtr->next;
-	//	  if(Curr_El->get_adapted_flag()>0) //if this is a refined element don't involve!!!
-	//	    Curr_El->calc_wet_dry_orient(El_Table);
-	//	}
-	//  }
 
 	/* finished corrector step */
 	calc_stats(El_Table, NodeTable, myid, matprops_ptr, timeprops_ptr, statprops_ptr, discharge, dt);

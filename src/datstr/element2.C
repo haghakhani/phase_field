@@ -175,7 +175,7 @@ Element::Element(unsigned nodekeys[][KEYLENGTH], unsigned neigh[][KEYLENGTH], in
 	effect_kactxy[0] = effect_kactxy[0] = 0.;
 	effect_bedfrict = effect_tanbedfrict = 0.;
 
-	phase_update=0;
+	phase_update = 0;
 }
 
 //used for refinement
@@ -297,7 +297,7 @@ Element::Element(unsigned nodekeys[][KEYLENGTH], unsigned neigh[][KEYLENGTH], in
 	coord[1] = coord_in[1];
 
 	stoppedflags = fthTemp->stoppedflags;
-	phase_update=0;
+	phase_update = 0;
 }
 /*********************************
  making a father element from its sons
@@ -593,7 +593,7 @@ Element::Element(Element* sons[], HashTable* NodeTable, HashTable* El_Table,
 	if (state_vars[1] > 0.0)
 		shortspeed /= (4.0 * state_vars[1]);
 
-	phase_update=0;
+	phase_update = 0;
 }
 
 unsigned* Element::getfather() {
@@ -3180,6 +3180,20 @@ int Element::if_next_buffer_boundary(HashTable *ElemTable, HashTable *NodeTable,
 
 	return (0);
 }
+
+void Element::if_next_phase(HashTable *ElemTable, int layer) {
+
+	if (phase_update == OFF)
+		for (int ineigh = 0; ineigh < 8; ineigh++)
+			if (neigh_proc[ineigh] >= 0) {
+				Element* ElemNeigh = (Element*) ElemTable->lookup(neighbor[ineigh]);
+				if (*(ElemNeigh->get_phase_update()) == layer-1) {
+					phase_update = layer;
+					break;
+				}
+			}
+}
+
 void Element::save_elem(FILE* fp, FILE *fptxt) {
 
 	FourBytes temp4;
@@ -3194,7 +3208,7 @@ void Element::save_elem(FILE* fp, FILE *fptxt) {
 	assert(Itemp == 2);
 
 #ifdef DEBUG_SAVE_ELEM
-	//FILE *fpdb=fopen("save_elem.debug","w");
+//FILE *fpdb=fopen("save_elem.debug","w");
 	FILE *fpdb=fptxt;
 	fprintf(fpdb,"\n\nelm_loc=%d %d\n",elm_loc[0],elm_loc[1]);
 #endif
@@ -3366,7 +3380,7 @@ void Element::save_elem(FILE* fp, FILE *fptxt) {
 	}
 	assert(Itemp == 96);
 
-	//don't need prev_state_vars or d_state_vars do need shortspeed
+//don't need prev_state_vars or d_state_vars do need shortspeed
 	temp8.d = shortspeed;
 	writespace[Itemp++] = temp8.u[0];
 	writespace[Itemp++] = temp8.u[1];
@@ -3400,7 +3414,7 @@ void Element::save_elem(FILE* fp, FILE *fptxt) {
 	writespace[Itemp++] = temp8.u[1];
 	assert(Itemp == 107);
 
-	//boundary conditions start here
+//boundary conditions start here
 	if (bcptr == NULL) {
 		writespace[Itemp++] = 0;
 		assert(Itemp == 108);
@@ -3442,7 +3456,7 @@ void Element::save_elem(FILE* fp, FILE *fptxt) {
 		assert(Itemp == 128);
 	}
 #ifdef DEBUG_SAVE_ELEM
-	//fclose(fpdb);
+//fclose(fpdb);
 #endif
 
 	fwrite(writespace, sizeof(unsigned), Itemp, fp);
@@ -3461,7 +3475,7 @@ Element::Element(FILE* fp, HashTable* NodeTable, MatProps* matprops_ptr, int myi
 		Influx[i] = 0.0;
 	myprocess = myid;
 	no_of_eqns = EQUATIONS;
-	//refined=0;
+//refined=0;
 
 	FourBytes temp4;
 	EightBytes temp8;
@@ -3469,7 +3483,7 @@ Element::Element(FILE* fp, HashTable* NodeTable, MatProps* matprops_ptr, int myi
 
 	fread(readspace, sizeof(unsigned), 102, fp);
 
-	//read the element here
+//read the element here
 	int Itemp = 0, itemp, jtemp;
 	for (itemp = 0; itemp < 2; itemp++) {
 		temp4.u = readspace[Itemp++];
@@ -3569,7 +3583,7 @@ Element::Element(FILE* fp, HashTable* NodeTable, MatProps* matprops_ptr, int myi
 	}
 	assert(Itemp == 90);
 
-	//don't need prev_state_vars or d_state_vars do need shortspeed
+//don't need prev_state_vars or d_state_vars do need shortspeed
 	temp8.u[0] = readspace[Itemp++];
 	temp8.u[1] = readspace[Itemp++];
 	shortspeed = temp8.d;
@@ -3666,7 +3680,7 @@ ElemPtrList::ElemPtrList(int initial_size) {
 
 //! the destructor frees the list space so the programmer never has to worry about it
 ElemPtrList:: ~ElemPtrList() {
-	//printf("list_space=%d, num_elem=%d, inewstart=%d\n",list_space,num_elem,inewstart);
+//printf("list_space=%d, num_elem=%d, inewstart=%d\n",list_space,num_elem,inewstart);
 	free(list);
 	return;
 }

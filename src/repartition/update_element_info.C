@@ -185,6 +185,7 @@ void construct_el(Element* newelement, ElemPack* elem2,
   newelement->generation = elem2->generation;
   newelement->opposite_brother_flag = elem2->opposite_brother_flag;
   newelement->material=elem2->material;
+  newelement->phase_update=elem2->phase_update;
 
   for(i=0; i<8; i++)
     {

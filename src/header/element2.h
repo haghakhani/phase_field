@@ -555,6 +555,10 @@ public:
 			drag[i] = df[i];
 	}
 
+	int* get_phase_update();
+
+	void if_next_phase(HashTable *ElemTable, int layer);
+
 private:
 	//! myprocess is id of the process(or) that owns this element
 	int myprocess;
@@ -726,6 +730,11 @@ private:
 	//this is a flag to just solve the laplacian for the element that are located near the interface
 	int phase_update;
 };
+
+inline int* Element::get_phase_update() {
+	return &phase_update;
+}
+;
 
 inline int Element::get_ithelem() {
 	return ithelem;
