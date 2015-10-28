@@ -722,6 +722,9 @@ private:
 
 	//! Drag-force
 	double drag[DIMENSION];
+
+	//this is a flag to just solve the laplacian for the element that are located near the interface
+	int phase_update;
 };
 
 inline int Element::get_ithelem() {

@@ -224,10 +224,10 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump, MatProp
 	// ====================================================Implicit Solver==========================
 	//	if (timeprops_ptr->iter % 5 == 4 || timeprops_ptr->iter == 1
 	//	    || timeprops_ptr->time >= timeprops_ptr->ndnextoutput) {
-	double timedelta = (timeprops_ptr->time - timeprops_ptr->implicit);
+//	double timedelta = (timeprops_ptr->time - timeprops_ptr->implicit);
 	//cout<<"time data not scaled  "<<timeprops_ptr->time-timeprops_ptr->implicit<<"   scaled time is   "<<timedelta<<"  Time Scale is "<<timeprops_ptr->TIME_SCALE<<endl;
 
-	timeprops_ptr->implicit = timeprops_ptr->time;
+//	timeprops_ptr->implicit = timeprops_ptr->time;
 
 	double scelsrelti =.01* mindx*mindx;
 

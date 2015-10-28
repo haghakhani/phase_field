@@ -18,9 +18,6 @@
 #ifndef STRUCT_H
 #define STRUCT_H
 
-#include <petscksp.h>
-//#include <petscdmda.h>
-
 //! ElemPack is a smaller (memory spacewise) version of Element that can be sent from one processor to another via MPI calls
 struct ElemPack{
   //see ../repartition/new_datatype.C blockcounts[3]={58,25*KEYLENGTH,102}

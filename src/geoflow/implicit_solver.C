@@ -20,6 +20,7 @@
 #endif
 
 #include "../header/hpfem.h"
+#include <petscksp.h>
 
 struct ContData {
 
@@ -37,7 +38,7 @@ PetscErrorCode MakeRHS(ContData *myctx, Vec b);
 PetscErrorCode update_phi(HashTable *El_Table, Vec update, ContData *ctx);
 
 #undef __FUNCT__
-#define __FUNCT__ "implicit_solver" 
+#define __FUNCT__ "implicit_solver"
 
 int implicit_solver(HashTable* El_Table, HashTable* NodeTable, double delta_t, double LapCoef,
     TimeProps* timeprops_ptr) {
@@ -150,7 +151,7 @@ int implicit_solver(HashTable* El_Table, HashTable* NodeTable, double delta_t, d
 	 */
 
 	ierr = MatCreateShell(PETSC_COMM_WORLD, num_elem_proc[rank], num_elem_proc[rank], total_elem,
-	    total_elem, &myctx, &A);
+	    total_elem, (void*) &myctx, &A);
 	CHKERRQ(ierr);
 	ierr = MatShellSetOperation(A, MATOP_MULT, (void (*)(void))MatLaplacian2D_Mult);CHKERRQ
 	(ierr);
@@ -176,7 +177,7 @@ int implicit_solver(HashTable* El_Table, HashTable* NodeTable, double delta_t, d
 	 -pc_type <type>
 	 */
 	//  ierr = KSPSetTolerances(ksp,1.e-7,PETSC_DEFAULT,1.e9,3000);CHKERRQ(ierr);
-	ierr = KSPSetTolerances(ksp, PETSC_DEFAULT, PETSC_DEFAULT, PETSC_DEFAULT, 50000);
+	ierr = KSPSetTolerances(ksp, PETSC_DEFAULT, PETSC_DEFAULT, PETSC_DEFAULT, 1000);
 	CHKERRQ(ierr);
 	/* -------------------------------------------------------------------
 	 Solve the linear system
@@ -199,18 +200,13 @@ int implicit_solver(HashTable* El_Table, HashTable* NodeTable, double delta_t, d
 	//ierr = VecNorm(x,NORM_2,&norm);CHKERRQ(ierr);
 	if (rank == 0) {
 
-		ierr = KSPGetIterationNumber(ksp, &its);
-		CHKERRQ(ierr);
-		ierr = KSPGetResidualNorm(ksp, &norm);
-		CHKERRQ(ierr);
-		ierr = PetscSynchronizedPrintf( MPI_COMM_SELF, "Norm of error %g iterations %D\n",
-		    (double) norm, its);
-		CHKERRQ(ierr);
-		//PetscSynchronizedFlush(PETSC_COMM_WORLD);
-		ierr = KSPGetConvergedReason(ksp, &reason);
-		ierr = PetscSynchronizedPrintf( MPI_COMM_SELF, "kind of divergence is: ...........%D \n",
-		    reason);
-		//PetscSynchronizedFlush(PETSC_COMM_WORLD);
+		KSPGetIterationNumber(ksp, &its);
+		KSPGetResidualNorm(ksp, &norm);
+		KSPGetConvergedReason(ksp, &reason);
+
+		cout << "Norm of error  " << norm << "  iterations " << its << "  kind of convergence  "
+		    << reason << "  total elements  " << total_elem << endl;
+
 	}
 	/*
 

@@ -174,6 +174,8 @@ Element::Element(unsigned nodekeys[][KEYLENGTH], unsigned neigh[][KEYLENGTH], in
 	kactxy[0] = kactxy[1] = 0.;
 	effect_kactxy[0] = effect_kactxy[0] = 0.;
 	effect_bedfrict = effect_tanbedfrict = 0.;
+
+	phase_update=0;
 }
 
 //used for refinement
@@ -295,8 +297,7 @@ Element::Element(unsigned nodekeys[][KEYLENGTH], unsigned neigh[][KEYLENGTH], in
 	coord[1] = coord_in[1];
 
 	stoppedflags = fthTemp->stoppedflags;
-
-	return;
+	phase_update=0;
 }
 /*********************************
  making a father element from its sons
@@ -592,7 +593,7 @@ Element::Element(Element* sons[], HashTable* NodeTable, HashTable* El_Table,
 	if (state_vars[1] > 0.0)
 		shortspeed /= (4.0 * state_vars[1]);
 
-	return;
+	phase_update=0;
 }
 
 unsigned* Element::getfather() {
