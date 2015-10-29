@@ -544,23 +544,18 @@ void reset_phase_flag(HashTable *El_Table) {
 void update_phase_flag(HashTable *El_Table, HashTable *Node_Table, int numprocs, int myid,
     TimeProps* timeprops_ptr, MatProps* matprops_ptr) {
 
+	move_data(numprocs, myid, El_Table, Node_Table, timeprops_ptr);
+
 	HashEntryPtr currentPtr;
 	Element *Curr_El;
 	HashEntryPtr *buck = El_Table->getbucketptr();
 	int num_of_layers = 10;
 
-	MapNames mapnames;
-	char *b, *c, *d;
-	char a[5] = "abs";	// ,b[5],c[5],d[5];
-	b = c = d = a;
-	int ce = 0;
-	mapnames.assign(a, b, c, d, ce);
-
 	for (int i = 0; i < El_Table->get_no_of_buckets(); i++) {
 		currentPtr = *(buck + i);
 		while (currentPtr) {
 			Curr_El = (Element*) (currentPtr->value);
-			if ((Curr_El->if_first_buffer_boundary(El_Table, 0.))) {
+			if ((Curr_El->get_adapted_flag() > 0) && (Curr_El->if_first_buffer_boundary(El_Table, 0.))) {
 				*(Curr_El->get_phase_update()) = 1;
 			}
 			currentPtr = currentPtr->next;
@@ -569,18 +564,16 @@ void update_phase_flag(HashTable *El_Table, HashTable *Node_Table, int numprocs,
 
 	for (int layer = 2; layer <= num_of_layers; ++layer) {
 		move_data(numprocs, myid, El_Table, Node_Table, timeprops_ptr);
-		meshplotter(El_Table, Node_Table, matprops_ptr, timeprops_ptr, &mapnames, ce);
 
 		for (int i = 0; i < El_Table->get_no_of_buckets(); i++) {
 			currentPtr = *(buck + i);
 			while (currentPtr) {
 				Curr_El = (Element*) (currentPtr->value);
-				Curr_El->if_next_phase(El_Table,layer);
+				if (Curr_El->get_adapted_flag() > 0)
+					Curr_El->if_next_phase(El_Table, layer);
 				currentPtr = currentPtr->next;
 			}
 		}
 
 	}
-	meshplotter(El_Table, Node_Table, matprops_ptr, timeprops_ptr, &mapnames, ce);
-
 }
