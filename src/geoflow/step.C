@@ -224,7 +224,7 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump, MatProp
 
 	implicit_solver(El_Table, NodeTable, dt, scelsrelti, timeprops_ptr);
 
-	update_phase_flag(El_Table, NodeTable, nump, myid, timeprops_ptr, matprops_ptr);
+//	update_phase_flag(El_Table, NodeTable, nump, myid, timeprops_ptr, matprops_ptr);
 
 //	}
 

@@ -206,7 +206,6 @@ int implicit_solver(HashTable* El_Table, HashTable* NodeTable, double delta_t, d
 
 		cout << "Norm of error  " << norm << "  iterations " << its << "  kind of convergence  "
 		    << reason << "  total elements  " << total_elem << endl;
-
 	}
 	/*
 
@@ -221,9 +220,11 @@ int implicit_solver(HashTable* El_Table, HashTable* NodeTable, double delta_t, d
 	MPI_Barrier(PETSC_COMM_WORLD);
 
 	ierr = KSPDestroy(&ksp);
-	CHKERRQ(ierr); //ierr = PetscFree(phin);CHKERRQ(ierr);
+	CHKERRQ(ierr);
 	ierr = VecDestroy(&x);
-	CHKERRQ(ierr); //ierr = PCDestroy(&pc);CHKERRQ(ierr);
+	CHKERRQ(ierr);
+	ierr = VecDestroy(&xlocal);
+	CHKERRQ(ierr);
 	ierr = VecDestroy(&b);
 	CHKERRQ(ierr);
 	ierr = MatDestroy(&A);
@@ -235,11 +236,8 @@ int implicit_solver(HashTable* El_Table, HashTable* NodeTable, double delta_t, d
 	ierr = ISDestroy(&tois);
 	CHKERRQ(ierr);
 	PetscFree(num_elem_proc);
-	CHKERRQ(ierr);
 	PetscFree(to);
-	CHKERRQ(ierr);
 	PetscFree(from);
-	CHKERRQ(ierr);
 
 	return 0;
 }
@@ -537,7 +535,6 @@ void reset_phase_flag(HashTable *El_Table) {
 				currentPtr = currentPtr->next;
 			}
 		}
-
 }
 
 //=====================================================================================================================
@@ -549,7 +546,7 @@ void update_phase_flag(HashTable *El_Table, HashTable *Node_Table, int numprocs,
 	HashEntryPtr currentPtr;
 	Element *Curr_El;
 	HashEntryPtr *buck = El_Table->getbucketptr();
-	int num_of_layers = 10;
+	int num_of_layers = 6;
 
 	for (int i = 0; i < El_Table->get_no_of_buckets(); i++) {
 		currentPtr = *(buck + i);
