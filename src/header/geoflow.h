@@ -102,7 +102,7 @@ int implicit_solver(HashTable* El_Table, HashTable* NodeTable, double delta_t, d
 double compute_eta(HashTable* El_Table, PileProps *pileprops);
 
 void update_phase_flag(HashTable *El_Table, HashTable *Node_Table, int numprocs, int myid,
-    TimeProps* timeprops_ptr, MatProps* matprops_ptr);
+    TimeProps* timeprops_ptr);
 
 //! I (Hossein) added this function for displaying the data
 void printdata(HashTable* El_Table, HashTable* NodeTable, MatProps* matprops_ptr,
