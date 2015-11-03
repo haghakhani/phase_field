@@ -63,12 +63,12 @@ int implicit_solver(HashTable* El_Table, HashTable* NodeTable, double delta_t, d
 	 Compute the matrix and right-hand-side vector that define
 	 the linear system, Ax = b.
 	 ------------------------------------------------------------------- */
-	reset_phase_flag(El_Table);
-	update_phase_flag(El_Table, NodeTable, size, rank, timeprops_ptr);
+//	reset_phase_flag(El_Table);
+//	update_phase_flag(El_Table, NodeTable, size, rank, timeprops_ptr);
 
 	ierr = PetscMalloc(size * sizeof(PetscInt), &num_elem_proc);
 	CHKERRQ(ierr);
-	num_elem_proc[rank] = num_elem_near_interf(El_Table);
+	num_elem_proc[rank] = num_nonzero_elem(El_Table);
 
 	if (rank > 0)
 		MPI_Send(&num_elem_proc[rank], 1, MPI_INT, 0, 22, PETSC_COMM_WORLD);
@@ -298,7 +298,7 @@ PetscErrorCode MatLaplacian2D_Mult(Mat A, Vec x, Vec y) {
 			HashEntryPtr currentPtr = *(buck + i);
 			while (currentPtr) {
 				Element* Curr_El = (Element*) (currentPtr->value);
-				if ( (Curr_El->get_adapted_flag() > 0) && (*(Curr_El->get_phase_update())>0)) {
+				if (Curr_El->get_adapted_flag() > 0) {
 					*(Curr_El->get_state_vars()) = x_ptr[elem];
 					elem++;
 				}
@@ -319,7 +319,7 @@ PetscErrorCode MatLaplacian2D_Mult(Mat A, Vec x, Vec y) {
 			HashEntryPtr currentPtr = *(buck + i);
 			while (currentPtr) {
 				Element* Curr_El = (Element*) (currentPtr->value);
-				if (Curr_El->get_adapted_flag() > 0 && (*(Curr_El->get_phase_update())>0)) {
+				if (Curr_El->get_adapted_flag() > 0 ) {
 					Curr_El->calc_lap_phi(myctx->El_Table, myctx->Node_Table);
 				}
 				currentPtr = currentPtr->next;
@@ -335,7 +335,7 @@ PetscErrorCode MatLaplacian2D_Mult(Mat A, Vec x, Vec y) {
 			HashEntryPtr currentPtr = *(buck + i);
 			while (currentPtr) {
 				Element* Curr_El = (Element*) (currentPtr->value);
-				if (Curr_El->get_adapted_flag() > 0&& (*(Curr_El->get_phase_update())>0)) {
+				if (Curr_El->get_adapted_flag() > 0) {
 					y_ptr[elem] = *(Curr_El->get_state_vars())
 					    - (myctx->LapCoef) * (myctx->delta_t)
 					        * (*(Curr_El->get_lap_phi()) + *(Curr_El->get_lap_phi() + 1));
@@ -371,13 +371,12 @@ PetscErrorCode MatLaplacian2D_Mult(Mat A, Vec x, Vec y) {
 }
 //=====================================================================================================================
 int num_nonzero_elem(HashTable *El_Table) {
-	int num = 0, myid, i;
+	int num = 0;
 	HashEntryPtr currentPtr;
 	Element *Curr_El;
 	HashEntryPtr *buck = El_Table->getbucketptr();
-	//printf("the numebr of buckets are: %d", El_Table->get_no_of_buckets());
 
-	for (i = 0; i < El_Table->get_no_of_buckets(); i++)
+	for (int i = 0; i < El_Table->get_no_of_buckets(); i++)
 		if (*(buck + i)) {
 			currentPtr = *(buck + i);
 			while (currentPtr) {
@@ -428,7 +427,7 @@ PetscErrorCode MakeRHS(ContData *ctx, Vec b) {
 			HashEntryPtr currentPtr = *(buck + i);
 			while (currentPtr) {
 				Element* Curr_El = (Element*) (currentPtr->value);
-				if (Curr_El->get_adapted_flag() > 0&& (*(Curr_El->get_phase_update())>0)) {
+				if (Curr_El->get_adapted_flag() > 0) {
 					b_ptr[elem] = *(Curr_El->get_state_vars());
 					//ierr= VecSetValue(blocal,elem,*(Curr_El->get_state_vars()), INSERT_VALUES);CHKERRQ(ierr);
 					elem++;
@@ -487,7 +486,7 @@ PetscErrorCode update_phi(HashTable *El_Table, Vec update, ContData *ctx) {
 			HashEntryPtr currentPtr = *(buck + i);
 			while (currentPtr) {
 				Element* Curr_El = (Element*) (currentPtr->value);
-				if (Curr_El->get_adapted_flag() > 0&& (*(Curr_El->get_phase_update())>0)) {
+				if (Curr_El->get_adapted_flag() > 0) {
 					*(Curr_El->get_state_vars()) = update_ptr[elem];
 					elem++;
 				}
