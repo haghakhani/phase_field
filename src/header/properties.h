@@ -646,7 +646,7 @@ struct OutLine {
 		//pileheight2=CAllocD2(Ny,Nx);
 		for (iy = 0; iy < Ny; iy++)
 			for (ix = 0; ix < Nx; ix++) {
-				pileheight[iy][ix] = 0.0;
+				pileheight[iy][ix] = -2.;
 				//pileheight2[iy][ix]=0.0;
 			}
 

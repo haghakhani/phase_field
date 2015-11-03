@@ -357,6 +357,7 @@ PetscErrorCode MatLaplacian2D_Mult(Mat A, Vec x, Vec y) {
 	CHKERRQ(ierr);
 	ierr = VecScatterEnd(*vscat, y_local, y, INSERT_VALUES, SCATTER_FORWARD);
 	CHKERRQ(ierr);
+	 MPI_Barrier(PETSC_COMM_WORLD);
 	ierr = VecDestroy(&y_local);
 	CHKERRQ(ierr);
 	ierr = VecDestroy(&x_local);
@@ -445,6 +446,7 @@ PetscErrorCode MakeRHS(ContData *ctx, Vec b) {
 	CHKERRQ(ierr);
 	ierr = VecScatterEnd(*vscat, blocal, b, INSERT_VALUES, SCATTER_FORWARD);
 	CHKERRQ(ierr);
+	 MPI_Barrier(PETSC_COMM_WORLD);
 	ierr = VecDestroy(&blocal);
 	CHKERRQ(ierr);
 
@@ -494,6 +496,7 @@ PetscErrorCode update_phi(HashTable *El_Table, Vec update, ContData *ctx) {
 		}
 	ierr = VecRestoreArray(x_local, &update_ptr);
 	CHKERRQ(ierr);
+	 MPI_Barrier(PETSC_COMM_WORLD);
 	ierr = VecDestroy(&x_local);
 	CHKERRQ(ierr);
 

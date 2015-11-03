@@ -359,22 +359,8 @@ int main(int argc, char *argv[]) {
 		output_stoch_stats(&matprops, &statprops);
 	MPI_Barrier(MPI_COMM_WORLD);
 
-	//saverun(&BT_Node_Ptr, myid, numprocs, &BT_Elem_Ptr, &matprops, &timeprops, &mapnames,
-	//      adaptflag, order_flag, &statprops, &discharge, &outline, &savefileflag); Was not possible because the saverun function doesn't write the information for laplacian, moreover element constructor requires some modifications
-//
-//	MPI_Barrier(MPI_COMM_WORLD);
-
-	//output maximum flow depth a.k.a. flow outline
-//        OutLine outline2;
-//        double dxy[2];
-//        dxy[0]=outline.dx;
-//        dxy[1]=outline.dy;
-//        outline2.init2(dxy,outline.xminmax,outline.yminmax);
-//        /*int*/ NxNyout=outline.Nx*outline.Ny;
-//printf("Nx=%d  Ny=%d \n",outline.Nx,outline.Ny); 
-
 	MPI_Reduce(*(outline.pileheight), *(outline2.pileheight), NxNyout,
-	MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+	MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 	if (myid == 0)
 		outline2.output(&matprops, &statprops, &timeprops);
 	MPI_Barrier(MPI_COMM_WORLD);
