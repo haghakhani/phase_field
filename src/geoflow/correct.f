@@ -125,6 +125,8 @@ c     alphaxy -- see pitman-le (2005)
          t3=unitvx*
      $        dmax1(g(3)*uvec(2)+Vel(1)*uvec(3)*curv(1),0.d0)
      $        *tanbed
+
+         t4 = uvec(2)*g(1)
 c     update ustore
          if (abs(Ustore(3) + dt*t4)
      $    .gt.abs(dt*(t3+t2))) then
