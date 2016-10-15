@@ -86,13 +86,13 @@ AUTOMAKE = ${SHELL} /dinesh1/data/users/haghakha/TITAN2D/phase_field/missing --r
 AWK = gawk
 CC = mpicc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -I/dinesh1/data/users/haghakha/slepc-3.4/petsc-3.6.2/dbg_mpich/include -I/dinesh1/data/users/haghakha/slepc-3.4/petsc-3.6.2/include -g -O0 -I/include
+CFLAGS = -g -O0 -I/include
 CPP = mpicc -E
-CPPFLAGS = -I/dinesh1/data/users/haghakha/slepc-3.4/petsc-3.6.2/include -I/dinesh1/data/users/haghakha/slepc-3.4/petsc-3.6.2/dbg_mpich/include -g -O0  -I/include -DH5_USE_16_API
+CPPFLAGS =   -I/include -DH5_USE_16_API
 CXX = mpicxx
 CXXCPP = mpicxx -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -I/dinesh1/data/users/haghakha/slepc-3.4/petsc-3.6.2/include -I/dinesh1/data/users/haghakha/slepc-3.4/petsc-3.6.2/dbg_mpich/include -g -O0  -I/include
+CXXFLAGS = -g -O0 -I/dinesh1/data/users/haghakha/slepc-3.4/petsc-3.6.2/dbg_mpich/include -I/dinesh1/data/users/haghakha/slepc-3.4/petsc-3.6.2/include  -I/include
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
