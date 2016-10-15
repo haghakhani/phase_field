@@ -2389,9 +2389,9 @@ void Element::eval_velocity(double xoffset, double yoffset, double Vel[]) {
 		    d_state_vars[NUM_STATE_VARS + ivar] * yoffset;        //distfromcenter[1];
 
 	for (i = 0; i < 4; i++)
-		Vel[i] = 0;
+		Vel[i] = 0.;
 
-	if (temp_state_vars[0] > 0/*> GEOFLOW_TINY*/) {
+	if (temp_state_vars[0] > GEOFLOW_TINY) {
 		Vel[0] = temp_state_vars[2] / temp_state_vars[1];
 		Vel[1] = temp_state_vars[3] / temp_state_vars[1];
 		Vel[2] = temp_state_vars[4] / temp_state_vars[1];
