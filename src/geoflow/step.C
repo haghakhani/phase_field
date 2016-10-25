@@ -260,16 +260,16 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump,
 					*(Curr_El->get_state_vars()) = phi;
 
 					// this part is for doing erosion
-//					double vel[] = { 0., 0. };
+					double vel[] = { 0., 0. };
 					double* state_vars = Curr_El->get_state_vars();
 
-//					if (*(Curr_El->get_state_vars()) > GEOFLOW_TINY) {
-//						vel[0] = state_vars[2] / state_vars[1];
-//						vel[1] = state_vars[3] / state_vars[1];
-//					} else {
-//						vel[0] = 0.;
-//						vel[1] = 0.;
-//					}
+					if (*(Curr_El->get_state_vars()) > GEOFLOW_TINY) {
+						vel[0] = state_vars[2] / state_vars[1];
+						vel[1] = state_vars[3] / state_vars[1];
+					} else {
+						vel[0] = 0.;
+						vel[1] = 0.;
+					}
 					//internal erosion
 					double erosion_rate = 0.1;
 					double es = 0.;
@@ -285,13 +285,13 @@ void step(HashTable* El_Table, HashTable* NodeTable, int myid, int nump,
 					double sq_phi = phi * phi;
 					if (sq_phi < 1.) {
 						double alpha = 1;
-						double beta = .1;
+						double beta = .1 * 5.;
 						es = pow(1 - sq_phi, alpha) * beta;
 					}
 
 					state_vars[1] = state_vars[1] + dt * es;
-					state_vars[2] = state_vars[2] + dt * es * state_vars[2];
-					state_vars[3] = state_vars[3] + dt * es * state_vars[3];
+					state_vars[2] = state_vars[2] + dt * es * vel[0];
+					state_vars[3] = state_vars[3] + dt * es * vel[1];
 
 #ifdef MAX_DEPTH_MAP
 					double *coord = Curr_El->get_coord();
